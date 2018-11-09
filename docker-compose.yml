@@ -1,0 +1,25 @@
+version: '2'
+
+services:
+  docker-openvpn-client:
+    image: docker-openvpn-client
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun
+    restart: always
+    build: .
+    ports:
+      - 1194:1194
+    network_mode: bridge
+    dns:
+      - 1.1.1.1
+      - 1.0.0.1
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /your/openvpn/configs/path/:/etc/openvpn
+    environment:
+      - OPENVPN_PROVIDER=vpnprovider
+      - OPENVPN_USERNAME=username
+      - OPENVPN_PASSWORD=password
+      - OPENVPN_OPTS=--auth-nocache --inactive 3600 --ping 10 --ping-exit 60
