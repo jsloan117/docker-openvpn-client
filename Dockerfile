@@ -5,7 +5,7 @@ LABEL maintainer="Jonathan Sloan"
 # Update packages and install software
 RUN apt-get update && apt-get -y upgrade && apt-get -y install software-properties-common sudo wget git curl && \
     echo "*** install packages ***" && \
-    apt-get -y install iputils-ping iproute2 net-tools dnsutils nano openvpn \
+    apt-get -y install iputils-ping iproute2 net-tools dnsutils nano openvpn && \
     wget https://github.com/Yelp/dumb-init/releases/download/v1.2.2/dumb-init_1.2.2_amd64.deb && \
     dpkg -i dumb-init_1.2.2_amd64.deb && \
     rm -rf dumb-init_1.2.2_amd64.deb && \
