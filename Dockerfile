@@ -2,7 +2,6 @@ FROM ubuntu:18.04
 LABEL Name=docker-openvpn-client Version=0.0.1
 LABEL maintainer="Jonathan Sloan"
 
-# Update packages and install software
 RUN apt-get update && apt-get -y upgrade && apt-get -y install software-properties-common sudo wget git curl && \
     echo "*** install packages ***" && \
     apt-get -y install iputils-ping iproute2 net-tools dnsutils nano openvpn && \
@@ -15,6 +14,8 @@ RUN apt-get update && apt-get -y upgrade && apt-get -y install software-properti
 
 ADD openvpn/ /etc/openvpn/
 
+RUN chmod +x /etc/openvpn/*.sh
+
 ENV OPENVPN_USERNAME=**None** \
     OPENVPN_PASSWORD=**None** \
     OPENVPN_PROVIDER=**None** \
@@ -22,7 +23,6 @@ ENV OPENVPN_USERNAME=**None** \
     PUID= \
     PGID=
 
-# Expose port and run
 EXPOSE 1194
 VOLUME /etc/openvpn
 CMD ["dumb-init", "/etc/openvpn/start.sh"]
