@@ -19,9 +19,7 @@ RUN chmod +x /etc/openvpn/*.sh
 ENV OPENVPN_USERNAME=**None** \
     OPENVPN_PASSWORD=**None** \
     OPENVPN_PROVIDER=**None** \
-    OPENVPN_OPTS= \
-    PUID= \
-    PGID=
+    OPENVPN_OPTS=
 
 EXPOSE 1194
 VOLUME /etc/openvpn

@@ -2,5 +2,3 @@ OPENVPN_USERNAME=**None**
 OPENVPN_PASSWORD=**None**
 OPENVPN_PROVIDER=**None**
 OPENVPN_OPTS=--auth-nocache --inactive 3600 --ping 10 --ping-exit 60
-PUID=911
-PGID=911
