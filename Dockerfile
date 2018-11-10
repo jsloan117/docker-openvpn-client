@@ -1,5 +1,5 @@
 FROM ubuntu:18.04
-LABEL Name=docker-openvpn-client Version=0.0.1
+LABEL Name=docker-openvpn-client Version=0.1.0
 LABEL maintainer="Jonathan Sloan"
 
 RUN apt-get update && apt-get -y upgrade && apt-get -y install software-properties-common sudo wget git curl && \
@@ -9,8 +9,7 @@ RUN apt-get update && apt-get -y upgrade && apt-get -y install software-properti
     dpkg -i dumb-init_1.2.2_amd64.deb && \
     rm -rf dumb-init_1.2.2_amd64.deb && \
     echo "*** cleanup ***" && \
-    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
-    useradd -u 911 -U -d /config -s /bin/false abc
+    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ADD openvpn/ /etc/openvpn/
 
