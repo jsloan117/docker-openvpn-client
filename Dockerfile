@@ -20,6 +20,5 @@ ENV OPENVPN_USERNAME=**None** \
     OPENVPN_PROVIDER=**None** \
     OPENVPN_OPTS=
 
-EXPOSE 1194
 VOLUME /etc/openvpn
 CMD ["dumb-init", "/etc/openvpn/start.sh"]

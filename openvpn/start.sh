@@ -65,7 +65,7 @@ fi
 
 ## If we use LOCAL_NETWORK we need to grab network config info
 if [[ -n "${LOCAL_NETWORK-}" ]]; then
-  eval $(/sbin/ip r l m 0.0.0.0 | awk '{if($5!="tun0"){print "GW="$3"\nINT="$5; exit}}')
+  eval $(/sbin/ip r l | awk '{if ($1 ~ /0.0.0.0|default/ && $5!="tun0") {print "GW="$3"\nINT="$5; exit}}')
 fi
 
 if [[ -n "${LOCAL_NETWORK-}" ]]; then
