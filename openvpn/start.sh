@@ -63,4 +63,18 @@ else
   chmod 600 /config/openvpn-credentials.txt
 fi
 
+## If we use LOCAL_NETWORK we need to grab network config info
+if [[ -n "${LOCAL_NETWORK-}" ]]; then
+  eval $(/sbin/ip r l m 0.0.0.0 | awk '{if($5!="tun0"){print "GW="$3"\nINT="$5; exit}}')
+fi
+
+if [[ -n "${LOCAL_NETWORK-}" ]]; then
+  if [[ -n "${GW-}" ]] && [[ -n "${INT-}" ]]; then
+    for localNet in ${LOCAL_NETWORK//,/ }; do
+      echo "adding route to local network ${localNet} via ${GW} dev ${INT}"
+      /sbin/ip r a "${localNet}" via "${GW}" dev "${INT}"
+    done
+  fi
+fi
+
 exec openvpn ${OPENVPN_OPTS} --config "${OPENVPN_CONFIG}"

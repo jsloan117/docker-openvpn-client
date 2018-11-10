@@ -91,13 +91,14 @@ This is a list of providers that are bundled within the image. The custom provid
 
 | Variable | Function | Example |
 |----------|----------|-------|
-|`OPENVPN_PROVIDER` | VPN provider | `OPENVPN_PROVIDER=VYPRVPN` |
-|`OPENVPN_USERNAME` | VPN username | `OPENVPN_USERNAME=user` |
-|`OPENVPN_PASSWORD` | VPN password | `OPENVPN_PASSWORD=password` |
+| `OPENVPN_PROVIDER` | VPN provider | `OPENVPN_PROVIDER=VYPRVPN` |
+| `OPENVPN_USERNAME` | VPN username | `OPENVPN_USERNAME=user` |
+| `OPENVPN_PASSWORD` | VPN password | `OPENVPN_PASSWORD=password` |
 
 ### Network configuration options
 
 | Variable | Function | Example |
 |----------|----------|-------|
-|`OPENVPN_CONFIG` | VPN endpoint to use | `OPENVPN_CONFIG=USA - Austin-256` |
-|`OPENVPN_OPTS` | OpenVPN startup options | See [OpenVPN doc](https://openvpn.net/index.php/open-source/documentation/manuals/65-openvpn-20x-manpage.html) |
+| `OPENVPN_CONFIG` | VPN endpoint to use | `OPENVPN_CONFIG=USA - Austin-256` |
+| `OPENVPN_OPTS` | OpenVPN startup options | See [OpenVPN doc](https://openvpn.net/index.php/open-source/documentation/manuals/65-openvpn-20x-manpage.html) |
+| `LOCAL_NETWORK` | Sets the local network that should have access. Accepts comma separated list. | `LOCAL_NETWORK=192.168.0.0/24`|
