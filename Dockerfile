@@ -1,5 +1,5 @@
 FROM ubuntu:18.04
-LABEL Name=docker-openvpn-client Version=0.1.0
+LABEL Name=docker-openvpn-client Version=0.1.2
 LABEL maintainer="Jonathan Sloan"
 
 RUN apt-get update && apt-get -y upgrade && apt-get -y install software-properties-common sudo wget git curl && \
