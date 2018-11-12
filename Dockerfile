@@ -18,7 +18,8 @@ RUN chmod +x /etc/openvpn/*.sh
 ENV OPENVPN_USERNAME=**None** \
     OPENVPN_PASSWORD=**None** \
     OPENVPN_PROVIDER=**None** \
-    OPENVPN_OPTS=
+    OPENVPN_OPTS= \
+    LOCAL_NETWORK=192.168.0.0/16
 
 VOLUME /etc/openvpn
 CMD ["dumb-init", "/etc/openvpn/start.sh"]

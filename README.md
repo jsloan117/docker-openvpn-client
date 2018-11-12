@@ -3,8 +3,9 @@
 Docker OpenVPN Client
 
 ![License](https://img.shields.io/badge/License-GPLv3-blue.svg)
-![https://microbadger.com/images/jsloan117/docker-openvpn-client](https://images.microbadger.com/badges/image/jsloan117/docker-openvpn-client.svg)
-![https://microbadger.com/images/jsloan117/docker-openvpn-client](https://images.microbadger.com/badges/version/jsloan117/docker-openvpn-client.svg)
+![Docker Automated build](https://img.shields.io/docker/automated/jsloan117/docker-openvpn-client.svg)
+![Docker Pulls](https://img.shields.io/docker/pulls/jsloan117/docker-openvpn-client.svg)
+[![](https://images.microbadger.com/badges/image/jsloan117/docker-openvpn-client.svg)](https://microbadger.com/images/jsloan117/docker-openvpn-client "Get your own image badge on microbadger.com")
 [![Codefresh build status]( https://g.codefresh.io/api/badges/pipeline/jsloan117_marketplace/jsloan117%2Fdocker-openvpn-client%2Fdocker-openvpn-client?type=cf-1)]( https://g.codefresh.io/public/accounts/jsloan117_marketplace/pipelines/jsloan117/docker-openvpn-client/docker-openvpn-client)
 
 Docker container that provides muitiple VPN providers for OpenVPN.
@@ -32,6 +33,7 @@ $ docker run --cap-add=NET_ADMIN --device=/dev/net/tun -d --name openvpn_client 
 -e OPENVPN_USERNAME=user \
 -e OPENVPN_PASSWORD=password \
 -e OPENVPN_OPTS=--auth-nocache\ --inactive\ 3600\ --ping\ 10\ --ping-exit\ 60 \
+-e LOCAL_NETWORK=192.168.0.0/16 \
 -p 1194:1194 --dns 1.1.1.1 --dns 1.0.0.1 \
 jsloan117/docker-openvpn-client
 ```
