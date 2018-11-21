@@ -7,7 +7,7 @@ RUN [ "cross-build-start" ]
 RUN echo "*** updating system ***" \
     && apt-get update && apt-get -y upgrade \
     && echo "*** installing packages ***" \
-    && apt-get -y install dumb-init iputils-ping iproute2 openvpn \
+    && apt-get -y install dumb-init iputils-ping iproute2 openvpn jq \
     && echo "*** cleanup ***" \
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
