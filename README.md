@@ -50,6 +50,7 @@ This is a list of providers that are bundled within the image. The custom provid
 | BTGuard | `BTGUARD` |
 | Cryptostorm | `CRYPTOSTORM` |
 | Cypherpunk | `CYPHERPUNK` |
+| FreeVPN | `FREEVPN` |
 | FrootVPN | `FROOT` |
 | FrostVPN | `FROSTVPN` |
 | Giganews | `GIGANEWS` |
@@ -68,6 +69,7 @@ This is a list of providers that are bundled within the image. The custom provid
 | Perfect Privacy | `PERFECTPRIVACY` |
 | Private Internet Access | `PIA` |
 | PrivateVPN | `PRIVATEVPN` |
+| ProtonVPN | `PROTONVPN` |
 | proXPN | `PROXPN` |
 | proxy.sh | `PROXYSH` |
 | PureVPN | `PUREVPN` |
@@ -85,6 +87,7 @@ This is a list of providers that are bundled within the image. The custom provid
 | VPN.AC | `VPNAC` |
 | VPN.ht | `VPNHT` |
 | VPNBook.com | `VPNBOOK` |
+| VPNFacile | `VPNFACILE` |
 | VPNTunnel | `VPNTUNNEL` |
 | VyprVpn | `VYPRVPN` |
 | Windscribe | `WINDSCRIBE` |
@@ -103,4 +106,4 @@ This is a list of providers that are bundled within the image. The custom provid
 |----------|----------|-------|
 | `OPENVPN_CONFIG` | VPN endpoint to use | `OPENVPN_CONFIG=USA - Austin-256` |
 | `OPENVPN_OPTS` | OpenVPN startup options | See [OpenVPN doc](https://openvpn.net/index.php/open-source/documentation/manuals/65-openvpn-20x-manpage.html) |
-| `LOCAL_NETWORK` | Sets the local network that should have access. Accepts comma separated list. | `LOCAL_NETWORK=192.168.0.0/24`|
+| `LOCAL_NETWORK` | Sets the local network that should have access. Accepts comma separated list. | `LOCAL_NETWORK=192.168.0.0/24` |
