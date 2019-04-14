@@ -1,13 +1,17 @@
-FROM alpine:latest
-LABEL Name=docker-openvpn-client Version=0.1.7
+# This Dockerfile is for building ARM images on x64 machine like Docker Hub
+
+FROM  balenalib/raspberry-pi:stretch
+LABEL Name=docker-openvpn-client Version=0.1.6
 LABEL maintainer="Jonathan Sloan"
 
+RUN [ "cross-build-start" ]
+
 RUN echo "*** updating system ***" \
-    && apk update && apk upgrade \
+    && apt-get update && apt-get -y upgrade \
     && echo "*** installing packages ***" \
-    && apk --no-cache add bash dumb-init openvpn shadow curl jq \
+    && apt-get -y install dumb-init iputils-ping iproute2 openvpn jq \
     && echo "*** cleanup ***" \
-    && rm -rf /tmp/* /var/tmp/*
+    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 COPY openvpn/ /etc/openvpn/
 
@@ -22,3 +26,5 @@ HEALTHCHECK --interval=5m CMD /etc/scripts/healthcheck.sh
 
 VOLUME /etc/openvpn
 CMD ["dumb-init", "/etc/openvpn/start.sh"]
+
+RUN [ "cross-build-end" ]
