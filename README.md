@@ -78,6 +78,7 @@ This is a list of providers that are bundled within the image. The custom provid
 | SlickVPN | `SLICKVPN` |
 | Smart DNS Proxy | `SMARTDNSPROXY` |
 | SmartVPN | `SMARTVPN` |
+| Surfshark | `SURFSHARK` |
 | TigerVPN | `TIGER` |
 | TorGuard | `TORGUARD` |
 | TunnelBear | `TUNNELBEAR`|
