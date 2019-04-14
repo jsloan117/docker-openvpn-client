@@ -107,3 +107,12 @@ This is a list of providers that are bundled within the image. The custom provid
 | `OPENVPN_CONFIG` | VPN endpoint to use | `OPENVPN_CONFIG=USA - Austin-256` |
 | `OPENVPN_OPTS` | OpenVPN startup options | See [OpenVPN doc](https://openvpn.net/index.php/open-source/documentation/manuals/65-openvpn-20x-manpage.html) |
 | `LOCAL_NETWORK` | Sets the local network that should have access. Accepts comma separated list. | `LOCAL_NETWORK=192.168.0.0/24` |
+| `CREATE_TUN_DEVICE` | Creates /dev/net/tun device inside the container, mitigates the need mount the device from the host | `CREATE_TUN_DEVICE=true` |
+
+### Health check option
+
+Because your VPN connection can sometimes fail, Docker will run a health check on this container every 5 minutes to see if the container is still connected to the internet. By default, this check is done by pinging google.com once. You can change the host that is pinged.
+
+| Variable | Function | Example |
+|----------|----------|-------|
+| `HEALTH_CHECK_HOST` | this host is pinged to check if the network connection still works | `google.com` |

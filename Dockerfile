@@ -18,7 +18,11 @@ ENV OPENVPN_USERNAME=**None** \
     OPENVPN_PASSWORD=**None** \
     OPENVPN_PROVIDER=**None** \
     OPENVPN_OPTS= \
-    LOCAL_NETWORK=192.168.0.0/16
+    LOCAL_NETWORK=192.168.0.0/16 \
+    CREATE_TUN_DEVICE=true \
+    HEALTH_CHECK_HOST=google.com
+
+HEALTHCHECK --interval=5m CMD /etc/openvpn/healthcheck.sh
 
 VOLUME /etc/openvpn
 CMD ["dumb-init", "/etc/openvpn/start.sh"]
