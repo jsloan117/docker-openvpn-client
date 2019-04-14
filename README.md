@@ -18,7 +18,7 @@ The container is available from the Docker registry and this is the simplest way
 To run the container use this command:
 
 ```bash
-$ docker run --cap-add=NET_ADMIN --device=/dev/net/tun -d --name openvpn_client \
+$ docker run --cap-add=NET_ADMIN -d --name openvpn_client \
 -v /etc/localtime:/etc/localtime:ro \
 --env-file /dockerenvironmentfile/path/DockerEnv \
 -p 1194:1194 --dns 1.1.1.1 --dns 1.0.0.1 \
@@ -26,8 +26,9 @@ jsloan117/docker-openvpn-client
 ```
 
 ```bash
-$ docker run --cap-add=NET_ADMIN --device=/dev/net/tun -d --name openvpn_client \
+$ docker run --cap-add=NET_ADMIN -d --name openvpn_client \
 -v /etc/localtime:/etc/localtime:ro \
+-e CREATE_TUN_DEVICE=true \
 -e OPENVPN_PROVIDER=VYPRVPN \
 -e OPENVPN_CONFIG=USA\ -\ Austin-256 \
 -e OPENVPN_USERNAME=user \
