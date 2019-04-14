@@ -20,7 +20,7 @@ fi
 
 echo "Using OpenVPN provider: ${OPENVPN_PROVIDER}"
 
-if [[ "$OPENVPN_PROVIDER" = "NORDVPN" ]]
+if [[ "${OPENVPN_PROVIDER^^}" = "NORDVPN" ]]
 then
     if [[ -z "$OPENVPN_CONFIG" ]]
     then
