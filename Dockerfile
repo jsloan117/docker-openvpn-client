@@ -1,5 +1,5 @@
 FROM ubuntu:18.04
-LABEL Name=docker-openvpn-client Version=0.1.7
+LABEL Name=docker-openvpn-client Version=0.2.0
 LABEL maintainer="Jonathan Sloan"
 
 RUN echo "*** updating system ***" \
