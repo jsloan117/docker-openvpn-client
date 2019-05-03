@@ -1,7 +1,7 @@
 # This Dockerfile is for building ARM images on x64 machine like Docker Hub
 
 FROM  balenalib/raspberry-pi:stretch
-LABEL Name=docker-openvpn-client Version=0.2.0
+LABEL Name=docker-openvpn-client Version=0.3.0
 LABEL maintainer="Jonathan Sloan"
 
 RUN [ "cross-build-start" ]
@@ -13,7 +13,8 @@ RUN echo "*** updating system ***" \
     && echo "*** cleanup ***" \
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-COPY openvpn/ /etc/openvpn/
+ADD openvpn/ /etc/openvpn/
+ADD scripts/ /etc/scripts/
 
 ENV OPENVPN_USERNAME=**None** \
     OPENVPN_PASSWORD=**None** \
@@ -22,7 +23,7 @@ ENV OPENVPN_USERNAME=**None** \
     LOCAL_NETWORK=192.168.0.0/16 \
     HEALTH_CHECK_HOST=google.com
 
-HEALTHCHECK --interval=5m CMD /etc/openvpn/healthcheck.sh
+HEALTHCHECK --interval=5m CMD /etc/scripts/healthcheck.sh
 
 VOLUME /etc/openvpn
 CMD ["dumb-init", "/etc/openvpn/start.sh"]

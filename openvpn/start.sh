@@ -20,12 +20,37 @@ fi
 
 echo "Using OpenVPN provider: ${OPENVPN_PROVIDER}"
 
+# If openvpn-pre-start.sh exists, run it
+if [ -x /scripts/openvpn-pre-start.sh ]
+then
+   echo "Executing /scripts/openvpn-pre-start.sh"
+   /scripts/openvpn-pre-start.sh "$@"
+   echo "/scripts/openvpn-pre-start.sh returned $?"
+fi
+
 if [[ "${OPENVPN_PROVIDER^^}" = "NORDVPN" ]]
 then
-    if [[ -z "$OPENVPN_CONFIG" ]]
+    if [[ -z $NORDVPN_PROTOCOL ]]
     then
-        export OPENVPN_CONFIG=$(curl -s 'https://nordvpn.com/wp-admin/admin-ajax.php?action=servers_recommendations' | jq -r '.[0].hostname').udp
-        echo "Setting best server ${OPENVPN_CONFIG}"
+      export NORDVPN_PROTOCOL=UDP
+    fi
+
+    if [[ -z $NORDVPN_CATEGORY ]]
+    then
+      export NORDVPN_CATEGORY=P2P
+    fi
+
+    if [[ ! -z $OPENVPN_CONFIG ]]
+    then
+      tmp_Protocol="${OPENVPN_CONFIG##*.}"
+      export NORDVPN_PROTOCOL=${tmp_Protocol^^}
+      echo "Setting NORDVPN_PROTOCOL to: ${NORDVPN_PROTOCOL}"
+      ${VPN_PROVIDER_CONFIGS}/updateConfigs.sh --openvpn-config
+    elif [[ ! -z $NORDVPN_COUNTRY ]]
+    then
+      export OPENVPN_CONFIG=$(${VPN_PROVIDER_CONFIGS}/updateConfigs.sh)
+    else
+      export OPENVPN_CONFIG=$(${VPN_PROVIDER_CONFIGS}/updateConfigs.sh --get-recommended})
     fi
 fi
 

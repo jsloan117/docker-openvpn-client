@@ -118,3 +118,13 @@ Because your VPN connection can sometimes fail, Docker will run a health check o
 | Variable | Function | Example |
 |----------|----------|-------|
 | `HEALTH_CHECK_HOST` | this host is pinged to check if the network connection still works | `google.com` |
+
+### Custom pre/post scripts
+
+If you ever need to run custom code before openvpn is executed you can use the custom scripts feature.
+Custom scripts are located in the /scripts directory.
+To enable this feature, you'll need to mount the /scripts directory.
+
+| Script | Function |
+|----------|----------|
+| `/scripts/openvpn-pre-start.sh` | This shell script will be executed before openvpn start |

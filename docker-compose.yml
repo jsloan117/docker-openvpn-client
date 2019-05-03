@@ -23,6 +23,7 @@ services:
       - OPENVPN_OPTS=--auth-nocache --inactive 3600 --ping 10 --ping-exit 60
       - LOCAL_NETWORK=192.168.0.0/16
       - HEALTH_CHECK_HOST=google.com
+      - CREATE_TUN_DEVICE=true
     healthcheck:
-      test: ["CMD", "/etc/openvpn/healthcheck.sh"]
+      test: ["CMD", "/etc/scripts/healthcheck.sh"]
       interval: 5m
