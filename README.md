@@ -3,10 +3,10 @@
 Docker OpenVPN Client
 
 ![License](https://img.shields.io/badge/License-GPLv3-blue.svg)
-![Docker Automated build](https://img.shields.io/docker/automated/jsloan117/docker-openvpn-client.svg)
+![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/jsloan117/docker-openvpn-client.svg)
+![Docker Build Status](https://img.shields.io/docker/cloud/build/jsloan117/docker-openvpn-client.svg)
 ![Docker Pulls](https://img.shields.io/docker/pulls/jsloan117/docker-openvpn-client.svg)
 [![](https://images.microbadger.com/badges/image/jsloan117/docker-openvpn-client.svg)](https://microbadger.com/images/jsloan117/docker-openvpn-client "Get your own image badge on microbadger.com")
-[![Codefresh build status]( https://g.codefresh.io/api/badges/pipeline/jsloan117_marketplace/jsloan117%2Fdocker-openvpn-client%2Fdocker-openvpn-client?type=cf-1)]( https://g.codefresh.io/public/accounts/jsloan117_marketplace/pipelines/jsloan117/docker-openvpn-client/docker-openvpn-client)
 
 Docker container that provides muitiple VPN providers for OpenVPN.
 
