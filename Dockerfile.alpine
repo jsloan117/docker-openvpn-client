@@ -5,7 +5,7 @@ LABEL maintainer="Jonathan Sloan"
 RUN echo "*** updating system ***" \
     && apk update && apk upgrade \
     && echo "*** installing packages ***" \
-    && apk --no-cache add bash dumb-init openvpn shadow curl jq \
+    && apk --no-cache add bash dumb-init openvpn shadow curl jq tzdata \
     && echo "*** cleanup ***" \
     && rm -rf /tmp/* /var/tmp/*
 

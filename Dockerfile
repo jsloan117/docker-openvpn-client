@@ -5,7 +5,7 @@ LABEL maintainer="Jonathan Sloan"
 RUN echo "*** updating system ***" \
     && apt-get update && apt-get -y upgrade \
     && echo "*** installing packages ***" \
-    && apt-get -y install wget iputils-ping iproute2 openvpn jq \
+    && apt-get -y install wget iputils-ping iproute2 openvpn jq tzdata \
     && wget https://github.com/Yelp/dumb-init/releases/download/v1.2.2/dumb-init_1.2.2_amd64.deb \
     && dpkg -i dumb-init_1.2.2_amd64.deb \
     && rm -rf dumb-init_1.2.2_amd64.deb \

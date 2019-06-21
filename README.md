@@ -51,6 +51,7 @@ This is a list of providers that are bundled within the image. The custom provid
 | BTGuard | `BTGUARD` |
 | Cryptostorm | `CRYPTOSTORM` |
 | Cypherpunk | `CYPHERPUNK` |
+| FastestVPN | `FASTESTVPN` |
 | FreeVPN | `FREEVPN` |
 | FrootVPN | `FROOT` |
 | FrostVPN | `FROSTVPN` |
@@ -91,6 +92,7 @@ This is a list of providers that are bundled within the image. The custom provid
 | VPNBook.com | `VPNBOOK` |
 | VPNFacile | `VPNFACILE` |
 | VPNTunnel | `VPNTUNNEL` |
+| VPNUnlimited | `VPNUNLIMITED` |
 | VyprVpn | `VYPRVPN` |
 | Windscribe | `WINDSCRIBE` |
 
