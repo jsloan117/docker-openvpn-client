@@ -1,16 +1,13 @@
 FROM ubuntu:18.04
-LABEL Name=docker-openvpn-client Version=0.3.0
+LABEL Name=docker-openvpn-client Version=0.4.0
 LABEL maintainer="Jonathan Sloan"
 
 RUN echo "*** updating system ***" \
     && apt-get update && apt-get -y upgrade \
     && echo "*** installing packages ***" \
-    && apt-get -y install wget iputils-ping iproute2 openvpn jq tzdata \
-    && wget https://github.com/Yelp/dumb-init/releases/download/v1.2.2/dumb-init_1.2.2_amd64.deb \
-    && dpkg -i dumb-init_1.2.2_amd64.deb \
-    && rm -rf dumb-init_1.2.2_amd64.deb \
+    && apt-get -y install wget iputils-ping iproute2 openvpn jq tzdata dumb-init \
     && echo "*** cleanup ***" \
-    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    && apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/* /tmp/* /var/tmp/*
 
 ADD openvpn/ /etc/openvpn/
 ADD scripts/ /etc/scripts/

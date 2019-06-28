@@ -1,5 +1,5 @@
 FROM alpine:latest
-LABEL Name=docker-openvpn-client Version=0.3.0
+LABEL Name=docker-openvpn-client Version=0.4.0
 LABEL maintainer="Jonathan Sloan"
 
 RUN echo "*** updating system ***" \
