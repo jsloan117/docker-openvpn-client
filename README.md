@@ -3,10 +3,8 @@
 Docker OpenVPN Client
 
 ![License](https://img.shields.io/badge/License-GPLv3-blue.svg)
-![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/jsloan117/docker-openvpn-client.svg)
-![Docker Build Status](https://img.shields.io/docker/cloud/build/jsloan117/docker-openvpn-client.svg)
-![Docker Pulls](https://img.shields.io/docker/pulls/jsloan117/docker-openvpn-client.svg)
-[![](https://images.microbadger.com/badges/image/jsloan117/docker-openvpn-client.svg)](https://microbadger.com/images/jsloan117/docker-openvpn-client "Get your own image badge on microbadger.com")
+[![Build Status](https://travis-ci.com/jsloan117/docker-openvpn-client.svg?branch=master)](https://travis-ci.com/jsloan117/docker-openvpn-client)
+[![Docker Pulls](https://img.shields.io/docker/pulls/jsloan117/docker-openvpn-client.svg)](https://img.shields.io/docker/pulls/jsloan117/docker-openvpn-client.svg)
 
 Docker container that provides muitiple VPN providers for OpenVPN.
 
@@ -38,64 +36,6 @@ $ docker run --cap-add=NET_ADMIN -d --name openvpn_client \
 -p 1194:1194 --dns 1.1.1.1 --dns 1.0.0.1 \
 jsloan117/docker-openvpn-client
 ```
-
-### Supported providers
-
-This is a list of providers that are bundled within the image. The custom provider setting can be used with any provider.
-
-| Provider Name                | Config Value (`OPENVPN_PROVIDER`) |
-|:-----------------------------|:-------------|
-| Anonine | `ANONINE` |
-| AnonVPN | `ANONVPN` |
-| BlackVPN | `BLACKVPN` |
-| BTGuard | `BTGUARD` |
-| Cryptostorm | `CRYPTOSTORM` |
-| Cypherpunk | `CYPHERPUNK` |
-| FastestVPN | `FASTESTVPN` |
-| FreeVPN | `FREEVPN` |
-| FrootVPN | `FROOT` |
-| FrostVPN | `FROSTVPN` |
-| Ghostpath | `GHOSTPATH` |
-| Giganews | `GIGANEWS` |
-| HideMe | `HIDEME` |
-| HideMyAss | `HIDEMYASS` |
-| IntegrityVPN | `INTEGRITYVPN` |
-| IPredator | `IPREDATOR` |
-| IPVanish | `IPVANISH` |
-| IronSocket | `IRONSOCKET` |
-| Ivacy | `IVACY` |
-| IVPN | `IVPN` |
-| Mullvad | `MULLVAD` |
-| Newshosting | `NEWSHOSTING` |
-| NordVPN | `NORDVPN` |
-| OVPN | `OVPN` |
-| Perfect Privacy | `PERFECTPRIVACY` |
-| Private Internet Access | `PIA` |
-| PrivateVPN | `PRIVATEVPN` |
-| ProtonVPN | `PROTONVPN` |
-| proXPN | `PROXPN` |
-| proxy.sh | `PROXYSH` |
-| PureVPN | `PUREVPN` |
-| RA4W VPN | `RA4W` |
-| SaferVPN | `SAFERVPN` |
-| SlickVPN | `SLICKVPN` |
-| Smart DNS Proxy | `SMARTDNSPROXY` |
-| SmartVPN | `SMARTVPN` |
-| Surfshark | `SURFSHARK` |
-| TigerVPN | `TIGER` |
-| TorGuard | `TORGUARD` |
-| TunnelBear | `TUNNELBEAR`|
-| UsenetServerVPN | `USENETSERVER` |
-| Windscribe | `WINDSCRIBE` |
-| VPNArea.com | `VPNAREA` |
-| VPN.AC | `VPNAC` |
-| VPN.ht | `VPNHT` |
-| VPNBook.com | `VPNBOOK` |
-| VPNFacile | `VPNFACILE` |
-| VPNTunnel | `VPNTUNNEL` |
-| VPNUnlimited | `VPNUNLIMITED` |
-| VyprVpn | `VYPRVPN` |
-| Windscribe | `WINDSCRIBE` |
 
 ### Required environment options
 

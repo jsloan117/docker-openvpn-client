@@ -1,0 +1,17 @@
+site_name: docker-openvpn-client
+site_url: http://jsloan117.github.io/docker-openvpn-client
+repo_url: https://github.com/jsloan117/docker-openvpn-client
+theme:
+  name: "material"
+markdown_extensions:
+  - codehilite:
+      linenums: true
+  - toc:
+      permalink: true
+      separator: "_"
+nav:
+  - "Home": "index.md"
+  - "Run from Docker registry": "run-from-docker-registry.md"
+  - "Configuration": "configuration.md"
+plugins:
+  - search

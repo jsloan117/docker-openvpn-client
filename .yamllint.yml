@@ -1,0 +1,9 @@
+---
+# https://yamllint.readthedocs.io/en/stable/configuration.html
+
+extends: default
+
+rules:
+  document-start: disable
+  braces: { min-spaces-inside: 1, max-spaces-inside: 1 }
+  truthy: { allowed-values: ["false", "true", "on", "off"] }

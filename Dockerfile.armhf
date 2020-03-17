@@ -1,24 +1,21 @@
 FROM  balenalib/raspberry-pi:stretch
-LABEL Name=docker-openvpn-client Version=0.4.0
-LABEL maintainer="Jonathan Sloan"
+LABEL Name=docker-openvpn-client Maintainer="Jonathan Sloan"
 
-RUN echo "*** updating system ***" \
-    && apt-get update && apt-get -y upgrade \
-    && echo "*** installing packages ***" \
-    && apt-get -y install dumb-init iputils-ping iproute2 openvpn jq tzdata \
+RUN echo "*** installing packages ***" \
+    && apt-get update && apt-get -y --no-install-recommends install dumb-init iputils-ping iproute2 openvpn jq tzdata \
     && echo "*** cleanup ***" \
-    && apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/* /tmp/* /var/tmp/*
+    && rm -rf /tmp/* /var/tmp/* /var/cache/apt/* /var/lib/apt/lists/*
 
-ADD openvpn/ /etc/openvpn/
-ADD scripts/ /etc/scripts/
+COPY openvpn /etc/openvpn
+COPY scripts /etc/scripts
 
-ENV OPENVPN_USERNAME=**None** \
-    OPENVPN_PASSWORD=**None** \
-    OPENVPN_PROVIDER=**None** \
-    OPENVPN_OPTS= \
-    LOCAL_NETWORK=192.168.0.0/16 \
-    CREATE_TUN_DEVICE=true \
-    HEALTH_CHECK_HOST=google.com
+ENV OPENVPN_USERNAME="**None**" \
+    OPENVPN_PASSWORD="**None**" \
+    OPENVPN_PROVIDER="**None**" \
+    OPENVPN_OPTS="" \
+    LOCAL_NETWORK="192.168.0.0/16" \
+    CREATE_TUN_DEVICE="true" \
+    HEALTH_CHECK_HOST="google.com"
 
 HEALTHCHECK --interval=5m CMD /etc/scripts/healthcheck.sh
 

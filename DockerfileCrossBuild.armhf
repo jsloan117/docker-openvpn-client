@@ -16,13 +16,13 @@ RUN echo "*** updating system ***" \
 ADD openvpn/ /etc/openvpn/
 ADD scripts/ /etc/scripts/
 
-ENV OPENVPN_USERNAME=**None** \
-    OPENVPN_PASSWORD=**None** \
-    OPENVPN_PROVIDER=**None** \
-    OPENVPN_OPTS= \
-    LOCAL_NETWORK=192.168.0.0/16 \
-    CREATE_TUN_DEVICE=true \
-    HEALTH_CHECK_HOST=google.com
+ENV OPENVPN_USERNAME="**None**" \
+    OPENVPN_PASSWORD="**None**" \
+    OPENVPN_PROVIDER="**None**" \
+    OPENVPN_OPTS="" \
+    LOCAL_NETWORK="192.168.0.0/16" \
+    CREATE_TUN_DEVICE="true" \
+    HEALTH_CHECK_HOST="google.com"
 
 HEALTHCHECK --interval=5m CMD /etc/scripts/healthcheck.sh
 
