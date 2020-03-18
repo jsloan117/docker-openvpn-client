@@ -2,12 +2,13 @@ FROM alpine:3.11
 LABEL Name=docker-openvpn-client Maintainer="Jonathan Sloan"
 
 RUN echo "*** installing packages ***" \
-    && apk update && apk --no-cache add bash dumb-init openvpn shadow curl jq tzdata \
+    && apk update && apk --no-cache add bash dumb-init openvpn curl iputils unzip jq \
     && echo "*** cleanup ***" \
     && rm -rf /tmp/* /var/tmp/* /var/cache/apk/* /var/lib/apk/*
 
 COPY openvpn /etc/openvpn
 COPY scripts /etc/scripts
+COPY VERSION .
 
 ENV OPENVPN_USERNAME="**None**" \
     OPENVPN_PASSWORD="**None**" \

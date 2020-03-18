@@ -1,13 +1,16 @@
 FROM ubuntu:18.04
 LABEL Name=docker-openvpn-client Maintainer="Jonathan Sloan"
 
+ENV DEBIAN_FRONTEND=noninteractive LC_ALL=C.UTF-8 LANG=C.UTF-8
+
 RUN echo "*** installing packages ***" \
-    && apt-get update && apt-get -y --no-install-recommends install wget iputils-ping iproute2 openvpn jq tzdata dumb-init \
+    && apt-get update && apt-get -y --no-install-recommends install curl unzip iputils-ping iproute2 openvpn jq dumb-init \
     && echo "*** cleanup ***" \
     && rm -rf /tmp/* /var/tmp/* /var/cache/apt/* /var/lib/apt/lists/*
 
 COPY openvpn /etc/openvpn
 COPY scripts /etc/scripts
+COPY VERSION .
 
 ENV OPENVPN_USERNAME="**None**" \
     OPENVPN_PASSWORD="**None**" \
