@@ -33,7 +33,7 @@ This is a list of providers that are bundled within the image. The custom provid
 | PrivateVPN              | `PRIVATEVPN`                      |
 | ProtonVPN               | `PROTONVPN`                       |
 | proXPN                  | `PROXPN`                          |
-| proxy.sh                | `PROXYSH`                        |
+| proxy.sh                | `PROXYSH`                         |
 | PureVPN                 | `PUREVPN`                         |
 | RA4W VPN                | `RA4W`                            |
 | SaferVPN                | `SAFERVPN`                        |
