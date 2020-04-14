@@ -13,5 +13,6 @@ nav:
   - "Home": "index.md"
   - "Run from Docker registry": "run-from-docker-registry.md"
   - "Configuration": "configuration.md"
+  - "Supported providers": "supported-providers.md"
 plugins:
   - search
