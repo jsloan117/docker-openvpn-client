@@ -24,12 +24,12 @@ This is a list of providers that are bundled within the image. The custom provid
 | Ivacy                   | `IVACY`                           |
 | IVPN                    | `IVPN`                            |
 | Mullvad                 | `MULLVAD`                         |
-| Newshosting             | `NEWSHOSTING`                     |
 | NordVPN                 | `NORDVPN`                         |
+| OctaneVPN               | `OCTANEVPN`                       |
 | OVPN                    | `OVPN`                            |
 | Perfect Privacy         | `PERFECTPRIVACY`                  |
 | Private Internet Access | `PIA`                             |
-| Privado (Newshosting)   | `PRIVADO`                         |
+| Privado                 | `PRIVADO`                         |
 | PrivateVPN              | `PRIVATEVPN`                      |
 | ProtonVPN               | `PROTONVPN`                       |
 | proXPN                  | `PROXPN`                          |
@@ -45,7 +45,6 @@ This is a list of providers that are bundled within the image. The custom provid
 | TorGuard                | `TORGUARD`                        |
 | Trust.Zone              | `TRUSTZONE`                       |
 | TunnelBear              | `TUNNELBEAR`                      |
-| UsenetServerVPN         | `USENETSERVER`                    |
 | Windscribe              | `WINDSCRIBE`                      |
 | VPNArea.com             | `VPNAREA`                         |
 | VPN.AC                  | `VPNAC`                           |
