@@ -13,6 +13,7 @@ This is a list of providers that are bundled within the image. The custom provid
 | FreeVPN                 | `FREEVPN`                         |
 | FrootVPN                | `FROOT`                           |
 | FrostVPN                | `FROSTVPN`                        |
+| Getflix                 | `GETFLIX`                         |
 | GhostPath               | `GHOSTPATH`                       |
 | Giganews                | `GIGANEWS`                        |
 | HideMe                  | `HIDEME`                          |

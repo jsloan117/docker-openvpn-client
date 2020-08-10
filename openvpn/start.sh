@@ -46,7 +46,7 @@ then
       tmp_Protocol="${OPENVPN_CONFIG##*.}"
       export NORDVPN_PROTOCOL=${tmp_Protocol^^}
       echo "Setting NORDVPN_PROTOCOL to: ${NORDVPN_PROTOCOL}"
-      "${VPN_PROVIDER_CONFIGS}/updateConfigs.sh" --openvpn-config
+      ${VPN_PROVIDER_CONFIGS}/updateConfigs.sh --openvpn-config
     elif [[ -n $NORDVPN_COUNTRY ]]
     then
       export OPENVPN_CONFIG=$(${VPN_PROVIDER_CONFIGS}/updateConfigs.sh)
@@ -76,7 +76,7 @@ then
       -F 'detectOrientation=false' \
       -F 'isTable=false' \
       "https://api.ocr.space/parse/image" -o /tmp/vpnbook_pwd
-    export OPENVPN_PASSWORD=$(awk -F',' '{ print $1 }' /tmp/vpnbook_pwd | awk -F':' '{print $NF}' | tr -d '"')
+    export OPENVPN_PASSWORD=$(cat /tmp/vpnbook_pwd  | awk -F',' '{ print $1 }' | awk -F':' '{print $NF}' | tr -d '"' | awk '{print $1 $2}')
 fi
 
 if [[ -n "${OPENVPN_CONFIG-}" ]]; then
