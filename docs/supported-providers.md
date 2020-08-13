@@ -9,6 +9,7 @@ This is a list of providers that are bundled within the image. The custom provid
 | Cryptostorm             | `CRYPTOSTORM`                     |
 | Cypherpunk              | `CYPHERPUNK`                      |
 | elastictunnel.com       | `ELASTICTUNNEL`                   |
+| ExpressVPN              | `EXPRESSVPN`                      |
 | FastestVPN              | `FASTESTVPN`                      |
 | FreeVPN                 | `FREEVPN`                         |
 | FrootVPN                | `FROOT`                           |
@@ -46,13 +47,13 @@ This is a list of providers that are bundled within the image. The custom provid
 | TorGuard                | `TORGUARD`                        |
 | Trust.Zone              | `TRUSTZONE`                       |
 | TunnelBear              | `TUNNELBEAR`                      |
-| Windscribe              | `WINDSCRIBE`                      |
 | VPNArea.com             | `VPNAREA`                         |
-| VPN.AC                  | `VPNAC`                           |
-| VPN.ht                  | `VPNHT`                           |
 | VPNBook.com             | `VPNBOOK`                         |
 | VPNFacile               | `VPNFACILE`                       |
 | VPNTunnel               | `VPNTUNNEL`                       |
-| VyprVpn                 | `VYPRVPN`                         |
 | VPNUnlimited            | `VPNUNLIMITED`                    |
+| VPN.AC                  | `VPNAC`                           |
+| VPN.ht                  | `VPNHT`                           |
+| VyprVpn                 | `VYPRVPN`                         |
+| Windscribe              | `WINDSCRIBE`                      |
 | ZoogVPN                 | `ZOOGVPN`                         |
