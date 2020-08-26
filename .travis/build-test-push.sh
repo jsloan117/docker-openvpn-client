@@ -3,7 +3,11 @@
 
 set -euo pipefail
 
-if [ "${TRAVIS_BRANCH}" = master ]; then
+if [[ "${ENABLE_DEBUG}" = true ]]; then
+  set -xv
+fi
+
+if [[ "${TRAVIS_BRANCH}" = master ]]; then
   IMAGE_TAG=latest
 else
   IMAGE_TAG="${TRAVIS_BRANCH}"
@@ -56,11 +60,7 @@ install_prereqs () {
   export TRIVY_VER
   wget -q "https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VER}/trivy_${TRIVY_VER}_Linux-64bit.tar.gz"
   tar -C "${HOME}/bin" -zxf "trivy_${TRIVY_VER}_Linux-64bit.tar.gz" trivy
-  # snyk (vuln scanner)
-  SNYK_VER=$(curl -s "https://api.github.com/repos/snyk/snyk/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
-  export SNYK_VER
-  curl -sL "https://github.com/snyk/snyk/releases/download/v${SNYK_VER}/snyk-linux" -o "${HOME}/bin/snyk"
-  chmod +rx "${HOME}"/bin/{goss,dgoss,snyk}
+  chmod +rx "${HOME}"/bin/{goss,dgoss}
 }
 
 vulnerability_scanner () {
@@ -70,13 +70,6 @@ vulnerability_scanner () {
     trivy --exit-code 0 --severity "UNKNOWN,LOW,MEDIUM,HIGH" --light -q "${IMAGE}"
     echo -e "\n<<< Checking ${IMAGE} for critical vulnerabilities >>>\n"
     trivy --exit-code 1 --severity CRITICAL --light -q "${IMAGE}"
-    if [[ "${TRAVIS_PULL_REQUEST}" = false ]] && [[ "${TRAVIS_BRANCH}" = master ]]; then
-      snyk auth "${SNYK_TOKEN}" &> /dev/null
-      snyk monitor --docker "${IMAGE_NAME}":"${IMAGE_TAG}" --file=Dockerfile
-      for DISTRO in $(find . -type f -iname "Dockerfile.*" -print | cut -d'/' -f2 | cut -d'.' -f 2); do
-        snyk monitor --docker "${IMAGE_NAME}":"${IMAGE_TAG}"-"${DISTRO}" --file=Dockerfile."${DISTRO}"
-      done
-    fi
   done
 }
 
