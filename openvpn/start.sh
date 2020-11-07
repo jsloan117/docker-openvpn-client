@@ -89,7 +89,7 @@ if [[ -z ${CHOSEN_OPENVPN_CONFIG} ]]; then
     else
       echo "Supplied config ${OPENVPN_CONFIG}.ovpn could not be found."
       echo "Your options for this provider are:"
-      ls "${VPN_PROVIDER_HOME}" | grep .ovpn
+      find "${VPN_PROVIDER_HOME}" -type f -iname "*.ovpn" -print
       echo "NB: Remember to not specify .ovpn as part of the config name."
       exit 1 # No longer fall back to default. The user chose a specific config - we should use it or fail.
     fi
@@ -116,7 +116,7 @@ fi
 
 ## If we use LOCAL_NETWORK we need to grab network config info
 if [[ -n "${LOCAL_NETWORK-}" ]]; then
-  eval $(/sbin/ip route list match 0.0.0.0 | awk '{if($5!="tun0"){print "GW="$3"\nINT="$5; exit}}')
+  eval "$(/sbin/ip route list match 0.0.0.0 | awk '{if($5!="tun0"){print "GW="$3"\nINT="$5; exit}}')"
 fi
 
 if [[ -n "${LOCAL_NETWORK-}" ]]; then

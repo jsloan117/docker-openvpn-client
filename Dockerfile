@@ -26,6 +26,7 @@ ENV REVISION=${REVISION:-""}
 
 LABEL org.opencontainers.image.name=docker-openvpn-client
 LABEL org.opencontainers.image.source=https://github.com/jsloan117/docker-openvpn-client
+LABEL org.opencontainers.image.documentation=http://jsloan117.github.io/docker-openvpn-client
 LABEL org.opencontainers.image.revision=$REVISION
 
 VOLUME /etc/openvpn
