@@ -1,12 +1,9 @@
-FROM ubuntu:20.04
-LABEL Name=docker-openvpn-client Maintainer="Jonathan Sloan"
-
-ENV DEBIAN_FRONTEND=noninteractive LC_ALL=C.UTF-8 LANG=C.UTF-8
+FROM alpine:3.12
 
 RUN echo "*** installing packages ***" \
-    && apt-get update && apt-get -y --no-install-recommends install curl unzip iputils-ping iproute2 openvpn jq dumb-init \
+    && apk update && apk --no-cache add bash dumb-init openvpn curl iputils unzip jq \
     && echo "*** cleanup ***" \
-    && rm -rf /tmp/* /var/tmp/* /var/cache/apt/* /var/lib/apt/lists/*
+    && rm -rf /tmp/* /var/tmp/* /var/cache/apk/* /var/lib/apk/*
 
 COPY openvpn /etc/openvpn
 COPY scripts /etc/scripts
@@ -21,6 +18,15 @@ ENV OPENVPN_USERNAME="**None**" \
     HEALTH_CHECK_HOST="google.com"
 
 HEALTHCHECK --interval=5m CMD /etc/scripts/healthcheck.sh
+
+# Add labels to identify this image and version
+ARG REVISION
+# Set env from build argument or default to empty string
+ENV REVISION=${REVISION:-""}
+
+LABEL org.opencontainers.image.name=docker-openvpn-client
+LABEL org.opencontainers.image.source=https://github.com/jsloan117/docker-openvpn-client
+LABEL org.opencontainers.image.revision=$REVISION
 
 VOLUME /etc/openvpn
 CMD ["dumb-init", "/etc/openvpn/start.sh"]
