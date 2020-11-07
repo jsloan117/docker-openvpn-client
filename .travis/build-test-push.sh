@@ -24,18 +24,15 @@ get_version () {
   else
     CURRENT_VERSION=$(docker run --entrypoint="" --rm "${IMAGE_NAME}":"${IMAGE_TAG}" cat VERSION 2> /dev/null)
     echo "${CURRENT_VERSION}" > VERSION
-    if [[ "${TRAVIS_BRANCH}" = master ]]; then
-      NEXT_VERSION=$(docker run --rm -it -v "${PWD}":/app -w /app treeder/bump --filename VERSION "${SEMVER_BUMP}")
-      echo "Version: ${NEXT_VERSION}"
-    else
-      NEXT_VERSION=$(cat VERSION)
-      echo "Version: ${NEXT_VERSION}"
-    fi
+    NEXT_VERSION=$(docker run --rm -it -v "${PWD}":/app -w /app treeder/bump --filename VERSION "${SEMVER_BUMP}")
+    echo "Version: ${NEXT_VERSION}"
   fi
   export NEXT_VERSION
 }
 
 build_images () {
+  [[ "${TRAVIS_BRANCH}" != master ]] && touch VERSION
+  [[ -z "${REVISION}" ]] && REVISION="${TRAVIS_COMMIT}"
   echo -e '\n<<< Building default image >>>\n'
   docker build --rm -f Dockerfile -t "${IMAGE_NAME}":"${IMAGE_TAG}" .
   for DISTRO in $(find . -type f -iname "Dockerfile.*" -print | cut -d'/' -f2 | cut -d'.' -f 2); do
@@ -45,7 +42,8 @@ build_images () {
   if docker image ls | tail -n+2 | awk '{print $2}'| grep '<none>' &> /dev/null; then
     echo -e '\n<<< Cleaning up dangling images >>>\n'
     docker rmi "$(docker images -f dangling=true -q)" 2>&-
-  fi 
+  fi
+  export REVISION
 }
 
 install_prereqs () {
@@ -99,9 +97,13 @@ push_images () {
   fi
 }
 
-get_version
+if [[ "${TRAVIS_BRANCH}" = master ]]; then
+  get_version
+fi
 build_images
-install_prereqs
+if [[ "${VULNERABILITY_TEST}" = true || "${DGOSS_TEST}" = true ]]; then
+  install_prereqs
+fi
 if [[ "${VULNERABILITY_TEST}" = true ]]; then
   vulnerability_scanner
 fi

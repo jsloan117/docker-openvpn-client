@@ -9,6 +9,10 @@ env:
 notifications:
   email: false
 
+branches:
+  except:
+    - /^(?i:v[0-9])$/
+
 jobs:
   include:
     - stage: build docker images
