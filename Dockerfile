@@ -19,9 +19,7 @@ ENV OPENVPN_USERNAME="**None**" \
 
 HEALTHCHECK --interval=5m CMD /etc/scripts/healthcheck.sh
 
-# Add labels to identify this image and version
 ARG REVISION
-# Set env from build argument or default to empty string
 ENV REVISION=${REVISION:-""}
 
 LABEL org.opencontainers.image.name=docker-openvpn-client

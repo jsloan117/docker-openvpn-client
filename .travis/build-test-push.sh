@@ -32,18 +32,16 @@ get_version () {
 
 build_images () {
   [[ "${TRAVIS_BRANCH}" != master ]] && touch VERSION
-  [[ -z "${REVISION}" ]] && REVISION="${TRAVIS_COMMIT}"
   echo -e '\n<<< Building default image >>>\n'
-  docker build --rm -f Dockerfile -t "${IMAGE_NAME}":"${IMAGE_TAG}" .
+  docker build --rm -f Dockerfile -t "${IMAGE_NAME}":"${IMAGE_TAG}" --build-arg REVISION="${TRAVIS_COMMIT}" .
   for DISTRO in $(find . -type f -iname "Dockerfile.*" -print | cut -d'/' -f2 | cut -d'.' -f 2); do
     echo -e "\n<<< Building ${DISTRO} image >>>\n"
-    docker build --rm -f Dockerfile."${DISTRO}" -t "${IMAGE_NAME}":"${IMAGE_TAG}"-"${DISTRO}" .
+    docker build --rm -f Dockerfile."${DISTRO}" -t "${IMAGE_NAME}":"${IMAGE_TAG}"-"${DISTRO}" --build-arg REVISION="${TRAVIS_COMMIT}" .
   done
   if docker image ls | tail -n+2 | awk '{print $2}'| grep '<none>' &> /dev/null; then
     echo -e '\n<<< Cleaning up dangling images >>>\n'
     docker rmi "$(docker images -f dangling=true -q)" 2>&-
   fi
-  export REVISION
 }
 
 install_prereqs () {
