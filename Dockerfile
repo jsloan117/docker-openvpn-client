@@ -1,4 +1,4 @@
-FROM alpine:3.12
+FROM alpine:3.13
 
 RUN echo "*** installing packages ***" \
     && apk update && apk --no-cache add bash dumb-init openvpn curl iputils unzip jq \
