@@ -7,8 +7,6 @@ This is a list of providers that are bundled within the image. The custom provid
 | BlackVPN                | `BLACKVPN`                        |
 | BTGuard                 | `BTGUARD`                         |
 | Cryptostorm             | `CRYPTOSTORM`                     |
-| Cypherpunk              | `CYPHERPUNK`                      |
-| elastictunnel.com       | `ELASTICTUNNEL`                   |
 | ExpressVPN              | `EXPRESSVPN`                      |
 | FastestVPN              | `FASTESTVPN`                      |
 | FreeVPN                 | `FREEVPN`                         |
@@ -20,7 +18,6 @@ This is a list of providers that are bundled within the image. The custom provid
 | HideMe                  | `HIDEME`                          |
 | HideMyAss               | `HIDEMYASS`                       |
 | IntegrityVPN            | `INTEGRITYVPN`                    |
-| IPredator               | `IPREDATOR`                       |
 | IPVanish                | `IPVANISH`                        |
 | IronSocket              | `IRONSOCKET`                      |
 | Ivacy                   | `IVACY`                           |
@@ -29,13 +26,11 @@ This is a list of providers that are bundled within the image. The custom provid
 | NordVPN                 | `NORDVPN`                         |
 | OctaneVPN               | `OCTANEVPN`                       |
 | OVPN                    | `OVPN`                            |
-| Perfect Privacy         | `PERFECTPRIVACY`                  |
 | Private Internet Access | `PIA`                             |
 | Privado                 | `PRIVADO`                         |
 | PrivateVPN              | `PRIVATEVPN`                      |
 | ProtonVPN               | `PROTONVPN`                       |
 | proXPN                  | `PROXPN`                          |
-| proxy.sh                | `PROXYSH`                         |
 | PureVPN                 | `PUREVPN`                         |
 | RA4W VPN                | `RA4W`                            |
 | SaferVPN                | `SAFERVPN`                        |

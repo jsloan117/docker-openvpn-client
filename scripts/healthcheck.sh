@@ -11,34 +11,20 @@ then
     HOST="google.com"
 fi
 
-ping -c 1 $HOST
+# Check DNS resolution works
+nslookup $HOST > /dev/null
+STATUS=$?
+if [[ ${STATUS} -ne 0 ]]
+then
+    echo "DNS resolution failed"
+    exit 1
+fi
+
+ping -c 2 -w 10 $HOST # Get at least 2 responses and timeout after 10 seconds
 STATUS=$?
 if [[ ${STATUS} -ne 0 ]]
 then
     echo "Network is down"
-    INTERFACE=$(ls -d /sys/class/net/tun*)
-    ISINTERFACE=$?
-
-    if [[ ${ISINTERFACE} -ne 0 ]]
-    then
-        echo "TUN Interface not found"
-        exit 1
-    fi
-
-    echo "Resetting TUN"
-    ip link set "${INTERFACE}" down
-    sleep 1
-    ip link set "${INTERFACE}" up
-    echo "Sent kill SIGUSR1 to openvpn"
-    pkill -SIGUSR1 openvpn
-    sleep 20
-fi
-
-ping -c 1 $HOST
-STATUS=$?
-if [[ ${STATUS} -ne 0 ]]
-then
-    echo "Network is still down"
     exit 1
 fi
 
