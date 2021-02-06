@@ -17,7 +17,7 @@
 
 ## Health check option
 
-Because your VPN connection can sometimes fail, Docker will run a health check on this container every 5 minutes to see if the container is still connected to the internet. By default, this check is done by pinging google.com once. You can change the host that is pinged.
+Because your VPN connection can sometimes fail, Docker will run a health check on this container every 5 minutes to see if the container is still connected to the internet. By default, this check is done by pinging google.com twice. You can change the host that is pinged.
 
 | Variable            | Function                                                           | Example      |
 | ------------------- | ------------------------------------------------------------------ | ------------ |

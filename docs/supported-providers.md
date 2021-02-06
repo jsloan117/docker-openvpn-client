@@ -20,7 +20,6 @@ This is a list of providers that are bundled within the image. The custom provid
 | HideMe                  | `HIDEME`                          |
 | HideMyAss               | `HIDEMYASS`                       |
 | IntegrityVPN            | `INTEGRITYVPN`                    |
-| IPredator               | `IPREDATOR`                       |
 | IPVanish                | `IPVANISH`                        |
 | IronSocket              | `IRONSOCKET`                      |
 | Ivacy                   | `IVACY`                           |
@@ -29,7 +28,6 @@ This is a list of providers that are bundled within the image. The custom provid
 | NordVPN                 | `NORDVPN`                         |
 | OctaneVPN               | `OCTANEVPN`                       |
 | OVPN                    | `OVPN`                            |
-| Perfect Privacy         | `PERFECTPRIVACY`                  |
 | Private Internet Access | `PIA`                             |
 | Privado                 | `PRIVADO`                         |
 | PrivateVPN              | `PRIVATEVPN`                      |
