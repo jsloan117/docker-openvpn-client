@@ -1,12 +1,13 @@
 FROM alpine:3.13
 
 RUN echo "*** installing packages ***" \
-    && apk update && apk --no-cache add bash dumb-init openvpn curl iputils unzip jq \
+    && apk update && apk --no-cache add bash dumb-init openvpn curl iputils unzip jq squid \
     && echo "*** cleanup ***" \
     && rm -rf /tmp/* /var/tmp/* /var/cache/apk/* /var/lib/apk/*
 
 COPY openvpn /etc/openvpn
 COPY scripts /etc/scripts
+RUN mkdir -p /scripts && ln -s /etc/scripts/openvpn-pre-start.sh /scripts/openvpn-pre-start.sh
 COPY VERSION .
 
 ENV OPENVPN_USERNAME="**None**" \
