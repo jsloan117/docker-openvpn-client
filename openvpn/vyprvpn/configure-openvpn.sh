@@ -40,6 +40,7 @@ rename_configs () {
 
   # Select a random server as default.ovpn
   ln -sf "$(find "${VPN_PROVIDER_HOME}" -iname "*.ovpn" | shuf -n 1)" "${VPN_PROVIDER_HOME}/default.ovpn"
+  cd "$HOME" || return
 }
 
 # Only download configs if /etc/openvpn/vyprvpn is empty

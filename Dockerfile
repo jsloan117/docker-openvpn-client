@@ -1,17 +1,26 @@
-FROM alpine:3.13
+FROM alpine:3.15
+
+ARG S6_OVERLAY_RELEASE=https://github.com/just-containers/s6-overlay/releases/latest/download/s6-overlay-amd64.tar.gz
+ENV S6_OVERLAY_RELEASE=${S6_OVERLAY_RELEASE}
+
+SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 
 RUN echo "*** installing packages ***" \
-    && apk update && apk --no-cache add bash dumb-init openvpn curl iputils unzip jq \
+    apk upgrade --update \
+    && apk --no-cache add bash openvpn curl iputils unzip jq shadow \
+    && wget -q -O- ${S6_OVERLAY_RELEASE} | tar -zx -C / \
     && echo "*** cleanup ***" \
-    && rm -rf /tmp/* /var/tmp/* /var/cache/apk/* /var/lib/apk/*
+    && rm -rf /tmp/* /var/tmp/* /var/cache/apk/* /var/lib/apk/* \
+    && useradd -u 911 -U -d /etc/openvpn -s /bin/false abc
 
+COPY etc /etc
 COPY openvpn /etc/openvpn
 COPY scripts /etc/scripts
-COPY VERSION .
+COPY VERSION /
 
-ENV OPENVPN_USERNAME="**None**" \
-    OPENVPN_PASSWORD="**None**" \
-    OPENVPN_PROVIDER="**None**" \
+ENV OPENVPN_USERNAME="" \
+    OPENVPN_PASSWORD="" \
+    OPENVPN_PROVIDER="" \
     OPENVPN_OPTS="" \
     LOCAL_NETWORK="192.168.0.0/16" \
     CREATE_TUN_DEVICE="true" \
@@ -28,4 +37,4 @@ LABEL org.opencontainers.image.documentation=http://jsloan117.github.io/docker-o
 LABEL org.opencontainers.image.revision=$REVISION
 
 VOLUME /etc/openvpn
-CMD ["dumb-init", "/etc/openvpn/start.sh"]
+ENTRYPOINT [ "/init" ]

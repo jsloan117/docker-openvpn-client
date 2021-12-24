@@ -1,0 +1,107 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+
+##
+# Get some initial setup out of the way.
+##
+
+if [[ -n "$REVISION" ]]; then
+  echo "Starting container with revision: $REVISION"
+fi
+
+[[ "${DEBUG}" == "true" ]] && set -x
+
+# Test DNS resolution
+if ! nslookup "${HEALTH_CHECK_HOST:-'google.com'}" &>/dev/null; then
+  echo "WARNING: initial DNS resolution test failed"
+fi
+
+# If create_tun_device is set, create /dev/net/tun
+if [[ "${CREATE_TUN_DEVICE,,}" == "true" ]]; then
+  echo "Creating TUN device /dev/net/tun"
+  mkdir -p /dev/net
+  mknod /dev/net/tun c 10 200
+  chmod 0666 /dev/net/tun
+fi
+
+##
+# Configure OpenVPN.
+# This basically means to figure out the config file to use as well as username/password
+##
+
+# If no OPENVPN_PROVIDER is given, we default to "custom" provider.
+VPN_PROVIDER="${OPENVPN_PROVIDER:-custom}"
+VPN_PROVIDER="${VPN_PROVIDER,,}" # to lowercase
+VPN_PROVIDER_HOME="/etc/openvpn/${VPN_PROVIDER}"
+mkdir -p "$VPN_PROVIDER_HOME"
+
+# Make sure that we have enough information to start OpenVPN
+if [[ -z "${OPENVPN_PROVIDER}" ]]; then
+  echo "ERROR: Cannot determine where to find your OpenVPN config. OPENVPN_PROVIDER is unset."
+  echo "You have to set a configured provider that will download one for you."
+  echo "Exiting..." && exit 1
+fi
+echo "Using OpenVPN provider: ${VPN_PROVIDER^^}"
+
+if [[ -x "$VPN_PROVIDER_HOME/configure-openvpn.sh" ]]; then
+  echo "Provider $OPENVPN_PROVIDER has a custom setup script, executing it"
+  # shellcheck source=/dev/null
+  # . "$VPN_PROVIDER_HOME"/configure-openvpn.sh
+  "${VPN_PROVIDER_HOME}/configure-openvpn.sh"
+fi
+
+if [[ -n "${OPENVPN_CONFIG-}" ]]; then
+  # Check that the chosen config exists.
+  if [[ -f "${VPN_PROVIDER_HOME}/${OPENVPN_CONFIG}.ovpn" ]]; then
+    echo "Starting OpenVPN using config ${OPENVPN_CONFIG}.ovpn"
+    CHOSEN_OPENVPN_CONFIG="${VPN_PROVIDER_HOME}/${OPENVPN_CONFIG}.ovpn"
+    # set path to vpncreds
+    if [[ -f /run/secrets/vpncreds ]]; then
+      sed -i "s#auth-user-pass.*#auth-user-pass /run/secrets/vpncreds#g" "${CHOSEN_OPENVPN_CONFIG}"
+    else
+      sed -i "s#auth-user-pass.*#auth-user-pass /config/vpncreds#g" "${CHOSEN_OPENVPN_CONFIG}"
+    fi
+  else
+    echo "Supplied config ${OPENVPN_CONFIG}.ovpn could not be found."
+    echo "Your options for this provider are:"
+    find "${VPN_PROVIDER_HOME}" -type f -iname "*.ovpn" -print
+    echo "Remember to not specify .ovpn as part of the config name."
+    exit 1
+  fi
+else
+  echo "No VPN configuration provided. Using default."
+  CHOSEN_OPENVPN_CONFIG="${VPN_PROVIDER_HOME}/default.ovpn"
+fi
+
+# add OpenVPN user/pass or use docker-secrets
+if [[ ! -f /run/secrets/vpncreds ]]; then
+  if [[ -z "${OPENVPN_USERNAME}" ]] || [[ -z "${OPENVPN_PASSWORD}" ]] ; then
+    if [[ ! -f /config/vpncreds ]] || [[ ! -f /run/secrets/vpncreds ]]; then
+      echo "OpenVPN credentials not set. Exiting."
+      exit 1
+    fi
+    echo "OpenVPN credentials found"
+  else
+    echo "Setting OpenVPN credentials..."
+    mkdir -p /config
+    echo "${OPENVPN_USERNAME}" > /config/vpncreds
+    echo "${OPENVPN_PASSWORD}" >> /config/vpncreds
+    chmod 640 /config/vpncreds
+    chown root:abc /config/vpncreds
+  fi
+fi
+
+# If we use LOCAL_NETWORK we need to grab network config info
+if [[ -n "${LOCAL_NETWORK-}" ]]; then
+  eval "$(/sbin/ip route list match 0.0.0.0 | awk '{if($5!="tun0"){print "GW="$3"\nINT="$5; exit}}')"
+fi
+
+# setup route to access local network
+if [[ -n "${LOCAL_NETWORK-}" ]]; then
+  if [[ -n "${GW-}" ]] && [[ -n "${INT-}" ]]; then
+    for localNet in ${LOCAL_NETWORK//,/ }; do
+      echo "adding route to local network ${localNet} via ${GW} dev ${INT}"
+      /sbin/ip route add "${localNet}" via "${GW}" dev "${INT}"
+    done
+  fi
+fi
