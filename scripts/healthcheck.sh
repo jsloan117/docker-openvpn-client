@@ -19,7 +19,7 @@ if [[ ${STATUS} -ne 0 ]]; then
 fi
 
 # get at least 2 responses and timeout after 10 seconds
-ping -c 2 -w 10 $HOST
+ping -I tun0 -c 2 -w 10 $HOST
 STATUS=$?
 if [[ ${STATUS} -ne 0 ]]; then
   echo "Network is down"
