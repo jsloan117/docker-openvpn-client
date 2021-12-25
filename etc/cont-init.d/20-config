@@ -47,8 +47,6 @@ echo "Using OpenVPN provider: ${VPN_PROVIDER^^}"
 
 if [[ -x "$VPN_PROVIDER_HOME/configure-openvpn.sh" ]]; then
   echo "Provider $OPENVPN_PROVIDER has a custom setup script, executing it"
-  # shellcheck source=/dev/null
-  # . "$VPN_PROVIDER_HOME"/configure-openvpn.sh
   "${VPN_PROVIDER_HOME}/configure-openvpn.sh"
 fi
 
@@ -56,7 +54,8 @@ if [[ -n "${OPENVPN_CONFIG-}" ]]; then
   # Check that the chosen config exists.
   if [[ -f "${VPN_PROVIDER_HOME}/${OPENVPN_CONFIG}.ovpn" ]]; then
     echo "Starting OpenVPN using config ${OPENVPN_CONFIG}.ovpn"
-    export CHOSEN_OPENVPN_CONFIG="${VPN_PROVIDER_HOME}/${OPENVPN_CONFIG}.ovpn"
+    CHOSEN_OPENVPN_CONFIG="${VPN_PROVIDER_HOME}/${OPENVPN_CONFIG}.ovpn"
+    echo "${CHOSEN_OPENVPN_CONFIG}" > /var/run/s6/container_environment/CHOSEN_OPENVPN_CONFIG
   else
     echo "Supplied config ${OPENVPN_CONFIG}.ovpn could not be found."
     echo "Your options for this provider are:"
@@ -66,7 +65,8 @@ if [[ -n "${OPENVPN_CONFIG-}" ]]; then
   fi
 else
   echo "No VPN configuration provided. Using default."
-  export CHOSEN_OPENVPN_CONFIG="${VPN_PROVIDER_HOME}/default.ovpn"
+  CHOSEN_OPENVPN_CONFIG="${VPN_PROVIDER_HOME}/default.ovpn"
+  echo "${CHOSEN_OPENVPN_CONFIG}" > /var/run/s6/container_environment/CHOSEN_OPENVPN_CONFIG
 fi
 
 # set path to vpncreds

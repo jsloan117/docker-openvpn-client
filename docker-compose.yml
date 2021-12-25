@@ -17,7 +17,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - openvpn_data:/etc/openvpn
     environment:
-      - OPENVPN_PROVIDER=vpnprovider
+      - OPENVPN_PROVIDER=""
       - OPENVPN_USERNAME=""
       - OPENVPN_PASSWORD=""
       - OPENVPN_OPTS=--user abc --group abc --auth-nocache --inactive 3600 --ping 10 --ping-exit 60
