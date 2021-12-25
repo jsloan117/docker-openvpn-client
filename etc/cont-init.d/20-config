@@ -57,12 +57,6 @@ if [[ -n "${OPENVPN_CONFIG-}" ]]; then
   if [[ -f "${VPN_PROVIDER_HOME}/${OPENVPN_CONFIG}.ovpn" ]]; then
     echo "Starting OpenVPN using config ${OPENVPN_CONFIG}.ovpn"
     export CHOSEN_OPENVPN_CONFIG="${VPN_PROVIDER_HOME}/${OPENVPN_CONFIG}.ovpn"
-    # set path to vpncreds
-    if [[ -f /run/secrets/vpncreds ]]; then
-      sed -i "s#auth-user-pass.*#auth-user-pass /run/secrets/vpncreds#g" "${CHOSEN_OPENVPN_CONFIG}"
-    else
-      sed -i "s#auth-user-pass.*#auth-user-pass /config/vpncreds#g" "${CHOSEN_OPENVPN_CONFIG}"
-    fi
   else
     echo "Supplied config ${OPENVPN_CONFIG}.ovpn could not be found."
     echo "Your options for this provider are:"
@@ -73,6 +67,13 @@ if [[ -n "${OPENVPN_CONFIG-}" ]]; then
 else
   echo "No VPN configuration provided. Using default."
   export CHOSEN_OPENVPN_CONFIG="${VPN_PROVIDER_HOME}/default.ovpn"
+fi
+
+# set path to vpncreds
+if [[ -f /run/secrets/vpncreds ]]; then
+  sed -i "s#auth-user-pass.*#auth-user-pass /run/secrets/vpncreds#g" "${CHOSEN_OPENVPN_CONFIG}"
+else
+  sed -i "s#auth-user-pass.*#auth-user-pass /config/vpncreds#g" "${CHOSEN_OPENVPN_CONFIG}"
 fi
 
 # add OpenVPN user/pass or use docker-secrets
