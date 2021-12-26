@@ -9,13 +9,15 @@ if [[ -n "$REVISION" ]]; then
   echo "Starting container with revision: $REVISION"
 fi
 
+[[ "${DEBUG}" == "true" ]] && set -x
+
 # Test DNS resolution
 if ! nslookup "${HEALTH_CHECK_HOST:-'google.com'}" &>/dev/null; then
   echo "WARNING: initial DNS resolution test failed"
 fi
 
-# create /dev/net/tun
-if [[ ! -c /dev/net/tun ]]; then
+# If create_tun_device is set, create /dev/net/tun
+if [[ "${CREATE_TUN_DEVICE,,}" == "true" ]]; then
   echo "Creating TUN device /dev/net/tun"
   mkdir -p /dev/net
   mknod /dev/net/tun c 10 200
@@ -27,10 +29,12 @@ fi
 # This basically means to figure out the config file to use as well as username/password
 ##
 
+export OPENVPN_OPTS="${OPENVPN_OPTS}"
+
 # If no OPENVPN_PROVIDER is given, we default to "custom" provider.
 VPN_PROVIDER="${OPENVPN_PROVIDER:-custom}"
-VPN_PROVIDER="${VPN_PROVIDER,,}" # to lowercase
-VPN_PROVIDER_HOME="/etc/openvpn/${VPN_PROVIDER}"
+export VPN_PROVIDER="${VPN_PROVIDER,,}" # to lowercase
+export VPN_PROVIDER_HOME="/etc/openvpn/${VPN_PROVIDER}"
 mkdir -p "$VPN_PROVIDER_HOME"
 
 # Make sure that we have enough information to start OpenVPN
@@ -51,6 +55,7 @@ if [[ -n "${OPENVPN_CONFIG-}" ]]; then
   if [[ -f "${VPN_PROVIDER_HOME}/${OPENVPN_CONFIG}.ovpn" ]]; then
     echo "Starting OpenVPN using config ${OPENVPN_CONFIG}.ovpn"
     CHOSEN_OPENVPN_CONFIG="${VPN_PROVIDER_HOME}/${OPENVPN_CONFIG}.ovpn"
+    echo "${CHOSEN_OPENVPN_CONFIG}" > /var/run/s6/container_environment/CHOSEN_OPENVPN_CONFIG
   else
     echo "Supplied config ${OPENVPN_CONFIG}.ovpn could not be found."
     echo "Your options for this provider are:"
@@ -61,6 +66,7 @@ if [[ -n "${OPENVPN_CONFIG-}" ]]; then
 else
   echo "No VPN configuration provided. Using default."
   CHOSEN_OPENVPN_CONFIG="${VPN_PROVIDER_HOME}/default.ovpn"
+  echo "${CHOSEN_OPENVPN_CONFIG}" > /var/run/s6/container_environment/CHOSEN_OPENVPN_CONFIG
 fi
 
 # set path to vpncreds

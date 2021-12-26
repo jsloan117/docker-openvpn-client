@@ -21,8 +21,9 @@ COPY VERSION /
 ENV OPENVPN_USERNAME="" \
     OPENVPN_PASSWORD="" \
     OPENVPN_PROVIDER="" \
-    OPENVPN_OPTS="" \
+    OPENVPN_OPTS="--user abc --group abc --auth-nocache --inactive 3600 --ping 10 --ping-exit 60" \
     OPENVPN_CONFIG="" \
+    CHOSEN_OPENVPN_CONFIG="" \
     LOCAL_NETWORK="192.168.0.0/16" \
     CREATE_TUN_DEVICE="true" \
     HEALTH_CHECK_HOST="google.com"
