@@ -29,8 +29,8 @@ fi
 
 # If no OPENVPN_PROVIDER is given, we default to "custom" provider.
 VPN_PROVIDER="${OPENVPN_PROVIDER:-custom}"
-VPN_PROVIDER="${VPN_PROVIDER,,}" # to lowercase
-VPN_PROVIDER_HOME="/etc/openvpn/${VPN_PROVIDER}"
+export VPN_PROVIDER="${VPN_PROVIDER,,}" # to lowercase
+export VPN_PROVIDER_HOME="/etc/openvpn/${VPN_PROVIDER}"
 mkdir -p "$VPN_PROVIDER_HOME"
 
 # Make sure that we have enough information to start OpenVPN
@@ -51,6 +51,7 @@ if [[ -n "${OPENVPN_CONFIG-}" ]]; then
   if [[ -f "${VPN_PROVIDER_HOME}/${OPENVPN_CONFIG}.ovpn" ]]; then
     echo "Starting OpenVPN using config ${OPENVPN_CONFIG}.ovpn"
     CHOSEN_OPENVPN_CONFIG="${VPN_PROVIDER_HOME}/${OPENVPN_CONFIG}.ovpn"
+    echo "${CHOSEN_OPENVPN_CONFIG}" > /var/run/s6/container_environment/CHOSEN_OPENVPN_CONFIG
   else
     echo "Supplied config ${OPENVPN_CONFIG}.ovpn could not be found."
     echo "Your options for this provider are:"
@@ -61,6 +62,7 @@ if [[ -n "${OPENVPN_CONFIG-}" ]]; then
 else
   echo "No VPN configuration provided. Using default."
   CHOSEN_OPENVPN_CONFIG="${VPN_PROVIDER_HOME}/default.ovpn"
+  echo "${CHOSEN_OPENVPN_CONFIG}" > /var/run/s6/container_environment/CHOSEN_OPENVPN_CONFIG
 fi
 
 # set path to vpncreds
