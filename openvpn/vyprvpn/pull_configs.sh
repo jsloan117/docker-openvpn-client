@@ -44,7 +44,7 @@ rename_configs () {
 }
 
 # Only download configs if /etc/openvpn/vyprvpn is empty
-if find "${VPN_PROVIDER_HOME}" -type f ! -iname 'configure-openvpn.sh' | grep -q 'ovpn'; then
+if find "${VPN_PROVIDER_HOME}" -type f ! -iname 'pull_configs.sh' | grep -q 'ovpn'; then
   echo "ovpn files detected, not downloading configs"
 else
   download_extract
