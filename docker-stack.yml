@@ -3,13 +3,21 @@ version: '3.8'
 services:
   docker-openvpn-client:
     image: docker-openvpn-client
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: '512M'
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        windows: 120
     cap_add:
       - NET_ADMIN
-    restart: always
-    build: .
     ports:
       - 1194:1194
-    network_mode: bridge
     dns:
       - 1.1.1.1
       - 1.0.0.1
@@ -17,7 +25,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - openvpn_data:/etc/openvpn
     environment:
-      - OPENVPN_PROVIDER=vpnprovider
+      - OPENVPN_PROVIDER=vyprvpn
       - OPENVPN_USERNAME=username
       - OPENVPN_PASSWORD=password
       - OPENVPN_OPTS=--user abc --group abc --auth-nocache --inactive 3600 --ping 10 --ping-exit 60
@@ -26,6 +34,16 @@ services:
     healthcheck:
       test: ["CMD", "/etc/scripts/healthcheck.sh"]
       interval: 5m
+    secrets:
+      - source: vpncreds
+        target: vpncreds
+        uid: '0'
+        gid: '911'
+        mode: 0440
+
+secrets:
+  vpncreds:
+    file: /root/secrets/vpncreds
 
 volumes:
   openvpn_data:
