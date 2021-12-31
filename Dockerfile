@@ -36,6 +36,8 @@ HEALTHCHECK --interval=1m CMD /etc/scripts/healthcheck.sh
 ARG REVISION
 ENV REVISION=${REVISION:-""}
 
+LABEL org.opencontainers.image.title="OpenVPN Client"
+LABEL org.opencontainers.image.description="OpenVPN Client with configs"
 LABEL org.opencontainers.image.name=docker-openvpn-client
 LABEL org.opencontainers.image.source=https://github.com/jsloan117/docker-openvpn-client
 LABEL org.opencontainers.image.documentation=http://jsloan117.github.io/docker-openvpn-client

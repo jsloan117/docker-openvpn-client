@@ -1,0 +1,56 @@
+---
+name: Tag and Release
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+    paths:
+      - 'etc/**'
+      - 'openvpn/**'
+      - 'scripts/**'
+      - Dockerfile
+      - Dockerfile.*
+
+jobs:
+  tag-release:
+    runs-on: ubuntu-latest
+    steps:
+      # https://github.com/marketplace/actions/checkout
+      - uses: actions/checkout@v2
+
+      # # https://github.com/marketplace/actions/github-tag
+      - name: Bump version and push tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.0
+        with:
+          default_bump: patch
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tag_prefix: v
+          pre_release_branches: dev
+
+      # https://github.com/marketplace/actions/create-release
+      # https://docs.github.com/en/repositories/releasing-projects-on-github/automatically-generated-release-notes
+      - name: Create prerelease
+        if: ${{ github.ref == 'refs/heads/dev' }}
+        uses: ncipollo/release-action@v1
+        with:
+          body: ${{ steps.tag_version.outputs.changelog }}
+          generateReleaseNotes: true
+          name: Release ${{ steps.tag_version.outputs.new_tag }}
+          prerelease: true
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # https://github.com/marketplace/actions/create-release
+      # https://docs.github.com/en/repositories/releasing-projects-on-github/automatically-generated-release-notes
+      - name: Create release
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: ncipollo/release-action@v1
+        with:
+          body: ${{ steps.tag_version.outputs.changelog }}
+          generateReleaseNotes: true
+          name: Release ${{ steps.tag_version.outputs.new_tag }}
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          token: ${{ secrets.GITHUB_TOKEN }}

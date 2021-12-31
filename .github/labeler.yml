@@ -1,0 +1,25 @@
+---
+# https://github.com/marketplace/actions/labeler
+ci/cd:
+  - .github/workflows/*
+  - .kodiak.toml
+
+build:
+  - '**.sh'
+  - Dockerfile
+  - Dockerfile.*
+  - docker-compose.yml
+  - DockerEnv
+  - .dockerignore
+
+documentation:
+  - README.md
+  - mkdocs.yml
+  - docs/*
+
+linters/formatters:
+  - .editorconfig
+  - .hadolint.yaml
+  - .yamllint.yml
+  - .prettierignore
+  - .prettierrc.yml
