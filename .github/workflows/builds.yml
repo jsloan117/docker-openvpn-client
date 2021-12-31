@@ -68,7 +68,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       # https://github.com/marketplace/actions/build-and-push-docker-images
       - name: Build and push
