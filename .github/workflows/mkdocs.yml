@@ -28,11 +28,14 @@ jobs:
         uses: actions/setup-python@v2.3.1
         with:
           python-version: '3.9'
+          cache: 'pip'
+
+      - run: pip install wheel
 
       - name: Install MkDocs and deps
         run: |
           pip install mkdocs mkdocs-material mkdocs-material-extensions \
-          mkdocs-minify-plugin mkdocs-redirects pygments pymdown-extensions wheel
+          mkdocs-minify-plugin mkdocs-redirects pygments pymdown-extensions
 
       - name: Build docs
         run: mkdocs build -vcs
