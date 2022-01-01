@@ -7,9 +7,9 @@ on:
       - main
       - dev
     paths:
-      - 'etc/**'
-      - 'openvpn/**'
-      - 'scripts/**'
+      - "etc/**"
+      - "openvpn/**"
+      - "scripts/**"
       - Dockerfile
       - Dockerfile.*
 

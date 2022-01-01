@@ -8,7 +8,7 @@ ci/cd:
   - .kodiak.toml
 
 build:
-  - '**.sh'
+  - "**.sh"
   - Dockerfile
   - Dockerfile.*
   - docker-compose.yml

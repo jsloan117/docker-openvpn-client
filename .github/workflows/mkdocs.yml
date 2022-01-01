@@ -7,8 +7,8 @@ on:
       - main
       - dev
     paths:
-      - '**.md'
-      - 'mkdocs.yml'
+      - "**.md"
+      - "mkdocs.yml"
       - .github/workflows/mkdocs.yml
 
 concurrency:
@@ -27,7 +27,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2.3.1
         with:
-          python-version: '3.9'
+          python-version: "3.9"
 
       - run: pip install wheel
 
@@ -40,23 +40,24 @@ jobs:
         run: mkdocs build -vcs
 
       # https://github.com/marketplace/actions/github-pages-action
-      # - name: Deploy
-      #   if: success() && github.event_name != 'pull_request'
-      #   uses: peaceiris/actions-gh-pages@v3.8.0
-      #   with:
-      #     commit_message: "Deployed ${GITHUB_SHA} to gh-pages [skip ci]"
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
-      #     publish_branch: gh-pages
-      #     publish_dir: ./site
+      - name: Deploy
+        if: success() && github.event_name != 'pull_request'
+        uses: peaceiris/actions-gh-pages@v3.8.0
+        with:
+          commit_message: "Deployed ${GITHUB_SHA} to gh-pages [skip ci]"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./site
 
       # https://github.com/marketplace/actions/github-pages
-      - name: GitHub Pages
-        if: success() # && ${{ github.ref == 'refs/heads/main' }} && github.event_name != 'pull_request'
-        uses: crazy-max/ghaction-github-pages@v2.5.0
-        with:
-          build_dir: ./site
-          commit_message: "Deployed ${{ github.sha }} to gh-pages [skip ci]"
-          jekyll: false
-          target_branch: gh-pages-dev
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: GitHub Pages
+      #   if: success()
+      #   # if: success() && ${{ github.ref == 'refs/heads/main' }} && github.event_name != 'pull_request'
+      #   uses: crazy-max/ghaction-github-pages@v2.5.0
+      #   with:
+      #     build_dir: ./site
+      #     commit_message: "Deployed ${{ github.sha }} to gh-pages [skip ci]"
+      #     jekyll: false
+      #     target_branch: gh-pages-dev
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

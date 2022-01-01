@@ -2,14 +2,14 @@
 name: Pull Request Labeler
 
 on:
-- pull_request_target
+  - pull_request_target
 
 jobs:
   triage:
     runs-on: ubuntu-latest
     steps:
-    # https://github.com/marketplace/actions/labeler
-    - name: Label PRs
-      uses: actions/labeler@v3
-      with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
+      # https://github.com/marketplace/actions/labeler
+      - name: Label PRs
+        uses: actions/labeler@v3
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
