@@ -11,6 +11,10 @@ on:
       - 'mkdocs.yml'
       - .github/workflows/mkdocs.yml
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   mkdocs:
     runs-on: ubuntu-latest
@@ -49,7 +53,7 @@ jobs:
         uses: crazy-max/ghaction-github-pages@v2.5.0
         with:
           build_dir: ./site
-          commit_message: "Deployed ${GITHUB_SHA} to gh-pages [skip ci]"
+          commit_message: "Deployed ${{ github.sha }} to gh-pages [skip ci]"
           jekyll: false
           target_branch: gh-pages-dev
         env:
