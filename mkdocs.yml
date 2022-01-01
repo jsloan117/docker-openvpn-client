@@ -28,7 +28,4 @@ nav:
 plugins:
   minify:
     minify_html: true
-  search:
-    prebuild_index: python
-    lang:
-      - en
+  search: {}
