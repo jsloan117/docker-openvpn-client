@@ -17,7 +17,6 @@ RUN echo "*** installing packages ***" \
 COPY etc /etc
 COPY openvpn /etc/openvpn
 COPY scripts /etc/scripts
-COPY VERSION /
 
 ENV OPENVPN_USERNAME= \
     OPENVPN_PASSWORD= \
@@ -35,6 +34,9 @@ HEALTHCHECK --interval=1m CMD /etc/scripts/healthcheck.sh
 
 ARG REVISION
 ENV REVISION=${REVISION:-""}
+
+ARG VERSION
+ENV VERSION=${VERSION:-""}
 
 LABEL org.opencontainers.image.title="OpenVPN Client"
 LABEL org.opencontainers.image.description="OpenVPN Client with configs"

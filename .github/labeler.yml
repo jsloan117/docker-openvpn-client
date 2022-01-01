@@ -2,6 +2,9 @@
 # https://github.com/marketplace/actions/labeler
 ci/cd:
   - .github/workflows/*
+  - .github/dependabot.yml
+  - .github/labeler.yml
+  - .github/mergify.yml
   - .kodiak.toml
 
 build:

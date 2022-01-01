@@ -1,0 +1,57 @@
+---
+name: mkdocs
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+    paths:
+      - '**.md'
+      - 'mkdocs.yml'
+      - .github/workflows/mkdocs.yml
+
+jobs:
+  mkdocs:
+    runs-on: ubuntu-latest
+    steps:
+      # https://github.com/marketplace/actions/checkout
+      - name: Checkout
+        uses: actions/checkout@v2.4.0
+
+      # https://github.com/marketplace/actions/setup-python
+      - name: Setup Python
+        uses: actions/setup-python@v2.3.1
+        with:
+          python-version: '3.x'
+          cache: 'pip'
+
+      - name: Install MkDocs and deps
+        run: |
+          pip install mkdocs mkdocs-material mkdocs-material-extension \
+          mkdocs-minify-plugin mkdocs-redirects pygments pymdown-extensions
+
+      - name: Build docs
+        run: mkdocs build -vcs
+
+      # https://github.com/marketplace/actions/github-pages-action
+      # - name: Deploy
+      #   if: success() && github.event_name != 'pull_request'
+      #   uses: peaceiris/actions-gh-pages@v3.8.0
+      #   with:
+      #     commit_message: "Deployed ${GITHUB_SHA} to gh-pages [skip ci]"
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     publish_branch: gh-pages
+      #     publish_dir: ./site
+
+      # https://github.com/marketplace/actions/github-pages
+      - name: GitHub Pages
+        if: success() # && ${{ github.ref == 'refs/heads/main' }} && github.event_name != 'pull_request'
+        uses: crazy-max/ghaction-github-pages@v2.5.0
+        with:
+          build_dir: ./site
+          commit_message: "Deployed ${GITHUB_SHA} to gh-pages [skip ci]"
+          jekyll: false
+          target_branch: gh-pages-dev
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,11 +1,13 @@
 ---
 name: images
+# https://docs.github.com/en/developers/webhooks-and-events/events/github-event-types
+# https://docs.github.com/en/actions/learn-github-actions/events-that-trigger-workflows#schedule
 
 on:
   push:
     tags:
       - 'v[0-9]+.[0-9]+.[0-9]+'
-  # https://docs.github.com/en/actions/learn-github-actions/events-that-trigger-workflows#schedule
+
   schedule:
     - cron:  '0 0 1 * *'
 
@@ -21,7 +23,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # https://github.com/marketplace/actions/checkout
-      - uses: actions/checkout@v2.4.0
+      - name: Checkout
+        uses: actions/checkout@v2.4.0
 
       # https://github.com/marketplace/actions/docker-metadata-action
       - name: Docker Metadata
@@ -80,3 +83,7 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            BUILDTIME=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.created'] }}
+            VERSION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
+            REVISION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.revision'] }}
