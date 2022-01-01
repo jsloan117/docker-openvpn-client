@@ -27,7 +27,7 @@ jobs:
 
       - name: Install MkDocs and deps
         run: |
-          pip install mkdocs mkdocs-material mkdocs-material-extension \
+          pip install mkdocs mkdocs-material mkdocs-material-extensions \
           mkdocs-minify-plugin mkdocs-redirects pygments pymdown-extensions
 
       - name: Build docs
