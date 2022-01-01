@@ -44,9 +44,10 @@ jobs:
         if: success() && github.event_name != 'pull_request'
         uses: peaceiris/actions-gh-pages@v3.8.0
         with:
-          commit_message: "Deployed ${GITHUB_SHA} to gh-pages [skip ci]"
+          commit_message: "Deployed ${{ github.sha }} to gh-pages [skip ci]"
+          force_orphan: true
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
+          publish_branch: gh-pages-dev
           publish_dir: ./site
 
       # https://github.com/marketplace/actions/github-pages
