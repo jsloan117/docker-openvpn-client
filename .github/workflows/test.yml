@@ -29,8 +29,8 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3.6.2
         with:
+          # ${{ env.IMAGE_NAME }} # commenting this out temp while only trying to push to GHCR
           images: |
-            ${{ env.IMAGE_NAME }}
             ghcr.io/${{ env.IMAGE_NAME }}
           flavor: |
             latest=false
