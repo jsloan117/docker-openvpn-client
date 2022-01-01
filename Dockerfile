@@ -1,4 +1,4 @@
-FROM alpine:3.13
+FROM alpine:3.15
 
 RUN echo "*** installing packages ***" \
     && apk update && apk --no-cache add bash dumb-init openvpn curl iputils unzip jq \
@@ -7,7 +7,7 @@ RUN echo "*** installing packages ***" \
 
 COPY openvpn /etc/openvpn
 COPY scripts /etc/scripts
-COPY VERSION .
+COPY VERSION /
 
 ENV OPENVPN_USERNAME="**None**" \
     OPENVPN_PASSWORD="**None**" \
