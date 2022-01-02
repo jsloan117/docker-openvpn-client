@@ -49,13 +49,6 @@ jobs:
           git_user_signingkey: true
           git_commit_gpgsign: true
 
-      - name: GPG user IDs
-        run: |
-          echo "fingerprint: ${{ steps.import_gpg.outputs.fingerprint }}"
-          echo "keyid:       ${{ steps.import_gpg.outputs.keyid }}"
-          echo "name:        ${{ steps.import_gpg.outputs.name }}"
-          echo "email:       ${{ steps.import_gpg.outputs.email }}"
-
       # https://github.com/marketplace/actions/github-pages-action
       # - name: Deploy
       #   if: success() && github.event_name != 'pull_request'
@@ -73,8 +66,6 @@ jobs:
         # if: success() && ${{ github.ref == 'refs/heads/main' }} && github.event_name != 'pull_request'
         uses: crazy-max/ghaction-github-pages@v2.5.0
         with:
-          author: jsloan117@users.noreply.github.com
-          committer: jsloan117
           build_dir: ./site
           commit_message: "Deployed ${{ github.sha }} to gh-pages [skip ci]"
           jekyll: false
