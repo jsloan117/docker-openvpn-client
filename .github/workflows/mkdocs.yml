@@ -45,7 +45,6 @@ jobs:
         with:
           gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
-          fingerprint: B4AAB0C18DF55304
           git_user_signingkey: true
           git_commit_gpgsign: true
 
