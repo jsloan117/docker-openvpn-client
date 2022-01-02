@@ -40,35 +40,37 @@ jobs:
         run: mkdocs build -vcs
 
       # https://github.com/marketplace/actions/import-gpg
-      - name: Import GPG key
-        uses: crazy-max/ghaction-import-gpg@v4.1.0
-        with:
-          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-          passphrase: ${{ secrets.PASSPHRASE }}
-          fingerprint: jsloan117@users.noreply.github.com
-          git_user_signingkey: true
-          git_commit_gpgsign: true
+      # - name: Import GPG key
+      #   uses: crazy-max/ghaction-import-gpg@v4.1.0
+      #   with:
+      #     gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+      #     passphrase: ${{ secrets.PASSPHRASE }}
+      #     fingerprint: jsloan117@users.noreply.github.com
+      #     git_user_signingkey: true
+      #     git_commit_gpgsign: true
 
       # https://github.com/marketplace/actions/github-pages-action
-      # - name: Deploy
-      #   if: success() && github.event_name != 'pull_request'
-      #   uses: peaceiris/actions-gh-pages@v3.8.0
-      #   with:
-      #     force_orphan: true
-      #     full_commit_message: "Deployed ${{ github.sha }} to gh-pages [skip ci]"
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
-      #     publish_branch: gh-pages-dev
-      #     publish_dir: ./site
+      - name: Deploy
+        if: success() && github.event_name != 'pull_request'
+        uses: peaceiris/actions-gh-pages@v3.8.0
+        with:
+          force_orphan: true
+          full_commit_message: "Deployed ${{ github.sha }} to gh-pages [skip ci]"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages-dev
+          publish_dir: ./site
 
       # https://github.com/marketplace/actions/github-pages
-      - name: GitHub Pages
-        if: success()
-        # if: success() && ${{ github.ref == 'refs/heads/main' }} && github.event_name != 'pull_request'
-        uses: crazy-max/ghaction-github-pages@v2.5.0
-        with:
-          build_dir: ./site
-          commit_message: "Deployed ${{ github.sha }} to gh-pages [skip ci]"
-          jekyll: false
-          target_branch: gh-pages-dev
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: GitHub Pages
+      #   if: success()
+      #   # if: success() && ${{ github.ref == 'refs/heads/main' }} && github.event_name != 'pull_request'
+      #   uses: crazy-max/ghaction-github-pages@v2.5.0
+      #   with:
+      #     author: Jonathan Sloan
+      #     committer: jsloan117@users.noreply.github.com
+      #     build_dir: ./site
+      #     commit_message: "Deployed ${{ github.sha }} to gh-pages [skip ci]"
+      #     jekyll: false
+      #     target_branch: gh-pages-dev
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
