@@ -12,8 +12,7 @@ RUN echo "*** installing packages ***" \
     && echo "*** cleanup ***" \
     && rm -rf /tmp/* /var/tmp/* /var/cache/apk/* /var/lib/apk/* \
     && useradd -u 911 -U -d /etc/openvpn -s /bin/false abc \
-    && apk del shadow \
-    && apk -v cache clean
+    && apk del shadow
 
 COPY etc /etc
 COPY openvpn /etc/openvpn

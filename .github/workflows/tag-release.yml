@@ -21,7 +21,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2.4.0
 
-      # # https://github.com/marketplace/actions/github-tag
+      # https://github.com/marketplace/actions/github-tag
+      # https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#type
       - name: Bump version and push tag
         id: tag_version
         uses: mathieudutour/github-tag-action@v6.0
