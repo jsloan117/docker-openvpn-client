@@ -1,26 +1,26 @@
 ---
 # https://github.com/marketplace/actions/labeler
-ci/cd:
-  - .github/workflows/*
-  - .github/dependabot.yml
-  - .github/labeler.yml
-  - .github/mergify.yml
-  - .kodiak.toml
 
 build:
-  - "**.sh"
+  - '**.sh'
   - Dockerfile
   - Dockerfile.*
   - docker-compose.yml
   - DockerEnv
   - .dockerignore
 
+ci/cd:
+  - .github/workflows/*
+  - .github/dependabot.yml
+  - .github/labeler.yml
+  - .github/mergify.yml
+
 documentation:
   - README.md
   - mkdocs.yml
   - docs/*
 
-linters/formatters:
+formatters/linters:
   - .editorconfig
   - .hadolint.yaml
   - .yamllint.yml

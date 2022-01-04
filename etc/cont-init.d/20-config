@@ -62,7 +62,7 @@ fi
 
 # add OpenVPN user/pass or use docker secrets
 if [[ ! -f /run/secrets/vpncreds ]]; then
-  if [[ -z "${OPENVPN_USERNAME}" ]] || [[ -z "${OPENVPN_PASSWORD}" ]] ; then
+  if [[ -z "${OPENVPN_USERNAME}" ]] || [[ -z "${OPENVPN_PASSWORD}" ]]; then
     if [[ ! -f /config/vpncreds ]]; then
       echo "OpenVPN credentials not set. Exiting."
       exit 1
@@ -126,7 +126,7 @@ if [[ "${ENABLE_UFW,,}" == "true" ]]; then
   sed -i 's/IPV6=yes/IPV6=no/' /etc/default/ufw
   ufw enable
 
-  if [[ -n "${UFW_EXTRA_PORTS}"  ]]; then
+  if [[ -n "${UFW_EXTRA_PORTS}" ]]; then
     for port in ${UFW_EXTRA_PORTS//,/ }; do
       if [[ "${UFW_ALLOW_GW_NET,,}" == "true" ]]; then
         ufwAllowPortLong "${port}" "${GW_CIDR}"
@@ -152,4 +152,3 @@ if [[ -n "${LOCAL_NETWORK}" ]]; then
     done
   fi
 fi
-

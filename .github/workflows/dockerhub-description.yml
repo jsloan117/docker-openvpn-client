@@ -22,6 +22,6 @@ jobs:
       - name: Docker Hub Description
         uses: peter-evans/dockerhub-description@v2.4.3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          username: jsloan117
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           short-description: ${{ github.event.repository.description }}

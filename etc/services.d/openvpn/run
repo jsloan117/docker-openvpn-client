@@ -4,4 +4,3 @@
 # shellcheck disable=SC2086
 exec s6-setuidgid root \
   openvpn ${OPENVPN_OPTS} --config "${CHOSEN_OPENVPN_CONFIG}"
-
