@@ -48,7 +48,5 @@ LABEL org.opencontainers.image.revision=$REVISION
 # Compatability with https://hub.docker.com/r/willfarrell/autoheal/
 LABEL autoheal=true
 
-USER abc
-
 VOLUME /etc/openvpn
 ENTRYPOINT [ "/init" ]
