@@ -4,6 +4,8 @@
 # Make sure that we have enough information to start OpenVPN
 if [[ -z "${OPENVPN_PROVIDER}" ]]; then
   echo "ERROR: OPENVPN_PROVIDER must be set to execute configure-openvpn.sh that downloads ovpn files." && exit 1
+else
+  echo "Using OpenVPN provider: ${OPENVPN_PROVIDER^^}"
 fi
 
 if [[ -n "${REVISION}" ]]; then
@@ -26,6 +28,12 @@ fi
 # setup OpenVPN - this means downloading config(s), and set user/password if not using docker secrets
 
 export VPN_PROVIDER_HOME="/etc/openvpn/${OPENVPN_PROVIDER,,}"
+
+# If no OPENVPN_PROVIDER is given, we default to "custom" provider.
+VPN_PROVIDER="${OPENVPN_PROVIDER:-custom}"
+export VPN_PROVIDER="${VPN_PROVIDER,,}" # to lowercase
+export VPN_PROVIDER_HOME="/etc/openvpn/${VPN_PROVIDER}"
+mkdir -p "${VPN_PROVIDER_HOME}"
 
 if [[ -x "${VPN_PROVIDER_HOME}/configure-openvpn.sh" ]]; then
   echo "Executing configure-openvpn.sh to download ovpn files for ${OPENVPN_PROVIDER}"
