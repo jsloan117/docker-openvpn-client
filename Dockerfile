@@ -11,7 +11,8 @@ RUN echo "*** installing packages ***" \
     && wget -q -O- ${S6_OVERLAY_RELEASE} | tar -zx -C / \
     && echo "*** cleanup ***" \
     && rm -rf /tmp/* /var/tmp/* /var/cache/apk/* /var/lib/apk/* \
-    && useradd -u 911 -U -d /etc/openvpn -s /bin/false abc \
+    && useradd -u 911 -U -d /etc/openvpn -s /sbin/nologin abc \
+    && groupmod -g 911 abc \
     && apk del shadow
 
 COPY etc /etc
