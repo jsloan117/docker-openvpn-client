@@ -1,0 +1,38 @@
+---
+version: '3.8'
+
+services:
+  openvpn-client:
+    image: jsloan117/docker-openvpn-client
+    # requires docker 20.10+ for cap_add func
+    cap_add:
+      - NET_ADMIN
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    dns:
+      - 1.1.1.1
+      - 1.0.0.1
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - openvpn_data:/etc/openvpn
+    env_file: ./openvpn_client.env
+    healthcheck:
+      test: [CMD, /etc/scripts/healthcheck.sh]
+      interval: 1m
+    secrets:
+      - source: vpncreds
+        uid: '0'
+        gid: '911'
+        mode: 0440
+
+volumes:
+  openvpn_data:
+
+secrets:
+  vpncreds:
+    external: true

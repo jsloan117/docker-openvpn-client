@@ -1,0 +1,15 @@
+---
+# https://docs.mergify.com/configuration/
+
+pull_request_rules:
+  - name: Automatically merge PRs from Dependabot
+    conditions:
+      - base=main
+      - author~=^dependabot(|-preview)\[bot\]$
+      - title~=Bump [^\s]+ from ([\d]+)\..+ to \1\.
+      - -conflict
+      - label=automerge
+    actions:
+      delete_head_branch:
+      merge:
+        method: squash

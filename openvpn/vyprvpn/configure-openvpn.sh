@@ -2,7 +2,7 @@
 # https://support.vyprvpn.com/hc/en-us/articles/360038096131-Where-can-I-find-the-OpenVPN-files-
 
 if [[ -z "$VPN_PROVIDER_HOME" ]]; then
-   echo "ERROR: Need to have VPN_PROVIDER_HOME set to call this script" && exit 1
+  echo "ERROR: Need to have VPN_PROVIDER_HOME set to call this script" && exit 1
 fi
 
 # Download & extract ovpn files from provider
@@ -40,10 +40,11 @@ rename_configs () {
 
   # Select a random server as default.ovpn
   ln -sf "$(find "${VPN_PROVIDER_HOME}" -iname "*.ovpn" | shuf -n 1)" "${VPN_PROVIDER_HOME}/default.ovpn"
+  cd "$HOME" || return
 }
 
 # Only download configs if /etc/openvpn/vyprvpn is empty
-if find "${VPN_PROVIDER_HOME}" -type f ! -iname 'configure-openvpn.sh' | grep -q 'ovpn'; then
+if find "${VPN_PROVIDER_HOME}" -type f ! -iname 'pull_configs.sh' | grep -q 'ovpn'; then
   echo "ovpn files detected, not downloading configs"
 else
   download_extract

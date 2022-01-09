@@ -8,8 +8,12 @@ docs/
 *.yaml
 *.yml
 *.md
+*.toml
 site/
-.travis/
 .trivyignore
 .ssh
+.editorconfig
 LICENSE
+.github/
+.yamllint
+.prettierignore
