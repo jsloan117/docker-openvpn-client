@@ -140,10 +140,11 @@ jobs:
       - name: Sign Image
         run: |
           printf '%s\n' "${COSIGN_KEY}" > /tmp/my_cosign.key && \
-          cosign sign --key /tmp/my_cosign.key \
+          COSIGN_EXPERIMENTAL=1 cosign sign --key /tmp/my_cosign.key \
             -a "repo=${{ github.repository }}" \
             -a "workflow=${{ github.workflow }}" \
-            -a "ref=${{ github.sha }}" ${TAGS}
+            -a "ref=${{ github.sha }}" \
+            -a "ref=${{ github.ref_name }}" ${TAGS}
           [[ -f /tmp/my_cosign.key ]] && rm -fv /tmp/my_cosign.key
         env:
           TAGS: ${{ steps.meta.outputs.tags }}
