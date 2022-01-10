@@ -81,6 +81,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2.4.0
 
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@v1.4.1
+
       # https://github.com/marketplace/actions/docker-metadata-action
       - name: Docker Metadata
         uses: docker/metadata-action@v3.6.2
@@ -140,3 +143,16 @@ jobs:
             BUILDTIME=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.created'] }}
             VERSION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
             REVISION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.revision'] }}
+
+      - name: Sign Image
+        run: |
+          echo ${COSIGN_PRIVATE_KEY} > /tmp/my_cosign.key && \
+          cosign sign --key /tmp/my_cosign.key \
+            -a "repo=${{ github.repository }}" \
+            -a "workflow=${{ github.workflow }}" \
+            -a "ref=${{ github.sha }}" ${TAGS}
+          [[ -f /tmp/my_cosign.key ]] && rm -fv /tmp/my_cosign.key
+        env:
+          TAGS: ${{ steps.docker_meta.outputs.tags }}
+          COSIGN_KEY: ${{secrets.COSIGN_PRIVATE_KEY}}
+          COSIGN_PASSWORD: ${{secrets.COSIGN_PASSWORD}}
