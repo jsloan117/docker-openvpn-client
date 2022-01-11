@@ -146,7 +146,7 @@ jobs:
 
       - name: Sign Image
         run: |
-          printf '%s\n' "${COSIGN_KEY}" > /tmp/my_cosign.key && \
+          printf '%s' "${COSIGN_KEY}" > /tmp/my_cosign.key && \
           COSIGN_EXPERIMENTAL=1 cosign sign --key /tmp/my_cosign.key \
             -a "repo=${{ github.repository }}" \
             -a "workflow=${{ github.workflow }}" \
@@ -157,3 +157,12 @@ jobs:
           TAGS: ${{ steps.meta.outputs.tags }}
           COSIGN_KEY: ${{secrets.COSIGN_PRIVATE_KEY}}
           COSIGN_PASSWORD: ${{secrets.COSIGN_PASSWORD}}
+
+      - name: Verify Image
+        run: |
+          printf '%s' "${COSIGN_PUBLIC_KEY}" | tee cosign.pub && \
+          cosign verify --key cosign.pub ${TAGS} | jq
+          [[ -f cosign.pub ]] && rm -fv cosign.pub
+        env:
+          TAGS: ${{ steps.meta.outputs.tags }}
+          COSIGN_PUBLIC_KEY: ${{secrets.COSIGN_PUBLIC_KEY}}
