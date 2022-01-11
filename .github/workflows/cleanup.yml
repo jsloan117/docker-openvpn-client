@@ -1,0 +1,18 @@
+---
+name: Delete Untagged Container Images
+
+on:
+  schedule:
+    - cron: '0 0 1 * *' # yamllint disable-line rule:quoted-strings
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      # https://github.com/marketplace/actions/delete-untagged
+      - name: Delete Untagged
+        uses: camargo/delete-untagged-action@v1
+        with:
+          github-token: ${{ secrets.PKG_CLEANUP_KEY }}
+          personal-account: true
+          repository: ${{ github.repository }}

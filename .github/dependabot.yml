@@ -1,0 +1,25 @@
+---
+# https://docs.github.com/en/code-security/supply-chain-security/keeping-your-dependencies-updated-automatically/configuration-options-for-dependency-updates
+
+version: 2
+updates:
+  # Maintain dependencies for GitHub Actions
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: daily
+    labels:
+      - automerge
+      - dependencies
+
+  # Maintain dependencies for Docker
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      # day: friday
+      interval: weekly
+    # will likley cause a merge conflict need to see if I can automerge main into dev
+    # target-branch: dev
+    labels:
+      - automerge
+      - dependencies

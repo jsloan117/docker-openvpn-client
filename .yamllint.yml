@@ -4,6 +4,18 @@
 extends: default
 
 rules:
-  document-start: disable
-  braces: { min-spaces-inside: 1, max-spaces-inside: 1 }
-  truthy: { allowed-values: ["false", "true", "on", "off"] }
+  braces:
+    min-spaces-inside: 1
+    max-spaces-inside: 1
+    min-spaces-inside-empty: 0
+    max-spaces-inside-empty: 0
+  comments:
+    require-starting-space: true
+    ignore-shebangs: true
+    min-spaces-from-content: 1
+  document-start: enable
+  line-length: disable
+  truthy: { allowed-values: ['false', 'true', 'on', 'off'] }
+  quoted-strings:
+    quote-type: single
+    required: only-when-needed
