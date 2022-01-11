@@ -22,7 +22,8 @@ COPY scripts /etc/scripts
 ENV OPENVPN_USERNAME= \
     OPENVPN_PASSWORD= \
     OPENVPN_PROVIDER= \
-    OPENVPN_OPTS="--user abc --group abc --auth-nocache --inactive 3600 --ping 10 --ping-exit 60" \
+    OPENVPN_OPTS="--user abc --group abc --auth-nocache --inactive 3600 --ping 10 \
+    --ping-exit 60 --resolv-retry 15 --mute-replay-warnings" \
     OPENVPN_CONFIG= \
     LOCAL_NETWORK=192.168.0.0/16 \
     CREATE_TUN_DEVICE=true \
