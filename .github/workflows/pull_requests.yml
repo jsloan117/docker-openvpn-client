@@ -49,7 +49,7 @@ jobs:
 
       # https://github.com/marketplace/actions/build-and-push-docker-images
       - name: Build Test Image
-        uses: docker/build-push-action@v2.9.0
+        uses: docker/build-push-action@v2.10.0
         with:
           tags: ${{ steps.meta.outputs.tags }}
           push: false
@@ -72,7 +72,7 @@ jobs:
 
       # https://github.com/marketplace/actions/build-and-push-docker-images
       - name: Build Image
-        uses: docker/build-push-action@v2.9.0
+        uses: docker/build-push-action@v2.10.0
         with:
           file: ./Dockerfile
           platforms: linux/amd64,linux/arm64
