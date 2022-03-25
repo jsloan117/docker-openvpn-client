@@ -20,7 +20,7 @@ jobs:
 
       # https://github.com/marketplace/actions/docker-hub-description
       - name: Docker Hub Description
-        uses: peter-evans/dockerhub-description@v2.4.3
+        uses: peter-evans/dockerhub-description@v3
         with:
           username: jsloan117
           password: ${{ secrets.DOCKERHUB_TOKEN }}
