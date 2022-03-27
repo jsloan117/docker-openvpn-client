@@ -13,7 +13,7 @@ on:
       - .github/workflows/mkdocs.yml
 
 env:
-  IMAGE_NAME: jsloan117/test-ci
+  IMAGE_NAME: jsloan117/docker-openvpn-client
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref }}
@@ -75,7 +75,7 @@ jobs:
       - name: Upload Sarif Report
         uses: actions/upload-artifact@v3.0.0
         with:
-          name: ${{ steps.meta.outputs.tags }}.sarif
+          name: jsloan117_docker-openvpn-client_${{ github.ref_name }}.sarif
           path: ${{ steps.scan.outputs.sarif }}
           if-no-files-found: warn
 
