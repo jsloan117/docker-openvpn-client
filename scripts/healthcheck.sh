@@ -6,22 +6,18 @@
 HOST=${HEALTH_CHECK_HOST}
 
 if [[ -z "$HOST" ]]; then
-  echo "Host  not set! Set env 'HEALTH_CHECK_HOST'. For now, using default google.com"
+  echo "Host not set! Set env 'HEALTH_CHECK_HOST'. For now, using default google.com"
   HOST="google.com"
 fi
 
 # check DNS resolution works
-nslookup $HOST > /dev/null
-STATUS=$?
-if [[ ${STATUS} -ne 0 ]]; then
+if ! nslookup "$HOST" > /dev/null; then
   echo "DNS resolution failed"
   exit 1
 fi
 
 # get at least 2 responses and timeout after 10 seconds
-ping -I tun0 -c 2 -w 10 $HOST
-STATUS=$?
-if [[ ${STATUS} -ne 0 ]]; then
+if ! ping -I tun0 -c 2 -w 10 "$HOST" &> /dev/null; then
   echo "Network is down"
   exit 1
 fi
@@ -29,7 +25,6 @@ fi
 echo "Network is up"
 
 # service check
-
 if ! pgrep openvpn; then
   echo "Openvpn process not running"
   exit 1

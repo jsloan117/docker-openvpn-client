@@ -64,11 +64,20 @@ jobs:
       # https://github.com/marketplace/actions/anchore-container-scan
       - name: Anchore Container Scan
         uses: anchore/scan-action@v3.2.0
+        id: scan
         with:
           image: ${{ steps.meta.outputs.tags }}
           acs-report-enable: true
           fail-build: true
           severity-cutoff: critical
+
+      # https://github.com/marketplace/actions/upload-a-build-artifact
+      - name: Upload Sarif Report
+        uses: actions/upload-artifact@v3.0.0
+        with:
+          name: ${{ steps.meta.outputs.tags }}.sarif
+          path: ${{ steps.scan.outputs.sarif }}
+          if-no-files-found: warn
 
       # https://github.com/marketplace/actions/build-and-push-docker-images
       - name: Build Image
