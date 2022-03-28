@@ -73,11 +73,17 @@ jobs:
           sarif_file: ${{ steps.scan.outputs.sarif }}
           wait-for-processing: true
 
+      - name: Set Sarif Report artifact variable
+        run: |
+          echo "sarif_artifact=$(echo ${image_tag} | sed -e 's|/|-|g' -e 's|:|_|g').sarif" >> $GITHUB_ENV
+        env:
+          image_tag: ${{ steps.meta.outputs.tags }}
+
       # https://github.com/marketplace/actions/upload-a-build-artifact
       - name: Upload Sarif Report
         uses: actions/upload-artifact@v3.0.0
         with:
-          name: jsloan117_docker-openvpn-client_${{ github.ref_name }}.sarif
+          name: ${{ env.sarif_artifact }}
           path: ${{ steps.scan.outputs.sarif }}
           if-no-files-found: warn
 

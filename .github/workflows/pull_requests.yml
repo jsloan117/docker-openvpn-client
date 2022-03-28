@@ -71,8 +71,9 @@ jobs:
           fail-build: true
           severity-cutoff: critical
 
-      - run: |
-          echo "image_name=$(echo ${image_tag} | sed -e 's|/|-|g' -e 's|:|_|g')" >> $GITHUB_ENV
+      - name: Set Sarif Report artifact variable
+        run: |
+          echo "sarif_artifact=$(echo ${image_tag} | sed -e 's|/|-|g' -e 's|:|_|g').sarif" >> $GITHUB_ENV
         env:
           image_tag: ${{ steps.meta.outputs.tags }}
 
@@ -80,7 +81,7 @@ jobs:
       - name: Upload Sarif Report
         uses: actions/upload-artifact@v3.0.0
         with:
-          name: ${{ env.image_name }}.sarif
+          name: ${{ env.sarif_artifact }}
           path: ${{ steps.scan.outputs.sarif }}
           if-no-files-found: warn
 
