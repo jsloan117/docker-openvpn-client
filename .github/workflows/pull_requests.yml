@@ -13,7 +13,7 @@ on:
       - .github/workflows/mkdocs.yml
 
 env:
-  IMAGE_NAME: jsloan117/test-ci
+  IMAGE_NAME: jsloan117/docker-openvpn-client
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref }}
@@ -63,12 +63,27 @@ jobs:
 
       # https://github.com/marketplace/actions/anchore-container-scan
       - name: Anchore Container Scan
-        uses: anchore/scan-action@v3.2.0
+        uses: anchore/scan-action@v3.2.1
+        id: scan
         with:
           image: ${{ steps.meta.outputs.tags }}
           acs-report-enable: true
           fail-build: true
           severity-cutoff: critical
+
+      - name: Set Sarif Report artifact variable
+        run: |
+          echo "sarif_artifact=$(echo ${image_tag} | sed -e 's|/|-|g' -e 's|:|_|g').sarif" >> $GITHUB_ENV
+        env:
+          image_tag: ${{ steps.meta.outputs.tags }}
+
+      # https://github.com/marketplace/actions/upload-a-build-artifact
+      - name: Upload Sarif Report
+        uses: actions/upload-artifact@v3.0.0
+        with:
+          name: ${{ env.sarif_artifact }}
+          path: ${{ steps.scan.outputs.sarif }}
+          if-no-files-found: warn
 
       # https://github.com/marketplace/actions/build-and-push-docker-images
       - name: Build Image

@@ -6,50 +6,46 @@ if [[ -z "$VPN_PROVIDER_HOME" ]]; then
 fi
 
 # Download & extract ovpn files from provider
-URL="https://support.vyprvpn.com/hc/article_attachments/360052617332"
-PACKAGE="Vypr_OpenVPN_20200320.zip"
-OUTPUT="/tmp/VyprVPN.zip"
+baseURL="https://support.vyprvpn.com/hc/article_attachments/360052617332"
+vyprvpn_config_bundle="Vypr_OpenVPN_20200320.zip"
+tmp_file=$(mktemp)
+tmp_dir=$(mktemp -d)
 
 download_extract () {
-  echo "Downloading OpenVPN configs into temporary file ${OUTPUT}"
-  curl -sSL "${URL}/${PACKAGE}" -o "${OUTPUT}"
+  echo "Downloading OpenVPN configs into temporary file ${tmp_file}"
+  curl -sSL "${baseURL}/${vyprvpn_config_bundle}" -o "${tmp_file}"
 
   # Delete all files for VyprVPN provider, except scripts
   find "${VPN_PROVIDER_HOME}" -type f ! -iname "*.sh" -delete
 
-  temp_dir=$(mktemp -d) && export temp_dir
-  echo "Temporarily extracting OpenVPN configs into directory ${temp_dir}"
-  unzip -qq "${OUTPUT}" -d "${temp_dir}"
+  echo "Temporarily extracting OpenVPN configs into directory ${tmp_dir}"
+  unzip -qq "${tmp_file}" -d "${tmp_dir}"
 }
 
 rename_configs () {
   # Automatically renames & moves the OVPN files with the encryption keysize as part of their names
-  cd "${temp_dir}/GF_OpenVPN_20200320" || exit 2
-  for ks in $(find . -maxdepth 1 -type d -iname "OpenVPN*" -print | tr -d '[:alpha:][:punct:]'); do
-    cd "OpenVPN${ks}" || return
-    for f in *.ovpn; do
-      base=$(echo "${f}" | awk -F'.' '{print $1}')
-      ext=$(echo "${f}" | awk -F'.' '{print $2}')
+  for ks in $(find "${tmp_dir}"/GF_OpenVPN_20200320/* -maxdepth 1 -type d -print | awk -F'/' '{print $NF}' | tr -d '[:alpha:][:punct:]'); do
+    for f in "${tmp_dir}/GF_OpenVPN_20200320/OpenVPN${ks}"/*.ovpn; do
+      base=$(echo "${f}" | awk -F'/' '{print $NF}'|  awk -F'.' '{print $1}')
+      ext=$(echo "${f}" | awk -F'/' '{print $NF}' | awk -F'.' '{print $2}')
       nf=$(echo "${base}-${ks}.${ext}")
       sed -i '/keepalive.*/d' "${f}"
       cp "${f}" "${VPN_PROVIDER_HOME}/${nf}"
     done
-    cd ..
   done
-  cp "${temp_dir}"/GF_OpenVPN_20200320/OpenVPN256/ca.vyprvpn.com.crt "${VPN_PROVIDER_HOME}"
+  cp "${tmp_dir}"/GF_OpenVPN_20200320/OpenVPN256/ca.vyprvpn.com.crt "${VPN_PROVIDER_HOME}"
 
   # Select a random server as default.ovpn
   ln -sf "$(find "${VPN_PROVIDER_HOME}" -iname "*.ovpn" | shuf -n 1)" "${VPN_PROVIDER_HOME}/default.ovpn"
-  cd "$HOME" || return
 }
 
 # Only download configs if /etc/openvpn/vyprvpn is empty
-if find "${VPN_PROVIDER_HOME}" -type f ! -iname 'pull_configs.sh' | grep -q 'ovpn'; then
+if find "${VPN_PROVIDER_HOME}" -type f ! -iname 'configure-openvpn.sh' | grep -q 'ovpn'; then
   echo "ovpn files detected, not downloading configs"
 else
   download_extract
   rename_configs
-  echo "Removing ${temp_dir} & ${OUTPUT}"
-  rm -rf "${temp_dir}"
-  rm -f "${OUTPUT}"
+  echo "Removing ${tmp_dir} & ${tmp_file}"
+  rm -rf "${tmp_dir}"
+  rm -f "${tmp_file}"
 fi

@@ -21,9 +21,10 @@ markdown_extensions:
 
 nav:
   - 'Home': index.md
-  - 'Run from Docker registry': run-from-docker-registry.md
+  - 'Running the image': run-image.md
   - 'Configuration': configuration.md
   - 'Supported providers': supported-providers.md
+  - 'Image signing and security': signing.md
 
 plugins:
   minify:
