@@ -71,11 +71,17 @@ jobs:
           fail-build: true
           severity-cutoff: critical
 
+      - run: |
+          filename="$(echo ${{ image_tag }} | sed -e 's|/|-|g' -e 's|:|_|g')"
+          echo "::set-env name=image_name::$filename"
+        env:
+          image_tag: ${{ steps.meta.outputs.tags }}
+
       # https://github.com/marketplace/actions/upload-a-build-artifact
       - name: Upload Sarif Report
         uses: actions/upload-artifact@v3.0.0
         with:
-          name: jsloan117_docker-openvpn-client_pr-${{ github.event.number }}.sarif
+          name: ${{ env.image_name }}.sarif
           path: ${{ steps.scan.outputs.sarif }}
           if-no-files-found: warn
 
