@@ -72,7 +72,7 @@ jobs:
           severity-cutoff: critical
 
       - run: |
-          filename="$(echo ${{ image_tag }} | sed -e 's|/|-|g' -e 's|:|_|g')"
+          filename="$(echo ${image_tag} | sed -e 's|/|-|g' -e 's|:|_|g')"
           echo "::set-env name=image_name::$filename"
         env:
           image_tag: ${{ steps.meta.outputs.tags }}
