@@ -63,7 +63,7 @@ jobs:
 
       # https://github.com/marketplace/actions/anchore-container-scan
       - name: Anchore Container Scan
-        uses: anchore/scan-action@v3.2.0
+        uses: anchore/scan-action@v3.2.1
         with:
           image: ${{ steps.meta.outputs.tags }}
           acs-report-enable: true
