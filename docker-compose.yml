@@ -7,10 +7,6 @@ services:
     cap_add:
       - NET_ADMIN
     restart: always
-    build: .
-    ports:
-      - 1194:1194
-    network_mode: bridge
     dns:
       - 1.1.1.1
       - 1.0.0.1

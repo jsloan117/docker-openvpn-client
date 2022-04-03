@@ -1,4 +1,4 @@
-#!/usr/bin/with-contenv bash
+#!/command/with-contenv bash
 # shellcheck shell=bash
 
 # Make sure that we have enough information to start OpenVPN
@@ -25,7 +25,7 @@ if [[ "${CREATE_TUN_DEVICE,,}" == "true" ]]; then
   chmod 0666 /dev/net/tun
 fi
 
-# setup OpenVPN - this means downloading config(s), and set user/password if not using docker secrets
+# setup OpenVPN - this means downloading config(s), and setting user/password if not using docker secrets
 
 export VPN_PROVIDER_HOME="/etc/openvpn/${OPENVPN_PROVIDER,,}"
 
@@ -41,34 +41,6 @@ if [[ -x "${VPN_PROVIDER_HOME}/configure-openvpn.sh" ]]; then
 else
   # shellcheck source=openvpn/fetch-external-configs.sh
   /etc/openvpn/fetch-external-configs.sh
-fi
-
-if [[ -n "${OPENVPN_CONFIG}" ]]; then
-  # Check that the chosen config exists.
-  if [[ -f "${VPN_PROVIDER_HOME}/${OPENVPN_CONFIG}.ovpn" ]]; then
-    echo "Starting OpenVPN using config ${OPENVPN_CONFIG}.ovpn"
-    CHOSEN_OPENVPN_CONFIG="${VPN_PROVIDER_HOME}/${OPENVPN_CONFIG}.ovpn"
-    # ensure the run script can get this variable
-    printf '%s' "${CHOSEN_OPENVPN_CONFIG}" > /var/run/s6/container_environment/CHOSEN_OPENVPN_CONFIG
-  else
-    echo "Supplied config ${OPENVPN_CONFIG}.ovpn could not be found."
-    echo "Your options for this provider are:"
-    find "${VPN_PROVIDER_HOME}" -type f -iname "*.ovpn" -print
-    echo "Remember to not specify .ovpn as part of the config name."
-    exit 1
-  fi
-else
-  echo "No VPN configuration provided. Using default."
-  CHOSEN_OPENVPN_CONFIG="${VPN_PROVIDER_HOME}/default.ovpn"
-  # ensure the run script can get this variable
-  printf '%s' "${CHOSEN_OPENVPN_CONFIG}" > /var/run/s6/container_environment/CHOSEN_OPENVPN_CONFIG
-fi
-
-# set path to vpncreds
-if [[ -f /run/secrets/vpncreds ]]; then
-  sed -i "s#auth-user-pass.*#auth-user-pass /run/secrets/vpncreds#g" "${CHOSEN_OPENVPN_CONFIG}"
-else
-  sed -i "s#auth-user-pass.*#auth-user-pass /config/vpncreds#g" "${CHOSEN_OPENVPN_CONFIG}"
 fi
 
 # add OpenVPN user/pass or use docker secrets
@@ -89,12 +61,42 @@ if [[ ! -f /run/secrets/vpncreds ]]; then
     chmod 0440 /config/vpncreds
     chown root:abc /config/vpncreds
   fi
+else
+  echo "Using docker secrets"
+fi
+
+if [[ -n "${OPENVPN_CONFIG}" ]]; then
+  # Check that the chosen config exists.
+  if [[ -f "${VPN_PROVIDER_HOME}/${OPENVPN_CONFIG}.ovpn" ]]; then
+    echo "Starting OpenVPN using config ${OPENVPN_CONFIG}.ovpn"
+    CHOSEN_OPENVPN_CONFIG="${VPN_PROVIDER_HOME}/${OPENVPN_CONFIG}.ovpn"
+    # ensure the run script can get this variable
+    printf '%s' "${CHOSEN_OPENVPN_CONFIG}" > /run/s6/container_environment/CHOSEN_OPENVPN_CONFIG
+  else
+    echo "Supplied config ${OPENVPN_CONFIG}.ovpn could not be found."
+    echo "Your options for this provider are:"
+    find "${VPN_PROVIDER_HOME}" -type f -iname "*.ovpn" -print
+    echo "Remember to not specify .ovpn as part of the config name."
+    exit 1
+  fi
+else
+  echo "No VPN configuration provided. Using default."
+  CHOSEN_OPENVPN_CONFIG="${VPN_PROVIDER_HOME}/default.ovpn"
+  # ensure the run script can get this variable
+  printf '%s' "${CHOSEN_OPENVPN_CONFIG}" > /run/s6/container_environment/CHOSEN_OPENVPN_CONFIG
+fi
+
+# set path to vpncreds
+if [[ -f /run/secrets/vpncreds ]]; then
+  sed -i "s#auth-user-pass.*#auth-user-pass /run/secrets/vpncreds#g" "${CHOSEN_OPENVPN_CONFIG}"
+else
+  sed -i "s#auth-user-pass.*#auth-user-pass /config/vpncreds#g" "${CHOSEN_OPENVPN_CONFIG}"
 fi
 
 # If we use UFW or the LOCAL_NETWORK we need to grab network config info
 if [[ "${ENABLE_UFW,,}" == "true" ]] || [[ -n "${LOCAL_NETWORK}" ]]; then
   eval "$(/sbin/ip route list match 0.0.0.0 | awk '{if($5!="tun0"){print "GW="$3"\nINT="$5; exit}}')"
-  # IF we use UFW_ALLOW_GW_NET along with ENABLE_UFW we need to know what our netmask CIDR is
+  # If we use UFW_ALLOW_GW_NET along with ENABLE_UFW we need to know what our netmask CIDR is
   if [[ "${ENABLE_UFW,,}" == "true" ]] && [[ "${UFW_ALLOW_GW_NET,,}" == "true" ]]; then
     eval "$(/sbin/ip route list dev "${INT}" | awk '{if($5=="link"){print "GW_CIDR="$1; exit}}')"
   fi
@@ -116,7 +118,7 @@ function ufwAllowPortLong {
 
   if [[ "${ENABLE_UFW,,}" == "true" ]] && [[ -n "${portNum}" ]] && [[ -n "${sourceAddress}" ]]; then
     echo "allowing ${sourceAddress} through the firewall to port ${portNum}"
-    ufw allow from "${sourceAddress}" proto tcp to any port "${portNum}"
+    ufw allow from "${sourceAddress}" to any port "${portNum}"
   fi
 }
 

@@ -73,6 +73,20 @@ jobs:
           sarif_file: ${{ steps.scan.outputs.sarif }}
           wait-for-processing: true
 
+      - name: Set Sarif Report artifact variable
+        run: |
+          echo "sarif_artifact=$(echo ${image_tag} | sed -e 's|/|-|g' -e 's|:|_|g').sarif" >> $GITHUB_ENV
+        env:
+          image_tag: ${{ steps.meta.outputs.tags }}
+
+      # https://github.com/marketplace/actions/upload-a-build-artifact
+      - name: Upload Sarif Report
+        uses: actions/upload-artifact@v3.0.0
+        with:
+          name: ${{ env.sarif_artifact }}
+          path: ${{ steps.scan.outputs.sarif }}
+          if-no-files-found: warn
+
   build-push:
     runs-on: ubuntu-latest
     needs: scan
@@ -155,7 +169,14 @@ jobs:
         run: |
           printf '%s' "${COSIGN_PUBLIC_KEY}" > cosign.pub && \
           cosign verify --key cosign.pub ${TAGS} | jq
-          [[ -f cosign.pub ]] && rm -fv cosign.pub
         env:
           TAGS: ${{ steps.meta.outputs.tags }}
           COSIGN_PUBLIC_KEY: ${{secrets.COSIGN_PUBLIC_KEY}}
+
+      # https://github.com/marketplace/actions/upload-a-build-artifact
+      - name: Upload public key
+        uses: actions/upload-artifact@v3.0.0
+        with:
+          name: cosign.pub
+          path: cosign.pub
+          if-no-files-found: warn
