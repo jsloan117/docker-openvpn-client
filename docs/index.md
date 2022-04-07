@@ -1,3 +1,9 @@
+---
+hide:
+  - navigation
+  # - toc
+---
+
 <h1 align="center">
   OpenVPN Client
 </h1>
@@ -10,14 +16,16 @@
     <img alt="license" src="https://img.shields.io/badge/License-GPLv3-blue.svg" />
   </a>
   <a href="https://github.com/jsloan117/docker-openvpn-client/actions/workflows/images.yml">
-    <img alt="images" src="https://github.com/jsloan117/docker-openvpn-client/actions/workflows/images.yml/badge.svg" />
+    <img alt="images" src="https://github.com/jsloan117/docker-openvpn-client/actions/workflows/images.yml/badge.svg?branch=v3.1.2" />
   </a>
   <a href="https://hub.docker.com/repository/docker/jsloan117/docker-openvpn-client">
     <img alt="pulls" src="https://img.shields.io/docker/pulls/jsloan117/docker-openvpn-client.svg" />
   </a>
 </p>
 
-## Quickstart
+## Getting started
+
+---
 
 Below is a quick method to get this up and running. Please see [Running the image](run-image.md) for more details.
 
@@ -32,6 +40,8 @@ jsloan117/docker-openvpn-client
 ```
 
 ## Credit
+
+---
 
 Thank you [Haugene](https://github.com/haugene) and all contributors for making a great image.
 

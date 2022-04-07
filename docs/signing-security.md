@@ -1,4 +1,16 @@
+---
+hide:
+  - navigation
+  # - toc
+---
+
+All of these things (signing, scanning, etc) are pretty new to me and this page may not always reflect the truth.
+
+Mainly at this time, that is how/where security reports are handled within Github. Where/how do I share them etc.
+
 ## Image Signing
+
+---
 
 The image is signed using cosign by [sigstore](https://www.sigstore.dev). You can verify any v3+ image using the below key or the key with that release.
 
@@ -19,17 +31,20 @@ cosign verify --key cosign.pub jsloan117/docker-openvpn-client:v3
 
 ## Vulnerability Scanning
 
-Image scanning is handled by [anchore/scan-action](https://github.com/anchore/scan-action).
-This uses [grype](https://github.com/anchore/grype) and if any critical vulnerabilities are found the pipeline will fail.
+---
+
+Image scanning is handled using [grype](https://github.com/anchore/grype) by [Anchore](https://anchore.com/).
+If any critical vulnerabilities are found the pipeline will fail.
 
 The results of the scan should be available in the security tab of Github and as an artifact with each run of the pipeline.
 
 ## Software Bill Of Materials (SBOM)
 
-The SBOM generation is handled by [anchore/sbom-action](https://github.com/anchore/sbom-action).
-This uses [syft](https://github.com/anchore/syft) to produce a spdx formatted SBOM.
+---
 
-The SBOM will be uploaded as an artifact with each run of the pipeline. For releases it will be uploaded as an asset.
+SBOM generation is handled using [syft](https://github.com/anchore/syft) by [Anchore](https://anchore.com/), in spdx-json format.
+
+It will be uploaded as an artifact with each run of the pipeline. For releases it will be uploaded as an asset.
 
 ### Check package name and their version
 

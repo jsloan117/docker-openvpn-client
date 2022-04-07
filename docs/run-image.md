@@ -1,12 +1,21 @@
+---
+hide:
+  - navigation
+  # - toc
+---
+
 This image is available from Docker's and GitHub's registries and this is the simplest way to get it.
 
-You must set the variable `OPENVPN_PROVIDER`, and provide your VPN credentials for this image to work.
+!!! note
+    You must set at least the `OPENVPN_PROVIDER` variable, and provide your VPN credentials for this image to work.
 
 Please see [configuration](configuration.md) for more details on each variable.
 
 ## Running the image
 
-To run the image use one of the following:
+---
+
+To run the image use one of (or combination of) the below methods.
 
 ### Docker run with env-file
 
@@ -49,6 +58,7 @@ docker run --cap-add=NET_ADMIN -d --name openvpn_client \
 -e UFW_ALLOW_GW_NET='true' \
 -e UFW_EXTRA_PORTS='8080,9091' \
 -e HEALTH_CHECK_HOST='google.com' \
+-e S6_CMD_WAIT_FOR_SERVICES_MAXTIME='60000' \
 --dns 1.1.1.1 --dns 1.0.0.1 \
 jsloan117/docker-openvpn-client
 ```
@@ -59,10 +69,16 @@ See the [docker-compose.yml](https://github.com/jsloan117/docker-openvpn-client/
 
 ## Docker secrets
 
-You can use docker secrets in a compose file or docker swarm mode. The below steps assumes you're using a compose file.
+---
+
+You can use docker secrets with docker compose or docker swarm. The below steps assumes you're using docker compose.
+
+!!! note
+    Docker secrets within the context of compose inherits the file's ownership and permissions from the host.
 
 - remove `OPENVPN_USERNAME` and `OPENVPN_PASSWORD` from the environment section of your compose file
 - add your credentials username and password each on a line in a file named `vpncreds`
+    - ensure correct ownership and permissions of that file `vpncreds`
 - add the below snippet to your compose file
 
 ### Compose file snippet

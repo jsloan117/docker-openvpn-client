@@ -2,11 +2,9 @@
 # https://github.com/marketplace/actions/labeler
 
 build:
-  - '**.sh'
-  - Dockerfile
-  - Dockerfile.*
+  - '**/*.sh'
+  - Dockerfile*
   - docker-compose.yml
-  - DockerEnv
   - .dockerignore
 
 ci/cd:
