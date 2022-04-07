@@ -1,12 +1,12 @@
 # OpenVPN Client
 
 ![License](https://img.shields.io/badge/License-GPLv3-blue.svg)
-[![images](https://github.com/jsloan117/docker-openvpn-client/actions/workflows/images.yml/badge.svg)](https://github.com/jsloan117/docker-openvpn-client/actions/workflows/images.yml)
+[![images](https://github.com/jsloan117/docker-openvpn-client/actions/workflows/images.yml/badge.svg?branch=v3.1.2)](https://github.com/jsloan117/docker-openvpn-client/actions/workflows/images.yml)
 [![Docker Pulls](https://img.shields.io/docker/pulls/jsloan117/docker-openvpn-client.svg)](https://img.shields.io/docker/pulls/jsloan117/docker-openvpn-client.svg)
 
 Container image that provides multiple VPN providers for OpenVPN.
 
-## Quickstart
+## Getting started
 
 Below is a quick method to get this up and running. Please see the full documentation for more options.
 
