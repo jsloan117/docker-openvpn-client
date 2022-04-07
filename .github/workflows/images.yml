@@ -57,7 +57,7 @@ jobs:
 
       # https://github.com/marketplace/actions/anchore-container-scan
       - name: Anchore Container Scan
-        uses: anchore/scan-action@v3.2.3
+        uses: anchore/scan-action@v3.2.4
         id: scan
         with:
           image: ${{ steps.meta.outputs.tags }}
