@@ -1,6 +1,14 @@
-## Internal Providers
+---
+hide:
+  - navigation
+  # - toc
+---
 
-These providers have had a script created for them to automatically download new configs, directly from the provider on container startup.
+## Internal providers
+
+---
+
+These providers have had a script created for them to automatically download configs, directly from the provider on container startup.
 
 | Provider Name           | Config Value (`OPENVPN_PROVIDER`) |
 | :---------------------- | :-------------------------------- |
@@ -9,12 +17,14 @@ These providers have had a script created for them to automatically download new
 | Private Internet Access | `PIA`                             |
 | VyprVpn                 | `VYPRVPN`                         |
 
-## External Providers
+## External providers
+
+---
 
 These providers are fetched from [config repo](https://github.com/haugene/vpn-configs-contrib) on startup.
 They have to be manually updated in that repo when the provider changes them.
 
-If you don't see your provider in the below list, check the config repo above. Still don't see your provider? Open a PR to add it.
+If you don't see your provider in the below list, check the config repo above. Still don't see your provider? Open a [:fontawesome-solid-code-pull-request:](https://github.com/haugene/vpn-configs-contrib/pulls) to add it.
 
 | Provider Name   | Config Value (`OPENVPN_PROVIDER`) |
 | :-------------- | :-------------------------------- |

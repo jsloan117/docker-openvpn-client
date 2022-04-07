@@ -3,6 +3,7 @@
 # https://squidfunk.github.io/mkdocs-material/setup/extensions/
 # https://python-markdown.github.io/extensions/
 # https://docutils.sourceforge.io/docs/ref/rst/directives.html#specific-admonitions
+# https://pygments.org/docs/lexers/
 
 site_name: docker-openvpn-client
 site_url: http://jsloan117.github.io/docker-openvpn-client
@@ -10,23 +11,61 @@ repo_url: https://github.com/jsloan117/docker-openvpn-client
 
 theme:
   name: material
+  language: en
+  icon:
+    repo: fontawesome/brands/github
+  include_search_page: false
+  search_index_only: true
+  features:
+    - header.autohide
+    - navigation.indexes
+    - navigation.instant
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+    - navigation.tracking
+    - search.highlight
+    - search.share
+    - search.suggest
+  palette:
+    - scheme: slate
+      toggle:
+        icon: material/weather-night
+        name: Switch to light mode
+    - scheme: default
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
 
 markdown_extensions:
-  admonition: {}
-  codehilite:
-    linenums: true
-  toc:
-    permalink: true
-    separator: _
+  - admonition
+  - attr_list
+  - meta
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.smartsymbols
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - tables
+  - toc:
+      permalink: true
+
+plugins:
+  - minify:
+      minify_html: true
+  - search
 
 nav:
   - 'Home': index.md
   - 'Running the image': run-image.md
   - 'Configuration': configuration.md
+  - 'Init system': s6-overlay.md
   - 'Supported providers': supported-providers.md
-  - 'Image signing and security': signing.md
-
-plugins:
-  minify:
-    minify_html: true
-  search: {}
+  - 'Image signing and security': signing-security.md

@@ -24,12 +24,13 @@ ENV OPENVPN_PROVIDER= \
     OPENVPN_OPTS="--user abc --group abc --auth-nocache --inactive 3600 --ping 10 \
     --ping-exit 60 --resolv-retry 15 --mute-replay-warnings" \
     OPENVPN_CONFIG= \
-    LOCAL_NETWORK=192.168.0.0/16 \
-    CREATE_TUN_DEVICE=true \
-    ENABLE_UFW=false \
-    UFW_ALLOW_GW_NET=false \
+    LOCAL_NETWORK='192.168.0.0/16' \
+    CREATE_TUN_DEVICE='true' \
+    ENABLE_UFW='false' \
+    UFW_ALLOW_GW_NET='false' \
     UFW_EXTRA_PORTS= \
-    HEALTH_CHECK_HOST=google.com
+    HEALTH_CHECK_HOST='google.com' \
+    S6_CMD_WAIT_FOR_SERVICES_MAXTIME='60000'
 
 HEALTHCHECK --interval=1m CMD /etc/scripts/healthcheck.sh
 
