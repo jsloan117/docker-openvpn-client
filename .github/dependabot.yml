@@ -18,7 +18,7 @@ updates:
     schedule:
       # day: friday
       interval: weekly
-    # will likley cause a merge conflict need to see if I can automerge main into dev
+    # will likely cause a merge conflict need to see if I can automerge main into dev
     # target-branch: dev
     labels:
       - automerge

@@ -1,0 +1,20 @@
+version = 1
+
+[merge]
+method = "squash"
+automerge_label = "automerge"
+require_automerge_label = true
+delete_branch_on_merge = true
+notify_on_conflict = true
+optimistic_updates = false
+
+[merge.automerge_dependencies]
+versions = ["minor", "patch"]
+usernames = ["dependabot", "jsloan117"]
+
+[merge.message]
+title = "pull_request_title"
+body = "github_default"
+strip_html_comments = true
+include_pr_number = true
+
