@@ -6,7 +6,7 @@ pull_request_rules:
     conditions:
       - base=main
       - author~=^dependabot(|-preview)\[bot\]$
-      - title~=Bump [^\s]+ from ([\d]+)\..+ to \1\.
+      - check-success=build-scan
       - -conflict
       - label=automerge
     actions:
