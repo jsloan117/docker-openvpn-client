@@ -9,8 +9,7 @@ on:
       - '**.md'
       - mkdocs.yml
       - .github/workflows/mkdocs.yml
-
-workflow_dispatch:
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
