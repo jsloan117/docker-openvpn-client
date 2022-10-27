@@ -17,6 +17,7 @@ concurrency:
 
 jobs:
   build:
+    permissions: {}
     runs-on: ubuntu-latest
     steps:
       # https://github.com/marketplace/actions/checkout
