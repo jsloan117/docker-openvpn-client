@@ -4,6 +4,7 @@ name: docs
 on:
   push:
     branches:
+      - dev
       - update_deployment_method
     paths:
       - '**.md'
