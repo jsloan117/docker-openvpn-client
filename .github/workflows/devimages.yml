@@ -7,10 +7,16 @@ on:
   push:
     branches:
       - dev
-    paths-ignore:
-      - '**.md'
-      - mkdocs.yml
-      - .github/workflows/mkdocs.yml
+    paths:
+      - etc/**
+      - openvpn/**
+      - scripts/**
+      - Dockerfile
+      - Dockerfile.*
+    # paths-ignore:
+    #   - '**.md'
+    #   - mkdocs.yml
+    #   - .github/workflows/mkdocs.yml
 
 env:
   IMAGE_NAME: jsloan117/docker-openvpn-client
