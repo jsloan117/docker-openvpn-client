@@ -11,6 +11,8 @@ on:
       - docs.yml
       - .github/workflows/mkdocs.yml
 
+workflow_dispatch:
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
