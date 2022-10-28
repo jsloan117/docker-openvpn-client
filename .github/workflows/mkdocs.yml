@@ -62,6 +62,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     # https://docs.github.com/en/actions/security-guides/automatic-token-authentication#permissions-for-the-github_token
+    # https://docs.github.com/en/rest/overview/permissions-required-for-github-apps#contents
     permissions:
       pages: write
       id-token: write
