@@ -5,13 +5,19 @@ ARG S6_OVERLAY_NOARCH_RELEASE=https://github.com/just-containers/s6-overlay/rele
 
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 
+# wg0.conf add "PersistentKeepalive = 25" under [Peer]
+# /proc/sys/net/ipv4/conf/all/src_valid_mark
+
 RUN echo "*** installing packages ***" \
     apk upgrade --update \
-    && apk --no-cache add bash openvpn curl iputils unzip jq shadow ufw \
+    && apk --no-cache add bash openvpn curl iputils unzip jq \
+      shadow ufw openresolv wireguard-tools \
     && wget -q -O- ${S6_OVERLAY_NOARCH_RELEASE} | tar -Jpx -C / \
     && wget -q -O- ${S6_OVERLAY_X86_64_RELEASE} | tar -Jpx -C / \
     && useradd -u 911 -U -d /etc/openvpn -s /sbin/nologin abc \
     && groupmod -g 911 abc \
+    && echo '*** wireguard wg-quick hack ***' \
+    && sed -i 's/sysctl.*/sysctl -q net.ipv4.conf.all.src_valid_mark=1 || true/' /usr/bin/wg-quick \
     && echo "*** cleanup ***" \
     && apk del shadow \
     && rm -rf /tmp/* /var/tmp/* /var/cache/apk/* /var/lib/apk/*
