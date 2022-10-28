@@ -1,7 +1,7 @@
 #!/command/with-contenv bash
 # shellcheck shell=bash
 
-attempted to delete routes as root user when openvpn is NOT running as root
+# attempted to delete routes as root user when openvpn is NOT running as root
 
 exec s6-setuidgid root /delete_routes.sh
 
