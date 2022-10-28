@@ -30,6 +30,12 @@ permissions: {}
 jobs:
   scan:
     runs-on: ubuntu-latest
+    permissions:
+      # required by codeql-action/upload-sarif
+      security-events: write
+      # only required for workflows in private repositories
+      actions: read
+      contents: read
     steps:
       # https://github.com/marketplace/actions/checkout
       - name: Checkout
