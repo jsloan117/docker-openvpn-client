@@ -21,6 +21,9 @@ concurrency:
 jobs:
   scan:
     runs-on: ubuntu-latest
+    permissions:
+      # required to upload sarif report to GitHub
+      security-events: write
     steps:
       # https://github.com/marketplace/actions/checkout
       - name: Checkout
@@ -89,6 +92,9 @@ jobs:
   build-push:
     runs-on: ubuntu-latest
     needs: scan
+    permissions:
+      # required to push image to ghcr
+      packages: write
     steps:
       # https://github.com/marketplace/actions/checkout
       - name: Checkout

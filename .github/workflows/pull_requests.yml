@@ -19,11 +19,10 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref }}
   cancel-in-progress: true
 
-permissions: {}
-
 jobs:
   build-scan:
     runs-on: ubuntu-latest
+    permissions: {}
     steps:
       # https://github.com/marketplace/actions/checkout
       - name: Checkout
