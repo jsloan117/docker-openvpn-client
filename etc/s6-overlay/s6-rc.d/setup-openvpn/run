@@ -1,10 +1,10 @@
 #!/command/with-contenv bash
 # shellcheck shell=bash
 
-if [[ ${VPN_SOLUTION} == "wireguard" ]]; then
+#if [[ ${VPN_SOLUTION} == "wireguard" ]]; then
   #/command/s6-rc -d change openvpn
-  /command/s6-svc -d /run/service/openvpn
-fi
+  #/command/s6-svc -d /run/service/openvpn
+#fi
 
 if [[ ${VPN_SOLUTION} == "openvpn" ]]; then
   /etc/scripts/setup.sh
@@ -14,3 +14,7 @@ fi
 # /command/s6-svc -d /run/service/openvpn
 # handles deps
 # /command/s6-rc -d|-u change openvpn
+
+# s6-rc: fatal: unable to take locks: Resource busy
+# Options error: In [CMD-LINE]:1: Error opening configuration file:
+
