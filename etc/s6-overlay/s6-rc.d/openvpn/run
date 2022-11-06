@@ -2,7 +2,6 @@
 # shellcheck shell=bash
 
 if [[ ${VPN_SOLUTION} == "wireguard" ]]; then
-  #/command/s6-rc -d change openvpn
   /command/s6-svc -d /run/service/openvpn
 fi
 
