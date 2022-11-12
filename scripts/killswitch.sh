@@ -13,11 +13,11 @@ sed -i 's/IPV6=yes/IPV6=no/' /etc/default/ufw
 
 # need to set a route to our local network
 # /sbin/ip route list match 0.0.0.0 | awk '{if($5!="tun0"){print "GW="$3"\nINT="$5; exit}}'
-ip route add LOCAL_NETWORK via $GW dev $INT
+ip route add LOCAL_NETWORK via "$GW" dev "$INT"
 
 # allow local network access - make sure we can always get to it..
-ufw allow in on $INT from LOCAL_NETWORK
-ufw allow out on $INT to LOCAL_NETWORK
+ufw allow in on "$INT" from LOCAL_NETWORK
+ufw allow out on "$INT" to LOCAL_NETWORK
 
 # allow outgoing to create tunnel
 # strict

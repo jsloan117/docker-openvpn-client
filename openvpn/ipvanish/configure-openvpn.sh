@@ -1,8 +1,10 @@
-#! /bin/bash
+#!/bin/bash
 
 set -e
 
-baseURL="https://www.ipvanish.com/software/configs"
+source /etc/openvpn/utils.sh
+
+baseURL="https://configs.ipvanish.com/configs"
 CONFIG_BUNDLE="configs.zip"
 
 if [ -z "$VPN_PROVIDER_HOME" ]; then

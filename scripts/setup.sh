@@ -1,6 +1,9 @@
 #!/command/with-contenv bash
 # shellcheck shell=bash
 
+# shellcheck source=/dev/null
+source /etc/openvpn/utils.sh
+
 if [[ -n "${REVISION}" ]]; then
   echo "GitRevision: ${REVISION}"
 fi
@@ -17,6 +20,7 @@ fi
 # create /dev/net/tun
 if [[ "${CREATE_TUN_DEVICE,,}" == "true" ]]; then
   echo "Creating TUN device /dev/net/tun"
+  rm -f /dev/net/tun
   mkdir -p /dev/net
   mknod /dev/net/tun c 10 200
   chmod 0666 /dev/net/tun
