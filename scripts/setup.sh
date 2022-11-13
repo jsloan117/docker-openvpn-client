@@ -46,26 +46,50 @@ if [[ "${VPN_PROVIDER}" != 'custom' ]]; then
   fi
 fi
 
-# add OpenVPN user/pass or use docker secrets
-if [[ ! -f /run/secrets/vpncreds ]]; then
+# # add OpenVPN user/pass or use docker secrets
+# if [[ ! -f /run/secrets/vpncreds ]]; then
+#   if [[ -z "${OPENVPN_USERNAME}" ]] || [[ -z "${OPENVPN_PASSWORD}" ]]; then
+#     if [[ ! -f /config/vpncreds ]]; then
+#       echo "OpenVPN credentials not set. Exiting."
+#       exit 1
+#     fi
+#     echo "OpenVPN credentials found"
+#   else
+#     echo "Setting OpenVPN credentials..."
+#     mkdir -p /config
+#     chmod 700 /config
+#     chown abc:abc /config
+#     echo "${OPENVPN_USERNAME}" > /config/vpncreds
+#     echo "${OPENVPN_PASSWORD}" >> /config/vpncreds
+#     chmod 0400 /config/vpncreds
+#     chown abc:abc /config/vpncreds
+#   fi
+# else
+#   echo "Using docker secrets"
+# fi
+
+mkdir -p /config
+chmod 0700 /config
+chown abc:abc /config
+
+if [[ -f /run/secrets/vpncreds ]]; then
+  if [[ ! -f /config/openvpn-credentials.txt ]] || cmp -s /run/secrets/vpncreds /config/openvpn-credentials.txt; then
+    echo "Setting OpenVPN credentials..."
+    cp /run/secrets/vpncreds /config/openvpn-credentials.txt
+  fi
+else
   if [[ -z "${OPENVPN_USERNAME}" ]] || [[ -z "${OPENVPN_PASSWORD}" ]]; then
-    if [[ ! -f /config/vpncreds ]]; then
+    if [[ ! -f /config/openvpn-credentials.txt ]]; then
       echo "OpenVPN credentials not set. Exiting."
       exit 1
     fi
-    echo "OpenVPN credentials found"
+    echo "Found existing OpenVPN credentials at /config/openvpn-credentials.txt"
   else
     echo "Setting OpenVPN credentials..."
-    mkdir -p /config
-    chmod 700 /config
-    chown abc:abc /config
-    echo "${OPENVPN_USERNAME}" > /config/vpncreds
-    echo "${OPENVPN_PASSWORD}" >> /config/vpncreds
-    chmod 0400 /config/vpncreds
-    chown abc:abc /config/vpncreds
+    echo -e "${OPENVPN_USERNAME}\n${OPENVPN_PASSWORD}" > /config/openvpn-credentials.txt
+    chmod 0400 /config/openvpn-credentials.txt
+    chown abc:abc /config/openvpn-credentials.txt
   fi
-else
-  echo "Using docker secrets"
 fi
 
 if [[ -n "${OPENVPN_CONFIG}" ]]; then
@@ -89,12 +113,13 @@ else
   printf '%s' "${CHOSEN_OPENVPN_CONFIG}" > /run/s6/container_environment/CHOSEN_OPENVPN_CONFIG
 fi
 
-# set path to vpncreds
-if [[ -f /run/secrets/vpncreds ]]; then
-  sed -i "s#auth-user-pass.*#auth-user-pass /run/secrets/vpncreds#g" "${CHOSEN_OPENVPN_CONFIG}"
-else
-  sed -i "s#auth-user-pass.*#auth-user-pass /config/vpncreds#g" "${CHOSEN_OPENVPN_CONFIG}"
-fi
+# This is causing a sed error when mounting ovpn file due to inode disk busy
+# # set path to vpncreds
+# if [[ -f /run/secrets/vpncreds ]]; then
+#   sed -i "s#auth-user-pass.*#auth-user-pass /run/secrets/vpncreds#g" "${CHOSEN_OPENVPN_CONFIG}"
+# else
+#   sed -i "s#auth-user-pass.*#auth-user-pass /config/vpncreds#g" "${CHOSEN_OPENVPN_CONFIG}"
+# fi
 
 # if we use UFW or the LOCAL_NETWORK we need to grab network config info
 if [[ "${ENABLE_UFW,,}" == "true" ]] || [[ -n "${LOCAL_NETWORK}" ]]; then
