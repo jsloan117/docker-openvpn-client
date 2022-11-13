@@ -6,9 +6,8 @@ if [[ ${VPN_SOLUTION} == "wireguard" ]]; then
   /command/s6-svc -d /run/service/openvpn
 fi
 
-OPENVPN_OPTS='--script-security 2 --route-up /etc/openvpn/update-resolv-conf --route-pre-down /etc/openvpn/update-resolv-conf'
-OPENVPN_OPTS+="${OPENVPN_OPTS}"
+RESOLV_OPTS='--script-security 2 --route-up /etc/openvpn/update-resolv-conf --route-pre-down /etc/openvpn/update-resolv-conf'
 
 # shellcheck disable=SC2086
 exec s6-setuidgid root \
-  openvpn "${OPENVPN_OPTS}" --config "${CHOSEN_OPENVPN_CONFIG}"
+  openvpn ${RESOLV_OPTS} ${OPENVPN_OPTS} --config "${CHOSEN_OPENVPN_CONFIG}"
