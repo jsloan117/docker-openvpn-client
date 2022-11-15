@@ -46,28 +46,6 @@ if [[ "${VPN_PROVIDER}" != 'custom' ]]; then
   fi
 fi
 
-# # add OpenVPN user/pass or use docker secrets
-# if [[ ! -f /run/secrets/vpncreds ]]; then
-#   if [[ -z "${OPENVPN_USERNAME}" ]] || [[ -z "${OPENVPN_PASSWORD}" ]]; then
-#     if [[ ! -f /config/vpncreds ]]; then
-#       echo "OpenVPN credentials not set. Exiting."
-#       exit 1
-#     fi
-#     echo "OpenVPN credentials found"
-#   else
-#     echo "Setting OpenVPN credentials..."
-#     mkdir -p /config
-#     chmod 700 /config
-#     chown abc:abc /config
-#     echo "${OPENVPN_USERNAME}" > /config/vpncreds
-#     echo "${OPENVPN_PASSWORD}" >> /config/vpncreds
-#     chmod 0400 /config/vpncreds
-#     chown abc:abc /config/vpncreds
-#   fi
-# else
-#   echo "Using docker secrets"
-# fi
-
 mkdir -p /config
 chmod 0700 /config
 chown abc:abc /config
@@ -113,13 +91,15 @@ else
   printf '%s' "${CHOSEN_OPENVPN_CONFIG}" > /run/s6/container_environment/CHOSEN_OPENVPN_CONFIG
 fi
 
-# This is causing a sed error when mounting ovpn file due to inode disk busy
-# # set path to vpncreds
-# if [[ -f /run/secrets/vpncreds ]]; then
-#   sed -i "s#auth-user-pass.*#auth-user-pass /run/secrets/vpncreds#g" "${CHOSEN_OPENVPN_CONFIG}"
-# else
-#   sed -i "s#auth-user-pass.*#auth-user-pass /config/vpncreds#g" "${CHOSEN_OPENVPN_CONFIG}"
-# fi
+# dont run script on mounted OpenVPN configs (causes sed errors)
+if ! mountpoint -q "$CHOSEN_OPENVPN_CONFIG"; then
+  MODIFY_CHOSEN_CONFIG="${MODIFY_CHOSEN_CONFIG:-true}"
+  # The config file we're supposed to use is chosen, modify it to fit this container setup
+  if [[ "${MODIFY_CHOSEN_CONFIG,,}" == "true" ]]; then
+    # shellcheck source=openvpn/modify-openvpn-config.sh
+    /etc/openvpn/modify-openvpn-config.sh "$CHOSEN_OPENVPN_CONFIG"
+  fi
+fi
 
 # if we use UFW or the LOCAL_NETWORK we need to grab network config info
 if [[ "${ENABLE_UFW,,}" == "true" ]] || [[ -n "${LOCAL_NETWORK}" ]]; then
