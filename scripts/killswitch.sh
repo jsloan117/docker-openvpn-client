@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/command/with-contenv bash
+# shellcheck shell=bash
 # killswitch.sh
 # basic idea is that if VPN goes down the
 # container won't be able to get the Internet
@@ -9,9 +10,6 @@
 
 # disable IPv6
 sed -i 's/IPV6=yes/IPV6=no/' /etc/default/ufw
-
-# need to set a route to our local network
-# /sbin/ip route list match 0.0.0.0 | awk '{if($5!="tun0"){print "GW="$3"\nINT="$5; exit}}'
 
 # if we use UFW or the LOCAL_NETWORK we need to grab network config info
 if [[ "${ENABLE_UFW,,}" == "true" ]] || [[ -n "${LOCAL_NETWORK}" ]]; then
@@ -44,7 +42,7 @@ if [[ -n "${LOCAL_NETWORK}" ]]; then
       # set defaults
       ufw default deny incoming
       ufw default deny outgoing
-      ufw enable || ufw reload
+      ufw enable
       # if [[ "${ENABLE_UFW,,}" == "true" ]]; then
       #   if [[ -n "${UFW_EXTRA_PORTS}" ]]; then
       #     for port in ${UFW_EXTRA_PORTS//,/ }; do
@@ -56,22 +54,10 @@ if [[ -n "${LOCAL_NETWORK}" ]]; then
   fi
 fi
 
-# allow local network access - make sure we can always get to it..
-ufw allow in on "$INT" from LOCAL_NETWORK
-ufw allow out on "$INT" to LOCAL_NETWORK
-
 # allow outgoing to create tunnel
+# ufw allow out to VPN_IP port VPN_PORT
 # strict
 # ufw allow out on $INT to VPN_IP port VPN_PORT -- Better?
 # stricter
 # ufw allow out on $INT from CONTAINER_IP to VPN_IP port VPN_PORT -- Better x2
-ufw allow out to VPN_IP port VPN_PORT
-# allow all outgoing on VPN_INTERFACE
-ufw allow out on VPN_INTERFACE from any to any
-
-# set defaults
-ufw default deny incoming
-ufw default deny outgoing
-
-ufw enable || ufw reload
 
