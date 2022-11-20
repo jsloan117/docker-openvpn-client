@@ -8,3 +8,4 @@ fi
 if [[ ${VPN_SOLUTION} == "wireguard" && ${1} == "up" ]]; then
   wg-quick up /etc/wireguard/wg0.conf
 fi
+

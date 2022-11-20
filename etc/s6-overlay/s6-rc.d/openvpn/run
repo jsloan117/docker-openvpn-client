@@ -12,3 +12,8 @@ RESOLV_OPTS='--script-security 2 --route-up /etc/openvpn/update-resolv-conf --do
 # shellcheck disable=SC2086
 exec s6-setuidgid root \
   openvpn ${RESOLV_OPTS} ${OPENVPN_OPTS} --config "${CHOSEN_OPENVPN_CONFIG}"
+
+if [[ "${ENABLE_UFW,,}" == "true" ]] || [[ -n "${LOCAL_NETWORK}" ]]; then
+  /etc/scripts/ufw.sh
+fi
+
