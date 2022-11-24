@@ -77,7 +77,7 @@ if [[ ${UFW_KILLSWITCH} = true ]]; then
         ufw allow out on "${INT}" to "${localNet}"
       fi
       # create array of vpn remotes
-      readarray -t remotes < <(grep '^remote ' "${CHOSEN_OPENVPN_CONFIG}" | sort | awk '{print $2,$3}')
+      readarray -t remotes < <(grep '^remote ' "${CHOSEN_OPENVPN_CONFIG}" | sort -V | awk '{print $2,$3}')
       for remote in "${remotes[@]}"; do
         eval "$(echo "${remote}" | awk '{print "IP="$1"\nport="$2; exit}')"
         echo "allowing outbound to ${IP}:${port} on device ${INT}"
