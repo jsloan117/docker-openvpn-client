@@ -71,6 +71,7 @@ if [[ ${UFW_KILLSWITCH} = true ]]; then
   if [[ -n "${VPNGW}" ]] && [[ -n "${VPNINT}" ]]; then
     for localNet in ${LOCAL_NETWORK//,/ }; do
       if [[ ${UFW_FAILSAFE} = true ]]; then
+        echo "allowing inbound/outbound to/from ${localNet} on device ${INT}"
         # allow local network access - make sure we can always get to it
         ufw allow in on "${INT}" from "${localNet}"
         ufw allow out on "${INT}" to "${localNet}"
@@ -79,12 +80,15 @@ if [[ ${UFW_KILLSWITCH} = true ]]; then
       readarray -t remotes < <(grep '^remote ' "${CHOSEN_OPENVPN_CONFIG}" | awk '{print $2,$3}')
       for remote in "${remotes[@]}"; do
         eval "$(echo "${remote}" | awk '{print "IP="$1"\nport="$2; exit}')"
+        echo "allowing outbound to ${IP}:${port} on device ${INT}"
         # allow outgoing to create tunnel
         ufw allow out on "${INT}" to "${IP}" port "${port}"
       done
+      echo "allowing all outbound traffic on device ${VPNINT}"
       # allow all outgoing on VPN_INTERFACE
       ufw allow out on "${VPNINT}" from any to any
       # set defaults
+      echo "set UFW incoming and outgoing default to deny"
       ufw default deny incoming
       ufw default deny outgoing
       ufw reload
