@@ -25,7 +25,7 @@ The [openvpn.env](https://github.com/jsloan117/docker-openvpn-client/blob/main/o
 ```bash
 docker run --cap-add=NET_ADMIN -d --name openvpn_client \
 --env-file ~/openvpn.env \
---dns 1.1.1.1 --dns 1.0.0.1 \
+-v /etc/localtime:/etc/localtime:ro \
 jsloan117/docker-openvpn-client
 ```
 
@@ -37,7 +37,7 @@ docker run --cap-add=NET_ADMIN -d --name openvpn_client \
 -e OPENVPN_CONFIG='USA - Austin-256' \
 -e OPENVPN_USERNAME='user' \
 -e OPENVPN_PASSWORD='password' \
---dns 1.1.1.1 --dns 1.0.0.1 \
+-v /etc/localtime:/etc/localtime:ro \
 jsloan117/docker-openvpn-client
 ```
 
@@ -55,11 +55,13 @@ docker run --cap-add=NET_ADMIN -d --name openvpn_client \
 -e LOCAL_NETWORK='192.168.0.0/16' \
 -e CREATE_TUN_DEVICE='true' \
 -e ENABLE_UFW='true' \
+-e UFW_KILLSWITCH=true \
+-e UFW_FAILSAFE=true \
 -e UFW_ALLOW_GW_NET='true' \
 -e UFW_EXTRA_PORTS='8080,9091' \
 -e HEALTH_CHECK_HOST='google.com' \
 -e S6_CMD_WAIT_FOR_SERVICES_MAXTIME='60000' \
---dns 1.1.1.1 --dns 1.0.0.1 \
+-v /etc/localtime:/etc/localtime:ro \
 jsloan117/docker-openvpn-client
 ```
 
@@ -103,3 +105,4 @@ secrets:
 your_vpn_username
 your_vpn_password
 ```
+

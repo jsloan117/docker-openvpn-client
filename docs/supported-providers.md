@@ -74,3 +74,4 @@ If you don't see your provider in the below list, check the config repo above. S
 | VPN.ht          | `VPNHT`                           |
 | Windscribe      | `WINDSCRIBE`                      |
 | ZoogVPN         | `ZOOGVPN`                         |
+

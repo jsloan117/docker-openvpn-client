@@ -35,7 +35,7 @@ docker run --cap-add=NET_ADMIN -d --name openvpn_client \
 -e OPENVPN_CONFIG='USA - Austin-256' \
 -e OPENVPN_USERNAME='user' \
 -e OPENVPN_PASSWORD='password' \
---dns 1.1.1.1 --dns 1.0.0.1 \
+-v /etc/localtime:/etc/localtime:ro \
 jsloan117/docker-openvpn-client
 ```
 
@@ -46,3 +46,4 @@ jsloan117/docker-openvpn-client
 Thank you [Haugene](https://github.com/haugene) and all contributors for making a great image.
 
 If you need anymore [details](https://haugene.github.io/docker-transmission-openvpn) this image is based on [this](https://github.com/haugene/docker-transmission-openvpn) and their documentation may be beneficial depending on your environment.
+

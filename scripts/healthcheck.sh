@@ -34,3 +34,4 @@ if ! ping -I "$iface" -c 2 -w 10 "$HOST" &> /dev/null; then
 fi
 
 exit 0
+

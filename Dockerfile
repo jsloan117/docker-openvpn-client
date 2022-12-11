@@ -1,38 +1,42 @@
-FROM alpine:3.17.0
+FROM ubuntu:22.04
 
 ARG S6_OVERLAY_X86_64_RELEASE=https://github.com/just-containers/s6-overlay/releases/latest/download/s6-overlay-x86_64.tar.xz
 ARG S6_OVERLAY_NOARCH_RELEASE=https://github.com/just-containers/s6-overlay/releases/latest/download/s6-overlay-noarch.tar.xz
 
-SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
-
 # wg0.conf add "PersistentKeepalive = 25" under [Peer]
 # /proc/sys/net/ipv4/conf/all/src_valid_mark
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+ENV DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true LC_ALL=C.UTF-8 LANG=C.UTF-8
+
 RUN echo "*** installing packages ***" \
-    apk upgrade --update \
-    && apk --no-cache add bash openvpn curl iputils unzip jq \
-      shadow ufw openresolv wireguard-tools \
+    && apt-get update && apt-get -y upgrade \
+    && apt-get install -y --no-install-recommends openvpn curl unzip jq iputils-ping iproute2 psmisc \
+       iptables bind9-dnsutils kmod ca-certificates wget xz-utils net-tools ufw openresolv wireguard-tools \
     && wget -q -O- ${S6_OVERLAY_NOARCH_RELEASE} | tar -Jpx -C / \
     && wget -q -O- ${S6_OVERLAY_X86_64_RELEASE} | tar -Jpx -C / \
     && useradd -u 911 -U -d /etc/openvpn -s /sbin/nologin abc \
     && groupmod -g 911 abc \
     && echo '*** wireguard wg-quick hack ***' \
     && sed -i 's/sysctl.*/sysctl -q net.ipv4.conf.all.src_valid_mark=1 || true/' /usr/bin/wg-quick \
+    && sed -i 's|up)|up\|route-up)|; s|down)|down\|route-pre-down)|' /etc/openvpn/update-resolv-conf \
     && echo "*** cleanup ***" \
-    && apk del shadow \
-    && rm -rf /tmp/* /var/tmp/* /var/cache/apk/* /var/lib/apk/*
+    && rm -rf /tmp/* /var/tmp/* /var/cache/apt/* /var/lib/apt/*
 
 COPY etc /etc
 COPY openvpn /etc/openvpn
 COPY scripts /etc/scripts
 
-ENV VPN_SOLUTION="openvpn" \
+ENV VPN_SOLUTION='openvpn' \
     OPENVPN_PROVIDER= \
-    OPENVPN_OPTS="--auth-nocache --inactive 3600 --ping 10 --ping-exit 60 --resolv-retry 15 --mute-replay-warnings" \
+    OPENVPN_OPTS='--auth-nocache --mute-replay-warnings --script-security 2 --route-up /etc/openvpn/update-resolv-conf --down /etc/openvpn/update-resolv-conf' \
     OPENVPN_CONFIG= \
     LOCAL_NETWORK='192.168.0.0/16' \
     CREATE_TUN_DEVICE='true' \
     ENABLE_UFW='false' \
+    UFW_KILLSWITCH=false \
+    UFW_FAILSAFE=false \
     UFW_ALLOW_GW_NET='false' \
     UFW_EXTRA_PORTS= \
     HEALTH_CHECK_HOST='google.com' \

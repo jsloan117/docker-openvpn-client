@@ -16,7 +16,7 @@ docker run --cap-add=NET_ADMIN -d --name openvpn_client \
 -e OPENVPN_CONFIG='USA - Austin-256' \
 -e OPENVPN_USERNAME='user' \
 -e OPENVPN_PASSWORD='password' \
---dns 1.1.1.1 --dns 1.0.0.1 \
+-v /etc/localtime:/etc/localtime:ro \
 jsloan117/docker-openvpn-client
 ```
 
@@ -27,3 +27,4 @@ The full documentation is available [here](http://jsloan117.github.io/docker-ope
 ## Credit
 
 Thank you [Haugene](https://github.com/haugene) and all contributors for making a great image.
+

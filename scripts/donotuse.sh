@@ -19,3 +19,4 @@ ip route del 128.0.0.1/1
 ip addr del dev tun0 "$(/sbin/ip -4 addr show tun0 | grep -w 'inet' | awk '{print $2}')"
 
 plugin openvpn-plugin-down-root.so "/sbin/ip route delete "
+

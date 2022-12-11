@@ -29,6 +29,8 @@ OpenVPN's username and password can be passed in as a config file via a mount po
 
 ---
 
+It is strongly recommended that you keep `--route-up` and `--down` arguments of `OPENVPN_OPTS`. Running `/etc/openvpn/update-resolv-conf` helps configure DNS for the container and prevent DNS leaks.
+
 The `OPENVPN_CONFIG` variable is optional to set, but is good practice. If no config is given, a default config will be selected for the provider you have chosen.
 
 Find available OpenVPN configs by looking in the openvpn folder of the [vpn-configs-contrib repository](https://github.com/haugene/vpn-configs-contrib), or by checking your providers site.
@@ -55,6 +57,8 @@ The value that you should use is the filename of your chosen openvpn configurati
 | Variable           | Function                                                                                      | Example                          |
 | ------------------ | --------------------------------------------------------------------------------------------- | -------------------------------- |
 | `ENABLE_UFW`       | Enables ufw firewall                                                                          | `ENABLE_UFW=true`                |
+| `UFW_KILLSWITCH`   | Turns UFW into a firewall kill switch                                                         | `UFW_KILLSWITCH=true`            |
+| `UFW_FAILSAFE`     | allow local network access - make sure we can always get to it ("localNet")                   | `UFW_FAILSAFE=true`              |
 | `UFW_ALLOW_GW_NET` | Allows the gateway network through the firewall. False defaults to only allowing the gateway. | `UFW_ALLOW_GW_NET=true`          |
 | `UFW_EXTRA_PORTS`  | Allows the comma separated list of ports through the firewall. Respects UFW_ALLOW_GW_NET.     | `UFW_EXTRA_PORTS=9910,23561,443` |
 
@@ -64,7 +68,7 @@ The value that you should use is the filename of your chosen openvpn configurati
 
 Docker will run a health check on the container every minute to see if it is still connected to the Internet.
 
-By default, this is done by pinging google.com twice. You can change the host that is pinged.
+By default, this is done by pinging yahoo.com twice. You can change the host that is pinged.
 
 | Variable            | Function                                                           | Example      |
 | ------------------- | ------------------------------------------------------------------ | ------------ |
@@ -114,3 +118,4 @@ They will automatically be executed before or after OpenVPN does sequentially. H
     # /etc/cont-finish.d/04-remove-junk.sh
     rm -f /tmp/junkfiles
     ```
+

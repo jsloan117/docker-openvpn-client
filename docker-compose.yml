@@ -6,22 +6,22 @@ services:
     image: jsloan117/docker-openvpn-client
     cap_add:
       - NET_ADMIN
-    restart: always
-    dns:
-      - 1.1.1.1
-      - 1.0.0.1
+    restart: on-failure
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - openvpn_data:/etc/openvpn
     environment:
+      - VPN_SOLUTION=openvpn
       - OPENVPN_USERNAME=
       - OPENVPN_PASSWORD=
       - OPENVPN_PROVIDER=
-      - OPENVPN_OPTS=--user abc --group abc --auth-nocache --inactive 3600 --ping 10 --ping-exit 60
+      - OPENVPN_OPTS=--auth-nocache --mute-replay-warnings --script-security 2 --route-up /etc/openvpn/update-resolv-conf --down /etc/openvpn/update-resolv-conf
       - OPENVPN_CONFIG=
       - LOCAL_NETWORK=192.168.0.0/16
       - CREATE_TUN_DEVICE=true
       - ENABLE_UFW=false
+      - UFW_KILLSWITCH=false
+      - UFW_FAILSAFE=false
       - UFW_ALLOW_GW_NET=false
       - UFW_EXTRA_PORTS=
       - HEALTH_CHECK_HOST=google.com
@@ -32,3 +32,4 @@ services:
 
 volumes:
   openvpn_data:
+
