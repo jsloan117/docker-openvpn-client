@@ -5,11 +5,11 @@ hide:
 ---
 
 <h1 align="center">
-  OpenVPN Client
+  OpenVPN & Wireguard Client
 </h1>
 
 <p align="center">
-  Container image that provides multiple VPN providers for OpenVPN
+  Container image that provides access to multiple VPN providers for OpenVPN
   <br><br>
 
   <a href="https://github.com/jsloan117/docker-deluge/blob/master/LICENSE">
@@ -27,7 +27,7 @@ hide:
 
 ---
 
-Below is a quick method to get this up and running. Please see [Running the image](run-image.md) for more details.
+Below is a quick way to get up and running with OpenVPN. Please see [Running the image](run-image.md) for more details.
 
 ```bash
 docker run --cap-add=NET_ADMIN -d --name openvpn_client \
@@ -37,6 +37,21 @@ docker run --cap-add=NET_ADMIN -d --name openvpn_client \
 -e OPENVPN_PASSWORD='password' \
 -v /etc/localtime:/etc/localtime:ro \
 jsloan117/docker-openvpn-client
+```
+
+
+Quick way to get up and running with Wireguard. (not yet working fully)
+
+```bash
+docker run --cap-add=NET_ADMIN -d --name wg_client \
+# Options error: In [CMD-LINE]:1: Error opening configuration file:
+-e OPENVPN_PROVIDER='PROTONVPN' \
+-e OPENVPN_CONFIG='nl.protonvpn.net.udp' \
+-e "VPN_SOLUTION=wireguard" \
+--sysctl net.ipv4.conf.all.src_valid_mark=1 \
+-v ~/wg0.conf:/etc/wireguard/wg0.conf \
+-v /etc/localtime:/etc/localtime:ro \
+jsloan117/docker-openvpn-client:dev
 ```
 
 ## Credit
