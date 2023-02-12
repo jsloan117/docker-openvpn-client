@@ -30,7 +30,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Docker Metadata
-        uses: docker/metadata-action@v4.1.1
+        uses: docker/metadata-action@v4.3.0
         id: meta
         with:
           images: ${{ env.IMAGE_NAME }}
@@ -39,14 +39,14 @@ jobs:
 
       # https://github.com/marketplace/actions/docker-setup-buildx
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2.2.1
+        uses: docker/setup-buildx-action@v2.4.1
         with:
           install: true
           version: latest
 
       # https://github.com/marketplace/actions/build-and-push-docker-images
       - name: Build Image
-        uses: docker/build-push-action@v3.2.0
+        uses: docker/build-push-action@v4.0.0
         with:
           tags: ${{ steps.meta.outputs.tags }}
           push: false
@@ -54,13 +54,13 @@ jobs:
 
       # https://github.com/marketplace/actions/anchore-sbom-action
       - name: Anchore SBOM Action
-        uses: anchore/sbom-action@v0.13.1
+        uses: anchore/sbom-action@v0.13.3
         with:
           image: ${{ steps.meta.outputs.tags }}
 
       # https://github.com/marketplace/actions/anchore-container-scan
       - name: Anchore Container Scan
-        uses: anchore/scan-action@v3.3.2
+        uses: anchore/scan-action@v3.3.3
         id: scan
         with:
           image: ${{ steps.meta.outputs.tags }}
@@ -83,7 +83,7 @@ jobs:
 
       # https://github.com/marketplace/actions/upload-a-build-artifact
       - name: Upload Sarif Report
-        uses: actions/upload-artifact@v3.1.1
+        uses: actions/upload-artifact@v3.1.2
         with:
           name: ${{ env.sarif_artifact }}
           path: ${{ steps.scan.outputs.sarif }}
@@ -105,7 +105,7 @@ jobs:
 
       # https://github.com/marketplace/actions/docker-metadata-action
       - name: Docker Metadata
-        uses: docker/metadata-action@v4.1.1
+        uses: docker/metadata-action@v4.3.0
         id: meta
         with:
           images: |
@@ -126,7 +126,7 @@ jobs:
 
       # https://github.com/marketplace/actions/docker-setup-buildx
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2.2.1
+        uses: docker/setup-buildx-action@v2.4.1
         id: buildx
         with:
           install: true
@@ -151,7 +151,7 @@ jobs:
 
       # https://github.com/marketplace/actions/build-and-push-docker-images
       - name: Build and push
-        uses: docker/build-push-action@v3.2.0
+        uses: docker/build-push-action@v4.0.0
         with:
           file: ./Dockerfile
           platforms: linux/amd64,linux/arm64
@@ -187,7 +187,7 @@ jobs:
 
       # https://github.com/marketplace/actions/upload-a-build-artifact
       - name: Upload public key
-        uses: actions/upload-artifact@v3.1.1
+        uses: actions/upload-artifact@v3.1.2
         with:
           name: cosign.pub
           path: cosign.pub
