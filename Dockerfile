@@ -1,5 +1,7 @@
 FROM ubuntu:22.04
 
+ARG TARGETARCH
+ARG TARGETPLATFORM
 ARG S6_OVERLAY_X86_64_RELEASE=https://github.com/just-containers/s6-overlay/releases/latest/download/s6-overlay-x86_64.tar.xz
 ARG S6_OVERLAY_NOARCH_RELEASE=https://github.com/just-containers/s6-overlay/releases/latest/download/s6-overlay-noarch.tar.xz
 
@@ -14,8 +16,14 @@ RUN echo "*** installing packages ***" \
     && apt-get update && apt-get -y upgrade \
     && apt-get install -y --no-install-recommends openvpn curl unzip jq iputils-ping iproute2 psmisc \
        iptables bind9-dnsutils kmod ca-certificates wget xz-utils net-tools ufw openresolv wireguard-tools \
+    && case ${TARGETPLATFORM} in \
+            "linux/amd64")  S6_OVERLAY_ARCH=x86_64  ;; \
+            "linux/arm64")  S6_OVERLAY_ARCH=aarch64  ;; \
+       esac \
+    && S6_OVERLAY_ARCH_RELEASE=https://github.com/just-containers/s6-overlay/releases/latest/download/s6-overlay-${S6_OVERLAY_ARCH}.tar.xz \
+    && wget -q -O- ${S6_OVERLAY_ARCH_RELEASE} | tar -Jpx -C / \
     && wget -q -O- ${S6_OVERLAY_NOARCH_RELEASE} | tar -Jpx -C / \
-    && wget -q -O- ${S6_OVERLAY_X86_64_RELEASE} | tar -Jpx -C / \
+    # && wget -q -O- ${S6_OVERLAY_X86_64_RELEASE} | tar -Jpx -C / \
     && useradd -u 911 -U -d /etc/openvpn -s /sbin/nologin abc \
     && groupmod -g 911 abc \
     && echo '*** wireguard wg-quick hack ***' \
@@ -43,7 +51,7 @@ ENV VPN_SOLUTION='openvpn' \
     HEALTH_CHECK_HOST='google.com' \
     S6_CMD_WAIT_FOR_SERVICES_MAXTIME='60000' \
     # this should allow us to dynamically use openvpn or wireguard
-    S6_STAGE2_HOOK='/scripts/init.sh'
+    S6_STAGE2_HOOK='/etc/scripts/init.sh'
 
 HEALTHCHECK --interval=1m CMD /etc/scripts/healthcheck.sh
 
