@@ -4,14 +4,6 @@
 # shellcheck source=/dev/null
 source /etc/openvpn/utils.sh
 
-if [[ -n "${REVISION}" ]]; then
-  echo "GitRevision: ${REVISION}"
-fi
-
-if [[ -n "${VERSION}" ]]; then
-  echo "GitVersion: ${VERSION}"
-fi
-
 # test DNS resolution
 if ! nslookup "${HEALTH_CHECK_HOST:-'google.com'}" &>/dev/null; then
   echo "WARNING: initial DNS resolution test failed"

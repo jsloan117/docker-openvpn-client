@@ -27,6 +27,7 @@ RUN echo "*** installing packages ***" \
 COPY etc /etc
 COPY openvpn /etc/openvpn
 COPY scripts /etc/scripts
+COPY services /services
 
 ENV VPN_SOLUTION='openvpn' \
     OPENVPN_PROVIDER= \
@@ -40,7 +41,9 @@ ENV VPN_SOLUTION='openvpn' \
     UFW_ALLOW_GW_NET='false' \
     UFW_EXTRA_PORTS= \
     HEALTH_CHECK_HOST='google.com' \
-    S6_CMD_WAIT_FOR_SERVICES_MAXTIME='60000'
+    S6_CMD_WAIT_FOR_SERVICES_MAXTIME='60000' \
+    # this should allow us to dynamically use openvpn or wireguard
+    S6_STAGE2_HOOK='/scripts/init-services.sh'
 
 HEALTHCHECK --interval=1m CMD /etc/scripts/healthcheck.sh
 
