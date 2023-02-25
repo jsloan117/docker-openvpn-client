@@ -43,7 +43,7 @@ ENV VPN_SOLUTION='openvpn' \
     HEALTH_CHECK_HOST='google.com' \
     S6_CMD_WAIT_FOR_SERVICES_MAXTIME='60000' \
     # this should allow us to dynamically use openvpn or wireguard
-    S6_STAGE2_HOOK='/scripts/init-services.sh'
+    S6_STAGE2_HOOK='/scripts/init.sh'
 
 HEALTHCHECK --interval=1m CMD /etc/scripts/healthcheck.sh
 
