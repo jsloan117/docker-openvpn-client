@@ -6,11 +6,12 @@
 HOST="${HEALTH_CHECK_HOST:=yahoo.com}"
 
 # check DNS resolution works
-if ! nslookup "$HOST" > /dev/null; then
+if ! nslookup "${HOST}" > /dev/null; then
   echo "DNS resolution failed"
   exit 1
 fi
 
+# shellcheck disable=SC2154
 if [[ "${VPN_SOLUTION}" == "openvpn" ]]; then
   iface='tun0'
   if ! pgrep openvpn; then
@@ -26,7 +27,7 @@ elif [[ "${VPN_SOLUTION}" == "wireguard" ]]; then
 fi
 
 # get at least 2 responses and timeout after 10 seconds
-if ! ping -I "$iface" -c 2 -w 10 "$HOST" &> /dev/null; then
+if ! ping -I "${iface}" -c 2 -w 10 "${HOST}" &> /dev/null; then
   echo "Network is down"
   # may be useful in the future to restart openvpn service
   #/command/s6-svc -r /run/service/openvpn
