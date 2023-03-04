@@ -66,6 +66,7 @@ nav:
   - 'Home': index.md
   - 'Running the image': run-image.md
   - 'Configuration': configuration.md
+  - 'Wireguard': wireguard.md
   - 'Init system': s6-overlay.md
   - 'Supported providers': supported-providers.md
   - 'Image signing and security': signing-security.md

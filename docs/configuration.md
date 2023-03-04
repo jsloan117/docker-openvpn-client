@@ -8,11 +8,14 @@ hide:
 
 ---
 
-`OPENVPN_PROVIDER` is the only required variable, all others below are optional.
+When using OpenVPN which is the default VPN client, the variable `OPENVPN_PROVIDER` is required.
+
+To use wireguard set the variable `VPN_CLIENT` to `wireguard`.
 
 | Variable           | Function     | Example                    |
 | ------------------ | ------------ | -------------------------- |
 | `OPENVPN_PROVIDER` | VPN provider | `OPENVPN_PROVIDER=VYPRVPN` |
+| `VPN_CLIENT`       | VPN client   | `VPN_CLIENT=wireguard`     |
 
 ## Credentials
 

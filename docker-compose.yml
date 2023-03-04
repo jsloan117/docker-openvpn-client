@@ -11,7 +11,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - openvpn_data:/etc/openvpn
     environment:
-      - VPN_SOLUTION=openvpn
+      - VPN_CLIENT=openvpn
       - OPENVPN_USERNAME=
       - OPENVPN_PASSWORD=
       - OPENVPN_PROVIDER=

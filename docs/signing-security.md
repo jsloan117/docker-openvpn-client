@@ -4,10 +4,6 @@ hide:
   # - toc
 ---
 
-All of these things (signing, scanning, etc) are pretty new to me and this page may not always reflect the truth.
-
-Mainly at this time, that is how/where security reports are handled within Github. Where/how do I share them etc.
-
 ## Image Signing
 
 ---

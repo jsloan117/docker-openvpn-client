@@ -1,11 +1,6 @@
 #!/command/with-contenv bash
 # shellcheck shell=bash
 
-# # if using wireguard shutdown openvpn
-# if [[ ${VPN_SOLUTION} == "wireguard" ]]; then
-#   /command/s6-svc -d /run/service/openvpn
-# fi
-
 # ensure we run the update-resolv-conf script to prevent leaking DNS
 # RESOLV_OPTS='--script-security 2 --route-up /etc/openvpn/update-resolv-conf --down /etc/openvpn/update-resolv-conf'
 # openvpn ${RESOLV_OPTS} ${OPENVPN_OPTS} --config "${CHOSEN_OPENVPN_CONFIG}"

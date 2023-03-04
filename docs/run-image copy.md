@@ -11,7 +11,7 @@ This image is available from Docker's and GitHub's registries and this is the si
 
 Please see [configuration](configuration.md) for more details on each variable.
 
-## Wireguard configuration
+## Running the image
 
 ---
 
@@ -21,8 +21,6 @@ To run the image use one of (or combination of) the below methods.
 
 This image offers wireguard as a vpn client. Please see [wireguard](wireguard.md) for more information.
 
-To use wireguard you'll need to change the variable `VPN_CLIENT` to `wireguard`, like in the example below.
-
 ```bash
 docker run --cap-add=NET_ADMIN -d --name wg_client \
 -e "VPN_CLIENT=wireguard" \
@@ -30,20 +28,6 @@ docker run --cap-add=NET_ADMIN -d --name wg_client \
 -v ~/wg0.conf:/etc/wireguard/wg0.conf \
 -v /etc/localtime:/etc/localtime:ro \
 jsloan117/docker-openvpn-client
-```
-
-Wireguard should work on any system, although on Synology you have to make some changes. Check out this [link](https://www.blackvoid.club/wireguard-spk-for-your-synology-nas/) for more details.
-
-You can obtain a wireguard config from your VPN provider if they support it. Adding PersistentKeepalive to your config may be beneficial. See the [man page](https://www.man7.org/linux/man-pages/man8/wg.8.html) for more options and details.
-
-```bash
-# /proc/sys/net/ipv4/conf/all/src_valid_mark
-[Interface]
-...
-
-[Peer]
-...
-PersistentKeepalive = 25
 ```
 
 ### Docker run with env-file

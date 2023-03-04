@@ -12,13 +12,13 @@ if ! nslookup "${HOST}" > /dev/null; then
 fi
 
 # shellcheck disable=SC2154
-if [[ "${VPN_SOLUTION}" == "openvpn" ]]; then
+if [[ "${VPN_CLIENT}" == "openvpn" ]]; then
   iface='tun0'
   if ! pgrep openvpn; then
     echo "Openvpn process not running"
     exit 1
   fi
-elif [[ "${VPN_SOLUTION}" == "wireguard" ]]; then
+elif [[ "${VPN_CLIENT}" == "wireguard" ]]; then
   iface='wg0'
   if ! wg status wg0; then
     echo "Wireguard interface wg0 is down"

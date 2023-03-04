@@ -1,14 +1,7 @@
 FROM ubuntu:22.04
 
 ARG TARGETPLATFORM
-# ARG S6_OVERLAY_X86_64_RELEASE=https://github.com/just-containers/s6-overlay/releases/latest/download/s6-overlay-x86_64.tar.xz
-# && wget -q -O- ${S6_OVERLAY_X86_64_RELEASE} | tar -Jpx -C / \
 ARG S6_OVERLAY_NOARCH_RELEASE=https://github.com/just-containers/s6-overlay/releases/latest/download/s6-overlay-noarch.tar.xz
-ARG S6_OVERLAY_NOARCH_SYMLINKS=https://github.com/just-containers/s6-overlay/releases/latest/download/s6-overlay-symlinks-noarch.tar.xz
-ARG S6_OVERLAY_ARCH_SYMLINKS=https://github.com/just-containers/s6-overlay/releases/latest/download/s6-overlay-symlinks-arch.tar.xz
-
-# wg0.conf add "PersistentKeepalive = 25" under [Peer]
-# /proc/sys/net/ipv4/conf/all/src_valid_mark
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -25,8 +18,6 @@ RUN echo '*** installing packages ***' \
     && S6_OVERLAY_ARCH_RELEASE="https://github.com/just-containers/s6-overlay/releases/latest/download/s6-overlay-${S6_OVERLAY_ARCH}.tar.xz" \
     && wget -q -O- "${S6_OVERLAY_ARCH_RELEASE}" | tar -Jpx -C / \
     && wget -q -O- "${S6_OVERLAY_NOARCH_RELEASE}" | tar -Jpx -C / \
-    && wget -q -O- "${S6_OVERLAY_NOARCH_SYMLINKS}" | tar -Jpx -C / \
-    && wget -q -O- "${S6_OVERLAY_ARCH_SYMLINKS}" | tar -Jpx -C / \
     && useradd -u 911 -U -d /etc/openvpn -s /sbin/nologin abc \
     && groupmod -g 911 abc \
     && echo '*** wireguard wg-quick hack ***' \
@@ -40,7 +31,7 @@ COPY openvpn /etc/openvpn
 COPY scripts /etc/scripts
 COPY services /services
 
-ENV VPN_SOLUTION='openvpn' \
+ENV VPN_CLIENT='openvpn' \
     OPENVPN_PROVIDER= \
     OPENVPN_OPTS='--auth-nocache --mute-replay-warnings --script-security 2 --route-up /etc/openvpn/update-resolv-conf --down /etc/openvpn/update-resolv-conf' \
     OPENVPN_CONFIG= \
