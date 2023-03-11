@@ -172,7 +172,8 @@ jobs:
             -a "workflow=${{ github.workflow }}" \
             -a "ref=${{ github.sha }}" \
             -a "ref=${{ github.ref_name }}" \
-            ${{ env.IMAGE_NAME }}@${DIGEST}
+            ${{ env.IMAGE_NAME }}@${DIGEST} \
+            ghcr.io/${{ env.IMAGE_NAME }}
         env:
           DIGEST: ${{ steps.build.outputs.digest }}
           COSIGN_KEY: ${{secrets.COSIGN_PRIVATE_KEY}}
@@ -180,7 +181,10 @@ jobs:
 
       - name: Verify Image
         run: |
-          cosign verify --key env://COSIGN_PUBLIC_KEY ${{ env.IMAGE_NAME }}@${DIGEST} | jq
+          printf '%s' "${COSIGN_PUBLIC_KEY}" > cosign.pub && \
+          cosign verify --key env://COSIGN_PUBLIC_KEY \
+          ${{ env.IMAGE_NAME }}@${DIGEST} \
+          ghcr.io/${{ env.IMAGE_NAME }}@${DIGEST} | jq
         env:
           DIGEST: ${{ steps.build.outputs.digest }}
           COSIGN_PUBLIC_KEY: ${{secrets.COSIGN_PUBLIC_KEY}}
