@@ -173,7 +173,7 @@ jobs:
             -a "ref=${{ github.sha }}" \
             -a "ref=${{ github.ref_name }}" \
             ${{ env.IMAGE_NAME }}@${DIGEST} \
-            ghcr.io/${{ env.IMAGE_NAME }}
+            ghcr.io/${{ env.IMAGE_NAME }}@${DIGEST}
         env:
           DIGEST: ${{ steps.build.outputs.digest }}
           COSIGN_KEY: ${{secrets.COSIGN_PRIVATE_KEY}}
