@@ -8,7 +8,7 @@ hide:
 
 ---
 
-These providers have had a script created for them to automatically download configs, directly from the provider on container startup.
+These providers have had a script created to download configs directly from the provider on container startup automatically.
 
 | Provider Name           | Config Value (`OPENVPN_PROVIDER`) |
 | :---------------------- | :-------------------------------- |
@@ -21,10 +21,10 @@ These providers have had a script created for them to automatically download con
 
 ---
 
-These providers are fetched from [config repo](https://github.com/haugene/vpn-configs-contrib) on startup.
-They have to be manually updated in that repo when the provider changes them.
+We fetch these providers on startup from [config repo](https://github.com/haugene/vpn-configs-contrib).
+They must be manually updated in that repo when the provider changes them.
 
-If you don't see your provider in the below list, check the config repo above. Still don't see your provider? Open a [:fontawesome-solid-code-pull-request:](https://github.com/haugene/vpn-configs-contrib/pulls) to add it.
+Open a [:fontawesome-solid-code-pull-request:](https://github.com/haugene/vpn-configs-contrib/pulls) if you don't see your provider in the below list or the config repo above.
 
 | Provider Name   | Config Value (`OPENVPN_PROVIDER`) |
 | :-------------- | :-------------------------------- |

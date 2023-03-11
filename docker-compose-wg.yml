@@ -1,0 +1,20 @@
+---
+services:
+  docker-openvpn-client:
+    image: jsloan117/docker-openvpn-client
+    cap_add:
+      - NET_ADMIN
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+    restart: on-failure
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ~/wg0.conf:/etc/wireguard/wg0.conf
+    environment:
+      - VPN_CLIENT=wireguard
+      - HEALTH_CHECK_HOST=google.com
+      - S6_CMD_WAIT_FOR_SERVICES_MAXTIME=60000
+    healthcheck:
+      test: [CMD, /etc/scripts/healthcheck.sh]
+      interval: 1m
+

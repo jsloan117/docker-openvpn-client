@@ -85,14 +85,14 @@ If you encounter a timeout error like the below, you may need to adjust the `S6_
 
 There are more environment variables for s6 and information on them can be found [here](https://github.com/just-containers/s6-overlay#customizing-s6-behaviour).
 
-???+ error
+???+ failure
 
     ```text
     s6-rc: fatal: timed out
     s6-sudoc: fatal: unable to get exit status from server: Operation timed out
     ```
 
-| Variable                           | Function                                                                                                   | Example |
+| Variable                           | Description                                                                                                | Default |
 | ---------------------------------- | ---------------------------------------------------------------------------------------------------------- | ------- |
 | `S6_CMD_WAIT_FOR_SERVICES_MAXTIME` | Global timeout value in milliseconds for all services. You can disable it by setting this variable to `0`. | `60000` |
 
@@ -119,6 +119,6 @@ They will automatically be executed before or after OpenVPN does sequentially. H
 ??? example "post-openvpn-script"
     ```bash
     # /etc/cont-finish.d/04-remove-junk.sh
-    rm -f /tmp/junkfiles
+    rm -f /tmp/junk
     ```
 

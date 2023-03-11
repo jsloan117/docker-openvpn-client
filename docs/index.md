@@ -5,11 +5,11 @@ hide:
 ---
 
 <h1 align="center">
-  OpenVPN & Wireguard Client
+  OpenVPN or Wireguard client
 </h1>
 
 <p align="center">
-  OpenVPN & Wireguard client with access to multiple providers for OpenVPN
+  The image provides OpenVPN or Wireguard as a VPN client, with OpenVPN having access to multiple providers.
   <br><br>
 
   <a href="https://github.com/jsloan117/docker-deluge/blob/master/LICENSE">
@@ -27,7 +27,7 @@ hide:
 
 ---
 
-Below is a quick way to get up and running with either OpenVPN or Wireguard. Please see [Running the image](run-image.md) for more details.
+Below is a quick way to get up and running with either OpenVPN or Wireguard. For more details, see [running the image](run-image.md).
 
 ```bash
 # OpenVPN client
@@ -56,5 +56,5 @@ jsloan117/docker-openvpn-client
 
 Thank you [Haugene](https://github.com/haugene) and all contributors for making a great image.
 
-If you need anymore [details](https://haugene.github.io/docker-transmission-openvpn) this image is based on [this](https://github.com/haugene/docker-transmission-openvpn) and their documentation may be beneficial depending on your environment.
+I initially based the image on [docker-transmission-openvpn](https://github.com/haugene/docker-transmission-openvpn). Their [documentation](https://haugene.github.io/docker-transmission-openvpn) may benefit you depending on your environment.
 

@@ -20,9 +20,9 @@ RUN echo '*** installing packages ***' \
     && wget -q -O- "${S6_OVERLAY_NOARCH_RELEASE}" | tar -Jpx -C / \
     && useradd -u 911 -U -d /etc/openvpn -s /sbin/nologin abc \
     && groupmod -g 911 abc \
+    && sed -i 's|up)|up\|route-up)|; s|down)|down\|route-pre-down)|' /etc/openvpn/update-resolv-conf \
     && echo '*** wireguard wg-quick hack ***' \
     && sed -i 's/sysctl.*/sysctl -q net.ipv4.conf.all.src_valid_mark=1 || true/' /usr/bin/wg-quick \
-    && sed -i 's|up)|up\|route-up)|; s|down)|down\|route-pre-down)|' /etc/openvpn/update-resolv-conf \
     && echo '*** cleanup ***' \
     && rm -rf /tmp/* /var/tmp/* /var/cache/apt/* /var/lib/apt/*
 
