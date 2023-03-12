@@ -158,31 +158,30 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            BUILDTIME=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.created'] }}
-            VERSION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
-            REVISION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.revision'] }}
+          sbom: true
 
       - name: Sign Image
         run: |
-          printf '%s' "${COSIGN_KEY}" > cosign.key && \
-          COSIGN_EXPERIMENTAL=1 cosign sign --key cosign.key \
+          cosign sign -y --key env://COSIGN_KEY --recursive \
             -a "repo=${{ github.repository }}" \
             -a "workflow=${{ github.workflow }}" \
             -a "ref=${{ github.sha }}" \
-            -a "ref=${{ github.ref_name }}" ${TAGS}
-          [[ -f cosign.key ]] && rm -fv cosign.key
+            -a "ref=${{ github.ref_name }}" \
+            ${{ env.IMAGE_NAME }}@${DIGEST} \
+            ghcr.io/${{ env.IMAGE_NAME }}@${DIGEST}
         env:
-          TAGS: ${{ steps.meta.outputs.tags }}
+          DIGEST: ${{ steps.build.outputs.digest }}
           COSIGN_KEY: ${{secrets.COSIGN_PRIVATE_KEY}}
           COSIGN_PASSWORD: ${{secrets.COSIGN_PASSWORD}}
 
       - name: Verify Image
         run: |
           printf '%s' "${COSIGN_PUBLIC_KEY}" > cosign.pub && \
-          cosign verify --key cosign.pub ${TAGS} | jq
+          cosign verify --key env://COSIGN_PUBLIC_KEY \
+          ${{ env.IMAGE_NAME }}@${DIGEST} \
+          ghcr.io/${{ env.IMAGE_NAME }}@${DIGEST} | jq
         env:
-          TAGS: ${{ steps.meta.outputs.tags }}
+          DIGEST: ${{ steps.build.outputs.digest }}
           COSIGN_PUBLIC_KEY: ${{secrets.COSIGN_PUBLIC_KEY}}
 
       # https://github.com/marketplace/actions/upload-a-build-artifact

@@ -49,18 +49,7 @@ ENV VPN_CLIENT='openvpn' \
 
 HEALTHCHECK --interval=1m CMD /etc/scripts/healthcheck.sh
 
-ARG REVISION
-ENV REVISION=${REVISION:-""}
-
-ARG VERSION
-ENV VERSION=${VERSION:-""}
-
-LABEL org.opencontainers.image.title="Docker OpenVPN Client"
-LABEL org.opencontainers.image.description="OpenVPN Client with configs"
-LABEL org.opencontainers.image.source="https://github.com/jsloan117/docker-openvpn-client"
-LABEL org.opencontainers.image.documentation="http://jsloan117.github.io/docker-openvpn-client"
-LABEL org.opencontainers.image.revision="$REVISION"
-LABEL org.opencontainers.image.version version="$VERSION"
+LABEL org.opencontainers.image.documentation=http://jsloan117.github.io/docker-openvpn-client
 
 # Compatability with https://hub.docker.com/r/willfarrell/autoheal/
 LABEL autoheal=true
