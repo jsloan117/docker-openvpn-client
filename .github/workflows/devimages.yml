@@ -159,8 +159,11 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          sbom: true
+          # Compatibility with https://hub.docker.com/r/willfarrell/autoheal/
+          labels: |
+            ${{ steps.meta.outputs.labels }}
+            org.opencontainers.image.documentation=http://jsloan117.github.io/docker-openvpn-client
+            autoheal=true
 
       - name: Sign Image
         run: |

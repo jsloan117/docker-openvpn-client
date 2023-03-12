@@ -49,10 +49,5 @@ ENV VPN_CLIENT='openvpn' \
 
 HEALTHCHECK --interval=1m CMD /etc/scripts/healthcheck.sh
 
-LABEL org.opencontainers.image.documentation=http://jsloan117.github.io/docker-openvpn-client
-
-# Compatability with https://hub.docker.com/r/willfarrell/autoheal/
-LABEL autoheal=true
-
 VOLUME /etc/openvpn
 ENTRYPOINT [ "/init" ]
