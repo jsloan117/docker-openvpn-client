@@ -4,7 +4,7 @@ name: docs
 on:
   push:
     branches:
-      - dev
+      - main
     paths:
       - '**.md'
       - mkdocs.yml
@@ -59,6 +59,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      # https://github.com/marketplace/actions/deploy-github-pages-site
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
