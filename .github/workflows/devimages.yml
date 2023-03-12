@@ -164,7 +164,7 @@ jobs:
             ${{ steps.meta.outputs.labels }}
             org.opencontainers.image.documentation=http://jsloan117.github.io/docker-openvpn-client
             autoheal=true
-          outputs: annotation-index.org.opencontainers.image.description="OpenVPN or Wireguard as a VPN client, with OpenVPN having access to multiple providers."
+          outputs: annotation-index.org.opencontainers.image.description=OpenVPN or Wireguard as a VPN client, with OpenVPN having access to multiple providers.
 
       - name: Sign Image
         run: |
