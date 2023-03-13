@@ -1,0 +1,8 @@
+#!/bin/bash
+
+HOST="${HEALTH_CHECK_HOST:=google.com}"
+
+if ! ping -I tun0 -c 2 -w 10 "${HOST}" &> /dev/null; then
+  exit 1
+fi
+
