@@ -164,7 +164,6 @@ jobs:
           labels: |
             ${{ steps.meta.outputs.labels }}
             org.opencontainers.image.documentation=http://jsloan117.github.io/docker-openvpn-client
-            autoheal=true
 
       - name: Sign Image
         run: |
