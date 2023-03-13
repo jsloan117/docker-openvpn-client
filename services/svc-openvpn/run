@@ -6,10 +6,7 @@
 # openvpn ${RESOLV_OPTS} ${OPENVPN_OPTS} --config "${CHOSEN_OPENVPN_CONFIG}"
 
 # shellcheck disable=SC2086,SC2154
-# exec s6-setuidgid root \
-#   openvpn ${OPENVPN_OPTS} --config "${CHOSEN_OPENVPN_CONFIG}"
-
 exec \
-  s6-notifyoncheck -d -n 120 -w 1000 \
+  s6-notifyoncheck -d -s 3000 -n 120 -w 1000 \
   s6-setuidgid root openvpn ${OPENVPN_OPTS} --config "${CHOSEN_OPENVPN_CONFIG}"
 
