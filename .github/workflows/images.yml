@@ -20,6 +20,7 @@ concurrency:
 
 jobs:
   scan:
+    name: Vulnerability scan
     runs-on: ubuntu-latest
     permissions:
       # required to upload sarif report to GitHub
@@ -103,6 +104,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      # https://github.com/marketplace/actions/cosign-installer
       - name: Install Cosign
         uses: sigstore/cosign-installer@v3.0.1
 
@@ -155,6 +157,7 @@ jobs:
       # https://github.com/marketplace/actions/build-and-push-docker-images
       - name: Build and push
         uses: docker/build-push-action@v4.0.0
+        id: build
         with:
           file: ./Dockerfile
           platforms: linux/amd64,linux/arm64
