@@ -24,7 +24,7 @@ jobs:
     steps:
       # https://github.com/marketplace/actions/checkout
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Docker Metadata
         uses: docker/metadata-action@v4.6.0
@@ -93,7 +93,7 @@ jobs:
     steps:
       # https://github.com/marketplace/actions/checkout
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Cosign
         uses: sigstore/cosign-installer@v3.1.2
