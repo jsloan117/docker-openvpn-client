@@ -28,7 +28,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Docker Metadata
-        uses: docker/metadata-action@v4.6.0
+        uses: docker/metadata-action@v5.0.0
         id: meta
         with:
           images: ${{ env.IMAGE_NAME }}
@@ -100,7 +100,7 @@ jobs:
 
       # https://github.com/marketplace/actions/docker-metadata-action
       - name: Docker Metadata
-        uses: docker/metadata-action@v4.6.0
+        uses: docker/metadata-action@v5.0.0
         id: meta
         with:
           images: |
