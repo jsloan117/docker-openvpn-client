@@ -3,7 +3,7 @@
 # Network check
 # Ping uses both exit codes 1 and 2. Exit code 2 cannot be used for docker health checks,
 # therefore we use this script to catch error code 2
-HOST="${HEALTH_CHECK_HOST:=yahoo.com}"
+HOST="${HEALTH_CHECK_HOST:=google.com}"
 
 # check DNS resolution works
 if ! nslookup "${HOST}" > /dev/null; then

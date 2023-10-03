@@ -14,22 +14,24 @@ GITHUB_CONFIG_SOURCE_REVISION="${GITHUB_CONFIG_SOURCE_REVISION:-main}"
 
 if [[ "${VPN_CONFIG_SOURCE_TYPE}" == "github_zip" ]]; then
 
+  # shellcheck disable=SC2317
   function cleanup {
     echo "Cleanup: deleting ${config_repo_temp_zip_file} and ${config_repo_temp_dir}"
     rm -rf "${config_repo_temp_zip_file}" "${config_repo_temp_dir}"
   }
+
+  config_repo_temp_zip_file=$(mktemp)
+  config_repo_temp_dir=$(mktemp -d)
   trap cleanup EXIT
 
   # Concatenate URL for config bundle from the given GitHub repo
   GITHUB_CONFIG_BUNDLE_URL="https://github.com/${GITHUB_CONFIG_SOURCE_REPO}/archive/${GITHUB_CONFIG_SOURCE_REVISION}.zip"
 
   # Create a temporary file and download bundle to it
-  config_repo_temp_zip_file=$(mktemp)
   echo "Downloading configs from ${GITHUB_CONFIG_BUNDLE_URL} into ${config_repo_temp_zip_file}"
   curl -sSL --fail -o "${config_repo_temp_zip_file}" "${GITHUB_CONFIG_BUNDLE_URL}"
 
   # Create a temporary folder and extract configs there
-  config_repo_temp_dir=$(mktemp -d)
   echo "Extracting configs to ${config_repo_temp_dir}"
   unzip -q "${config_repo_temp_zip_file}" -d "${config_repo_temp_dir}"
 

@@ -10,6 +10,7 @@ if ! nslookup "${HEALTH_CHECK_HOST:-'google.com'}" &>/dev/null; then
 fi
 
 # create /dev/net/tun
+# shellcheck disable=SC2154
 if [[ "${CREATE_TUN_DEVICE,,}" == "true" ]]; then
   echo "Creating TUN device /dev/net/tun"
   rm -f /dev/net/tun
@@ -96,6 +97,7 @@ if [[ "${MODIFY_CHOSEN_CONFIG,,}" == "true" ]]; then
 fi
 
 # if we use UFW or the LOCAL_NETWORK we need to grab network config info
+# shellcheck disable=SC2154
 if [[ "${ENABLE_UFW,,}" == "true" ]] || [[ -n "${LOCAL_NETWORK}" ]]; then
   eval "$(/sbin/ip route list match 0.0.0.0 | awk '{if($5!="tun0"){print "GW="$3"\nINT="$5; exit}}')"
   # If we use UFW_ALLOW_GW_NET along with ENABLE_UFW we need to know what our netmask CIDR is
