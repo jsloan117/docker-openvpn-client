@@ -178,8 +178,8 @@ jobs:
             ghcr.io/${{ env.IMAGE_NAME }}@${DIGEST}
         env:
           DIGEST: ${{ steps.build.outputs.digest }}
-          COSIGN_KEY: ${{secrets.COSIGN_PRIVATE_KEY}}
-          COSIGN_PASSWORD: ${{secrets.COSIGN_PASSWORD}}
+          COSIGN_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
+          COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
 
       - name: Verify Image
         run: |
@@ -189,7 +189,7 @@ jobs:
           ghcr.io/${{ env.IMAGE_NAME }}@${DIGEST} | jq
         env:
           DIGEST: ${{ steps.build.outputs.digest }}
-          COSIGN_PUBLIC_KEY: ${{secrets.COSIGN_PUBLIC_KEY}}
+          COSIGN_PUBLIC_KEY: ${{ secrets.COSIGN_PUBLIC_KEY }}
 
       # https://github.com/marketplace/actions/upload-a-build-artifact
       - name: Upload public key
@@ -198,3 +198,4 @@ jobs:
           name: cosign.pub
           path: cosign.pub
           if-no-files-found: warn
+

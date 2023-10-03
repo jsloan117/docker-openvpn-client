@@ -41,3 +41,4 @@ jobs:
           name: Release ${{ steps.tag_version.outputs.new_tag }}
           tag: ${{ steps.tag_version.outputs.new_tag }}
           token: ${{ secrets.GITHUB_TOKEN }}
+
