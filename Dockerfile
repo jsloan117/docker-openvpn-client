@@ -6,7 +6,8 @@ ARG S6_OVERLAY_NOARCH_RELEASE=https://github.com/just-containers/s6-overlay/rele
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-ENV DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true LC_ALL=C.UTF-8 LANG=C.UTF-8
+ENV PATH="${PATH}:/command" LC_ALL=C.UTF-8 LANG=C.UTF-8
+ARG DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true
 
 RUN echo '*** installing packages ***' \
     && apt-get update && apt-get -y upgrade \

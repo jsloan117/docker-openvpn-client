@@ -30,10 +30,9 @@ jobs:
         with:
           python-version: '3.10'
 
-      - run: pip install wheel
-
       - name: Install MkDocs and deps
         run: |
+          pip install wheel
           pip install mkdocs mkdocs-material mkdocs-material-extensions \
           mkdocs-minify-plugin mkdocs-redirects pygments pymdown-extensions
 
