@@ -13,10 +13,9 @@ on:
       - scripts/**
       - Dockerfile
       - Dockerfile.*
-    paths-ignore:
-      - '**.md'
-      - mkdocs.yml
-      - .github/workflows/mkdocs.yml
+      - '!**.md'
+      - '!mkdocs.yml'
+      - '!.github/workflows/mkdocs.yml'
 
 env:
   IMAGE_NAME: jsloan117/docker-openvpn-client
