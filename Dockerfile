@@ -1,5 +1,6 @@
 FROM ubuntu:22.04
 
+# https://docs.docker.com/engine/reference/builder/#automatic-platform-args-in-the-global-scope
 ARG TARGETPLATFORM
 ARG S6_OVERLAY_NOARCH_RELEASE=https://github.com/just-containers/s6-overlay/releases/latest/download/s6-overlay-noarch.tar.xz
 
@@ -14,6 +15,7 @@ RUN echo '*** installing packages ***' \
     && case ${TARGETPLATFORM} in \
             'linux/amd64')  S6_OVERLAY_ARCH=x86_64  ;; \
             'linux/arm64')  S6_OVERLAY_ARCH=aarch64  ;; \
+            *) echo "${TARGETPLATFORM} not defined, exiting" && exit 1;; \
        esac \
     && S6_OVERLAY_ARCH_RELEASE="https://github.com/just-containers/s6-overlay/releases/latest/download/s6-overlay-${S6_OVERLAY_ARCH}.tar.xz" \
     && wget -q -O- "${S6_OVERLAY_ARCH_RELEASE}" | tar -Jpx -C / \
@@ -26,7 +28,6 @@ RUN echo '*** installing packages ***' \
     && echo '*** cleanup ***' \
     && rm -rf /tmp/* /var/tmp/* /var/cache/apt/* /var/lib/apt/*
 
-COPY etc /etc
 COPY openvpn /etc/openvpn
 COPY scripts /etc/scripts
 COPY services /services

@@ -59,12 +59,15 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           push: false
           load: true
+          cache-from: type=gha,scope=${{ github.workflow}}
+          cache-to: type=gha,mode=max,scope=${{ github.workflow}}
 
       # https://github.com/marketplace/actions/anchore-sbom-action
       - name: Anchore SBOM Action
         uses: anchore/sbom-action@v0.14.3
         with:
           image: ${{ steps.meta.outputs.tags }}
+          dependency-snapshot: true
 
       # https://github.com/marketplace/actions/anchore-container-scan
       - name: Anchore Container Scan
@@ -158,12 +161,17 @@ jobs:
         with:
           file: ./Dockerfile
           platforms: linux/amd64,linux/arm64
+          build-args: |
+            BUILDTIME=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.created'] }}
+            VERSION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
+            REVISION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.revision'] }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
-          # Compatibility with https://hub.docker.com/r/willfarrell/autoheal/
-          labels: |
-            ${{ steps.meta.outputs.labels }}
-            org.opencontainers.image.documentation=http://jsloan117.github.io/docker-openvpn-client
+          provenance: true
+          sbom: true
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha,scope=${{ github.workflow}}
+          cache-to: type=gha,mode=max,scope=${{ github.workflow}}
 
       - name: Sign Image
         run: |

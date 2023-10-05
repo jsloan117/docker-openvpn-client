@@ -19,9 +19,10 @@ CONFIG_MOD_CA_CERTS=${CONFIG_MOD_CA_CERTS:-"1"}
 CONFIG_MOD_PING=${CONFIG_MOD_PING:-"1"}
 CONFIG_MOD_RESOLV_RETRY=${CONFIG_MOD_RESOLV_RETRY:-"1"}
 CONFIG_MOD_TLS_CERTS=${CONFIG_MOD_TLS_CERTS:-"1"}
-CONFIG_MOD_VERBOSITY=${CONFIG_MOD_VERBOSITY:-"1"}
+CONFIG_MOD_VERBOSITY=${CONFIG_MOD_VERBOSITY:-"3"}
 CONFIG_MOD_REMAP_USR1=${CONFIG_MOD_REMAP_USR1:-"1"}
 CONFIG_MOD_FAILURE_SCRIPT=${CONFIG_MOD_FAILURE_SCRIPT:-"1"}
+CONFIG_MOD_CIPHERS=${CONFIG_MOD_CIPHERS:-"1"}
 
 ## Option 1 - Change the auth-user-pass line to point to credentials file
 if [[ $CONFIG_MOD_USERPASS == "1" ]]; then
@@ -81,14 +82,17 @@ if [[ $CONFIG_MOD_TLS_CERTS == "1" ]]; then
 fi
 
 ## Option 6 - Update or set verbosity of openvpn logging
-if [[ $CONFIG_MOD_VERBOSITY == "1" ]]; then
-    echo "Modification: Set output verbosity to 3"
+if [[ $(( "$CONFIG_MOD_VERBOSITY" )) -gt 0 ]]; then
+    if [[ $(( "$CONFIG_MOD_VERBOSITY" )) -gt 9 ]]; then
+        CONFIG_MOD_VERBOSITY=9
+    fi
+    echo "Modification: Set output verbosity to ${CONFIG_MOD_VERBOSITY}"
     # Remove any old options
     sed -i "/^verb.*$/d" "$CONFIG"
 
     # Add new ones
     sed -i "\$q" "$CONFIG" # Ensure config ends with a line feed
-    echo "verb 3" >> "$CONFIG"
+    echo "verb ${CONFIG_MOD_VERBOSITY}" >> "$CONFIG"
 fi
 
 ## Option 7 - Remap the SIGUSR1 signal to SIGTERM
@@ -133,3 +137,16 @@ if [[ $CONFIG_MOD_FAILURE_SCRIPT == "1" ]]; then
     fi
   fi
 fi
+
+## Option 9 - match data-ciphers to ciphers
+# add data ciphers: DEPRECATED OPTION: --cipher set to 'AES-256-CBC' but missing in --data-ciphers (AES-256-GCM:AES-128-GCM)
+if [[ ${CONFIG_MOD_CIPHERS} == "1" ]]; then
+  if grep '^cipher' "${CONFIG}"; then
+    echo "Modification: adding data-ciphers to match ciphers"
+    ciphers=$(grep '^cipher' "${CONFIG}" | cut -d' ' -f2)
+    sed -i "/cipher ${ciphers}/a data-ciphers ${ciphers}" "${CONFIG}"
+
+    sed -i "\$q" "$CONFIG" # Ensure config ends with a line feed
+  fi
+fi
+

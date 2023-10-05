@@ -1,3 +1,0 @@
-# ensure proper boot order
-# https://github.com/just-containers/s6-overlay#executing-initialization-and-finalization-tasks
-
