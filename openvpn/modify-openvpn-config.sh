@@ -141,12 +141,13 @@ fi
 ## Option 9 - match data-ciphers to ciphers
 # add data ciphers: DEPRECATED OPTION: --cipher set to 'AES-256-CBC' but missing in --data-ciphers (AES-256-GCM:AES-128-GCM)
 if [[ ${CONFIG_MOD_CIPHERS} == "1" ]]; then
-  if grep '^cipher' "${CONFIG}"; then
-    echo "Modification: adding data-ciphers to match ciphers"
-    ciphers=$(grep '^cipher' "${CONFIG}" | cut -d' ' -f2)
-    sed -i "/cipher ${ciphers}/a data-ciphers ${ciphers}" "${CONFIG}"
-
-    sed -i "\$q" "$CONFIG" # Ensure config ends with a line feed
+  if grep -q '^cipher' "${CONFIG}"; then
+    if ! grep -q '^data-cipher' "${CONFIG}"; then
+      echo "Modification: adding data-ciphers to match ciphers"
+      ciphers=$(grep '^cipher' "${CONFIG}" | cut -d' ' -f2)
+      sed -i "/cipher ${ciphers}/a data-ciphers ${ciphers}" "${CONFIG}"
+      sed -i "\$q" "$CONFIG" # Ensure config ends with a line feed
+    fi
   fi
 fi
 
