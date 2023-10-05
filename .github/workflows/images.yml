@@ -20,11 +20,11 @@ concurrency:
 
 jobs:
   scan:
-    name: Vulnerability scan
+    name: vulnerability scan
     runs-on: ubuntu-latest
     permissions:
-      # required to upload sarif report to GitHub
-      security-events: write
+      contents: write # dependency submission API
+      security-events: write # upload sarif report to Github
     steps:
       # https://github.com/marketplace/actions/checkout
       - name: Checkout
