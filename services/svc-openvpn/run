@@ -1,11 +1,12 @@
 #!/command/with-contenv bash
 # shellcheck shell=bash
 
-# ensure we run the update-resolv-conf script to prevent leaking DNS
-# RESOLV_OPTS='--script-security 2 --route-up /etc/openvpn/update-resolv-conf --down /etc/openvpn/update-resolv-conf'
-# openvpn ${RESOLV_OPTS} ${OPENVPN_OPTS} --config "${CHOSEN_OPENVPN_CONFIG}"
+set -eo pipefail
+
+# https://skarnet.org/software/s6/s6-notifyoncheck.html
+# https://skarnet.org/software/s6/s6-setuidgid.html
 
 exec \
-  s6-notifyoncheck -d -s 3000 -n 120 -w 1000 \
+  s6-notifyoncheck -d -s 3000 -n 10 -w 1000 \
   s6-setuidgid root openvpn ${OPENVPN_OPTS} --config "${CHOSEN_OPENVPN_CONFIG}"
 

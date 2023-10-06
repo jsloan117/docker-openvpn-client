@@ -63,3 +63,4 @@ LABEL autoheal=true
 
 VOLUME /etc/openvpn
 ENTRYPOINT [ "/init" ]
+

@@ -4,6 +4,7 @@ set -o nounset
 set -o errexit
 set -o pipefail
 
+# shellcheck source=/dev/null
 source /etc/openvpn/utils.sh
 
 VPN_CONFIG_SOURCE_TYPE="${VPN_CONFIG_SOURCE_TYPE:-github_zip}"
@@ -14,6 +15,7 @@ GITHUB_CONFIG_SOURCE_REVISION="${GITHUB_CONFIG_SOURCE_REVISION:-main}"
 
 if [[ "${VPN_CONFIG_SOURCE_TYPE}" == "github_zip" ]]; then
 
+  # shellcheck disable=SC2317
   function cleanup {
     echo "Cleanup: deleting ${config_repo_temp_zip_file} and ${config_repo_temp_dir}"
     rm -rf "${config_repo_temp_zip_file}" "${config_repo_temp_dir}"
@@ -58,13 +60,13 @@ elif [[ "${VPN_CONFIG_SOURCE_TYPE}" == "github_clone" ]]; then
   # Check if git repo exists and clone or pull based on that
   if [[ -d ${config_repo} ]]; then
     GITHUB_CONFIG_SOURCE_LOCAL=$(git -C "${config_repo}" remote -v | head -1 | awk '{print $2}' | sed -e 's/https:\/\/github.com\///' -e 's/.git//')
-    if [ "$GITHUB_CONFIG_SOURCE_LOCAL" == "$GITHUB_CONFIG_SOURCE_REPO" ]; then
+    if [[ "${GITHUB_CONFIG_SOURCE_LOCAL}" == "${GITHUB_CONFIG_SOURCE_REPO}" ]]; then
       echo "Repository is already cloned, checking for update"
       git -C "${config_repo}" pull
       git -C "${config_repo}" checkout "${GITHUB_CONFIG_SOURCE_REVISION}"
     else
       echo "Cloning ${GITHUB_CONFIG_REPO_URL} into ${config_repo}"
-      config_repo_old="${config_repo}" + "_old"
+      config_repo_old="${config_repo}_old"
       mv "${config_repo}" "${config_repo_old}"
       git clone -b "${GITHUB_CONFIG_SOURCE_REVISION}" "${GITHUB_CONFIG_REPO_URL}" "${config_repo}"
     fi

@@ -11,7 +11,6 @@ if ! nslookup "${HOST}" > /dev/null; then
   exit 1
 fi
 
-# shellcheck disable=SC2154
 if [[ "${VPN_CLIENT}" == "openvpn" ]]; then
   iface='tun0'
   if ! pgrep openvpn; then
