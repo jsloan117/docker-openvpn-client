@@ -14,9 +14,6 @@ services:
         delay: 5s
         max_attempts: 3
         window: 120s
-    dns:
-      - 1.1.1.1
-      - 1.0.0.1
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - openvpn_data:/etc/openvpn
@@ -36,3 +33,4 @@ volumes:
 secrets:
   vpncreds:
     external: true
+

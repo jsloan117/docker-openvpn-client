@@ -22,6 +22,7 @@ concurrency:
 jobs:
   build-scan:
     runs-on: ubuntu-latest
+    permissions: {}
     steps:
       # https://github.com/marketplace/actions/checkout
       - name: Checkout
@@ -67,7 +68,6 @@ jobs:
         id: scan
         with:
           image: ${{ steps.meta.outputs.tags }}
-          acs-report-enable: true
           fail-build: true
           severity-cutoff: critical
 
@@ -99,3 +99,4 @@ jobs:
             BUILDTIME=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.created'] }}
             VERSION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
             REVISION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.revision'] }}
+

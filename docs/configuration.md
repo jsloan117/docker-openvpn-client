@@ -8,11 +8,14 @@ hide:
 
 ---
 
-`OPENVPN_PROVIDER` is the only required variable, all others below are optional.
+When using OpenVPN which is the default VPN client, the variable `OPENVPN_PROVIDER` is required.
+
+To use wireguard set the variable `VPN_CLIENT` to `wireguard`.
 
 | Variable           | Function     | Example                    |
 | ------------------ | ------------ | -------------------------- |
 | `OPENVPN_PROVIDER` | VPN provider | `OPENVPN_PROVIDER=VYPRVPN` |
+| `VPN_CLIENT`       | VPN client   | `VPN_CLIENT=wireguard`     |
 
 ## Credentials
 
@@ -28,6 +31,8 @@ OpenVPN's username and password can be passed in as a config file via a mount po
 ## Network
 
 ---
+
+It is strongly recommended that you keep `--route-up` and `--down` arguments of `OPENVPN_OPTS`. Running `/etc/openvpn/update-resolv-conf` helps configure DNS for the container and prevent DNS leaks.
 
 The `OPENVPN_CONFIG` variable is optional to set, but is good practice. If no config is given, a default config will be selected for the provider you have chosen.
 
@@ -55,6 +60,8 @@ The value that you should use is the filename of your chosen openvpn configurati
 | Variable           | Function                                                                                      | Example                          |
 | ------------------ | --------------------------------------------------------------------------------------------- | -------------------------------- |
 | `ENABLE_UFW`       | Enables ufw firewall                                                                          | `ENABLE_UFW=true`                |
+| `UFW_KILLSWITCH`   | Turns UFW into a firewall kill switch                                                         | `UFW_KILLSWITCH=true`            |
+| `UFW_FAILSAFE`     | allow local network access - make sure we can always get to it ("localNet")                   | `UFW_FAILSAFE=true`              |
 | `UFW_ALLOW_GW_NET` | Allows the gateway network through the firewall. False defaults to only allowing the gateway. | `UFW_ALLOW_GW_NET=true`          |
 | `UFW_EXTRA_PORTS`  | Allows the comma separated list of ports through the firewall. Respects UFW_ALLOW_GW_NET.     | `UFW_EXTRA_PORTS=9910,23561,443` |
 
@@ -64,7 +71,7 @@ The value that you should use is the filename of your chosen openvpn configurati
 
 Docker will run a health check on the container every minute to see if it is still connected to the Internet.
 
-By default, this is done by pinging google.com twice. You can change the host that is pinged.
+By default, this is done by pinging yahoo.com twice. You can change the host that is pinged.
 
 | Variable            | Function                                                           | Example      |
 | ------------------- | ------------------------------------------------------------------ | ------------ |
@@ -78,14 +85,14 @@ If you encounter a timeout error like the below, you may need to adjust the `S6_
 
 There are more environment variables for s6 and information on them can be found [here](https://github.com/just-containers/s6-overlay#customizing-s6-behaviour).
 
-???+ error
+???+ failure
 
     ```text
     s6-rc: fatal: timed out
     s6-sudoc: fatal: unable to get exit status from server: Operation timed out
     ```
 
-| Variable                           | Function                                                                                                   | Example |
+| Variable                           | Description                                                                                                | Default |
 | ---------------------------------- | ---------------------------------------------------------------------------------------------------------- | ------- |
 | `S6_CMD_WAIT_FOR_SERVICES_MAXTIME` | Global timeout value in milliseconds for all services. You can disable it by setting this variable to `0`. | `60000` |
 
@@ -112,5 +119,6 @@ They will automatically be executed before or after OpenVPN does sequentially. H
 ??? example "post-openvpn-script"
     ```bash
     # /etc/cont-finish.d/04-remove-junk.sh
-    rm -f /tmp/junkfiles
+    rm -f /tmp/junk
     ```
+

@@ -7,9 +7,13 @@ on:
 jobs:
   triage:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       # https://github.com/marketplace/actions/labeler
       - name: Label PRs
         uses: actions/labeler@v4
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
+

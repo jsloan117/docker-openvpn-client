@@ -4,15 +4,11 @@ hide:
   # - toc
 ---
 
-All of these things (signing, scanning, etc) are pretty new to me and this page may not always reflect the truth.
-
-Mainly at this time, that is how/where security reports are handled within Github. Where/how do I share them etc.
-
 ## Image Signing
 
 ---
 
-The image is signed using cosign by [sigstore](https://www.sigstore.dev). You can verify any v3+ image using the below key or the key with that release.
+The image is signed using cosign by [sigstore](https://www.sigstore.dev). You can verify any v3+ image using the below or the key associated with that release.
 
 ### Public key
 
@@ -33,36 +29,32 @@ cosign verify --key cosign.pub jsloan117/docker-openvpn-client:v3
 
 ---
 
-Image scanning is handled using [grype](https://github.com/anchore/grype) by [Anchore](https://anchore.com/).
-If any critical vulnerabilities are found the pipeline will fail.
+We use [grype](https://github.com/anchore/grype) by [Anchore](https://anchore.com/) to handle image scanning.
+If any critical vulnerabilities are detected, the pipeline will fail.
 
-The results of the scan should be available in the security tab of Github and as an artifact with each run of the pipeline.
+The scan results should be available in the security tab of Github and as an artifact with each pipeline run.
 
 ## Software Bill Of Materials (SBOM)
 
 ---
 
-SBOM generation is handled using [syft](https://github.com/anchore/syft) by [Anchore](https://anchore.com/), in spdx-json format.
+We use [syft](https://github.com/anchore/syft) by [Anchore](https://anchore.com/) to handle SBOM generation in spdx-json format.
+We upload it as an artifact with every pipeline run and as an asset for releases.
 
-It will be uploaded as an artifact with each run of the pipeline. For releases it will be uploaded as an asset.
+???+ example "get package name and version"
+    ```bash linenums="1"
+    jq -r '.packages[] | {name, versionInfo}' jsloan117-docker-openvpn-client_v1.7.1.spdx.json
+    {
+      "name": "unzip",
+      "versionInfo": "6.0-r9"
+    }
+    {
+      "name": "xz-libs",
+      "versionInfo": "5.2.5-r0"
+    }
+    {
+      "name": "zlib",
+      "versionInfo": "1.2.11-r3"
+    }
+    ```
 
-### Check package name and their version
-
-```bash
-jq -r '.packages[] | {name, versionInfo}' jsloan117-docker-openvpn-client_v1.7.1.spdx.json
-```
-
-```json
-{
-  "name": "unzip",
-  "versionInfo": "6.0-r9"
-}
-{
-  "name": "xz-libs",
-  "versionInfo": "5.2.5-r0"
-}
-{
-  "name": "zlib",
-  "versionInfo": "1.2.11-r3"
-}
-```

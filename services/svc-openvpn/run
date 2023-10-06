@@ -1,0 +1,11 @@
+#!/command/with-contenv bash
+# shellcheck shell=bash
+# https://skarnet.org/software/s6/s6-notifyoncheck.html
+# https://skarnet.org/software/s6/s6-setuidgid.html
+
+set -eo pipefail
+
+exec \
+  s6-notifyoncheck -d -s 3000 -n 120 -w 1000 \
+  s6-setuidgid root openvpn ${OPENVPN_OPTS} --config "${CHOSEN_OPENVPN_CONFIG}"
+

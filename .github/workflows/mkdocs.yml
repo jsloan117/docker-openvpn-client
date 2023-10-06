@@ -9,14 +9,16 @@ on:
       - '**.md'
       - mkdocs.yml
       - .github/workflows/mkdocs.yml
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  mkdocs:
+  build:
     runs-on: ubuntu-latest
+    permissions: {}
     steps:
       # https://github.com/marketplace/actions/checkout
       - name: Checkout
@@ -26,25 +28,38 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
-
-      - run: pip install wheel
+          python-version: '3.10'
 
       - name: Install MkDocs and deps
         run: |
+          pip install wheel
           pip install mkdocs mkdocs-material mkdocs-material-extensions \
           mkdocs-minify-plugin mkdocs-redirects pygments pymdown-extensions
 
       - name: Build docs
         run: mkdocs build -vcs
 
-      # https://github.com/marketplace/actions/github-pages-action
-      - name: Deploy
-        if: success() && github.event_name != 'pull_request'
-        uses: peaceiris/actions-gh-pages@v3.9.2
+      # https://github.com/marketplace/actions/upload-github-pages-artifact
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
         with:
-          force_orphan: true
-          full_commit_message: Deployed ${{ github.sha }} to gh-pages [skip ci]
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: ./site
+          path: ./site
+          retention-days: 1
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    # https://docs.github.com/en/actions/security-guides/automatic-token-authentication#permissions-for-the-github_token
+    # https://docs.github.com/en/rest/overview/permissions-required-for-github-apps#contents
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      # https://github.com/marketplace/actions/deploy-github-pages-site
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
+
