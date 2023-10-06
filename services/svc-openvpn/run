@@ -7,6 +7,6 @@ set -eo pipefail
 # https://skarnet.org/software/s6/s6-setuidgid.html
 
 exec \
-  s6-notifyoncheck -d -s 3000 -n 10 -w 1000 \
+  s6-notifyoncheck -d -s 3000 -n 120 -w 1000 \
   s6-setuidgid root openvpn ${OPENVPN_OPTS} --config "${CHOSEN_OPENVPN_CONFIG}"
 
