@@ -7,7 +7,7 @@ if [[ -n "${REVISION-}" ]]; then
   echo "GitRevision: ${REVISION-}"
 fi
 
-if [[ -n "${VERSION}" ]]; then
+if [[ -n "${VERSION-}" ]]; then
   echo "GitVersion: ${VERSION}"
 fi
 
