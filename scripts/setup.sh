@@ -75,7 +75,6 @@ fi
 if [[ -n "${OPENVPN_CONFIG-}" ]]; then
   # check that the chosen config exists.
   if [[ -f "${VPN_PROVIDER_HOME}/${OPENVPN_CONFIG}.ovpn" ]]; then
-    echo "Starting OpenVPN using config ${OPENVPN_CONFIG}.ovpn"
     CHOSEN_OPENVPN_CONFIG="${VPN_PROVIDER_HOME}/${OPENVPN_CONFIG}.ovpn"
     # ensure the run script can get this variable
     printf '%s' "${CHOSEN_OPENVPN_CONFIG}" > /run/s6/container_environment/CHOSEN_OPENVPN_CONFIG
