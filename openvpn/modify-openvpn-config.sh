@@ -54,9 +54,6 @@ if [[ ${CONFIG_MOD_PING} == "1" ]]; then
 
   # Add new ones
   sed -i "\$q" "${CONFIG}" # Ensure config ends with a line feed
-  # echo "inactive 3600" >> "${CONFIG}"
-  # echo "ping 10" >> "${CONFIG}"
-  # echo "ping-exit 60" >> "${CONFIG}"
   {
     echo 'inactive 3600'
     echo 'ping 10'

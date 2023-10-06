@@ -44,6 +44,7 @@ ENV VPN_CLIENT='openvpn' \
     UFW_FAILSAFE=false \
     UFW_ALLOW_GW_NET='false' \
     UFW_EXTRA_PORTS= \
+    UFW_DISABLE_IPTABLES_REJECT=false \
     HEALTH_CHECK_HOST='google.com' \
     S6_CMD_WAIT_FOR_SERVICES_MAXTIME='60000' \
     # this should allow us to dynamically use openvpn or wireguard
