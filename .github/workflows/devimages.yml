@@ -63,7 +63,7 @@ jobs:
 
       # https://github.com/marketplace/actions/anchore-sbom-action
       - name: Anchore SBOM Action
-        uses: anchore/sbom-action@v0.14.3
+        uses: anchore/sbom-action@v0.15.0
         with:
           image: ${{ steps.meta.outputs.tags }}
           dependency-snapshot: true
