@@ -111,7 +111,7 @@ jobs:
 
       # https://github.com/marketplace/actions/cosign-installer
       - name: Install Cosign
-        uses: sigstore/cosign-installer@v3.3.0
+        uses: sigstore/cosign-installer@v3.4.0
 
       # https://github.com/marketplace/actions/docker-metadata-action
       - name: Docker Metadata
