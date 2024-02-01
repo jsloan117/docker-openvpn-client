@@ -38,7 +38,7 @@ jobs:
 
       # https://github.com/marketplace/actions/docker-metadata-action
       - name: Docker Metadata
-        uses: docker/metadata-action@v5.5.0
+        uses: docker/metadata-action@v5.5.1
         id: meta
         with:
           images: ${{ env.IMAGE_NAME }}
@@ -115,7 +115,7 @@ jobs:
 
       # https://github.com/marketplace/actions/docker-metadata-action
       - name: Docker Metadata
-        uses: docker/metadata-action@v5.5.0
+        uses: docker/metadata-action@v5.5.1
         id: meta
         with:
           images: |
