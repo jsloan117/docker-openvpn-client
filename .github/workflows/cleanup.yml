@@ -12,9 +12,12 @@ jobs:
     steps:
       # https://github.com/marketplace/actions/delete-untagged
       - name: Delete Untagged
-        uses: camargo/delete-untagged-action@v1
+        uses: Chizkiyahu/delete-untagged-ghcr-action@v4
         with:
-          github-token: ${{ secrets.PKG_CLEANUP_KEY }}
-          personal-account: true
+          token: ${{ secrets.PKG_CLEANUP_KEY }}
+          owner_type: user
           repository: ${{ github.repository }}
+          repository_owner: ${{ github.repository_owner }}
+          untagged_only: true
+          except_untagged_multiplatform: true
 
