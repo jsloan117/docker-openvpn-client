@@ -50,7 +50,7 @@ jobs:
 
       # https://github.com/marketplace/actions/build-and-push-docker-images
       - name: Build Image
-        uses: docker/build-push-action@v6.2.0
+        uses: docker/build-push-action@v6.3.0
         with:
           tags: ${{ steps.meta.outputs.tags }}
           push: false
@@ -157,7 +157,7 @@ jobs:
 
       # https://github.com/marketplace/actions/build-and-push-docker-images
       - name: Build and push
-        uses: docker/build-push-action@v6.2.0
+        uses: docker/build-push-action@v6.3.0
         id: build
         with:
           file: ./Dockerfile
