@@ -39,7 +39,7 @@ jobs:
 
       # https://github.com/marketplace/actions/docker-setup-qemu
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3.0.0
+        uses: docker/setup-qemu-action@v3.1.0
 
       # https://github.com/marketplace/actions/docker-setup-buildx
       - name: Set up Docker Buildx
