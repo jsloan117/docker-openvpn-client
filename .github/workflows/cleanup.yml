@@ -1,23 +1,21 @@
 ---
-name: Delete Untagged Container Images
+name: delete untagged
 
 on:
   schedule:
-    - cron: '0 0 1 * *' # yamllint disable-line rule:quoted-strings
+    - cron: '5 0 * * *' # yamllint disable-line rule:quoted-strings
+  workflow_dispatch:
+
+permissions: {}
 
 jobs:
   cleanup:
     runs-on: ubuntu-latest
-    permissions: {}
     steps:
       # https://github.com/marketplace/actions/delete-untagged
       - name: Delete Untagged
-        uses: Chizkiyahu/delete-untagged-ghcr-action@v4
+        # uses: camargo/delete-untagged-action@v1
+        uses: jsloan117/delete-untagged-action@v1.0.1
         with:
-          token: ${{ secrets.PKG_CLEANUP_KEY }}
-          owner_type: user
-          repository: ${{ github.repository }}
-          repository_owner: ${{ github.repository_owner }}
-          untagged_only: true
-          except_untagged_multiplatform: true
-
+          github-token: ${{ secrets.PKG_CLEANUP }}
+          personal-account: true
