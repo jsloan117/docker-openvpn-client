@@ -15,6 +15,7 @@ RUN echo '*** installing packages ***' \
        iptables bind9-dnsutils kmod ca-certificates wget xz-utils net-tools ufw wireguard-tools \
     && wget 'http://mirrors.kernel.org/ubuntu/pool/universe/o/openresolv/openresolv_3.12.0-2_all.deb' \
     && dpkg -i './openresolv_3.12.0-2_all.deb' \
+    && rm -f './openresolv_3.12.0-2_all.deb' \
     && case ${TARGETPLATFORM} in \
             'linux/amd64')  S6_OVERLAY_ARCH=x86_64  ;; \
             'linux/arm64')  S6_OVERLAY_ARCH=aarch64  ;; \
