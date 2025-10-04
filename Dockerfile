@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 # https://docs.docker.com/engine/reference/builder/#automatic-platform-args-in-the-global-scope
 ARG TARGETPLATFORM
@@ -12,7 +12,10 @@ ARG DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true
 RUN echo '*** installing packages ***' \
     && apt-get update && apt-get -y upgrade \
     && apt-get install -y --no-install-recommends openvpn curl unzip jq iputils-ping iproute2 psmisc \
-       iptables bind9-dnsutils kmod ca-certificates wget xz-utils net-tools ufw openresolv wireguard-tools \
+       iptables bind9-dnsutils kmod ca-certificates wget xz-utils net-tools ufw wireguard-tools \
+    && wget 'http://mirrors.kernel.org/ubuntu/pool/universe/o/openresolv/openresolv_3.12.0-2_all.deb' \
+    && dpkg -i './openresolv_3.12.0-2_all.deb' \
+    && rm -f './openresolv_3.12.0-2_all.deb' \
     && case ${TARGETPLATFORM} in \
             'linux/amd64')  S6_OVERLAY_ARCH=x86_64  ;; \
             'linux/arm64')  S6_OVERLAY_ARCH=aarch64  ;; \

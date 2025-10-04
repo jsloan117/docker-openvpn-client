@@ -55,8 +55,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           push: false
           load: true
-          cache-from: type=gha,scope=${{ github.workflow}}
-          cache-to: type=gha,mode=max,scope=${{ github.workflow}}
+          no-cache: true
 
       # https://github.com/marketplace/actions/anchore-sbom-action
       - name: Anchore SBOM Action
@@ -169,8 +168,7 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha,scope=${{ github.workflow}}
-          cache-to: type=gha,mode=max,scope=${{ github.workflow}}
+          no-cache: true
 
       - name: Sign Image
         run: |
