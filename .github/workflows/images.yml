@@ -90,7 +90,7 @@ jobs:
 
       # https://github.com/marketplace/actions/upload-a-build-artifact
       - name: Upload Sarif Report
-        uses: actions/upload-artifact@v5.0.0
+        uses: actions/upload-artifact@v6.0.0
         with:
           name: ${{ env.sarif_artifact }}
           path: ${{ steps.scan.outputs.sarif }}
@@ -198,7 +198,7 @@ jobs:
 
       # https://github.com/marketplace/actions/upload-a-build-artifact
       - name: Upload public key
-        uses: actions/upload-artifact@v5.0.0
+        uses: actions/upload-artifact@v6.0.0
         with:
           name: cosign.pub
           path: cosign.pub
