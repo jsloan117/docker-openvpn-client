@@ -10,6 +10,5 @@ pull_request_rules:
       - -conflict
       - label=automerge
     actions:
-      delete_head_branch:
       merge:
         method: squash
